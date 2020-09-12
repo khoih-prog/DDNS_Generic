@@ -1,0 +1,29 @@
+#######################################
+# Syntax Coloring Map For DDNS_Generic
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+DDNSGenericClass	KEYWORD1
+DDNSUpdateHandler	KEYWORD1
+
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+###################
+# DDNSGenericClass
+###################
+
+service KEYWORD2
+client  KEYWORD2
+update  KEYWORD2
+onUpdate  KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
