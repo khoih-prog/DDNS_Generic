@@ -59,7 +59,7 @@
 #### Currently Supported Ethernet Modules/Shields
 
   - **W5x00's using Ethernet, EthernetLarge, Ethernet2 or Ethernet3 Library.**
-  - **ENC28J60 using UIPEthernet library**
+  - **ENC28J60 using EthernetENC or UIPEthernet library**
   - **LAN8742A using STM32duino LwIP,STM32duino STM32Ethernet libraries**
   
 ---
@@ -85,6 +85,7 @@
    - [`Ethernet2 library v1.0.4+`](https://github.com/khoih-prog/Ethernet2) for W5500 (Deprecated, use Arduino Ethernet library).
    - [`Ethernet3 library v1.5.3+`](https://github.com/sstaub/Ethernet3) for W5500/WIZ550io/WIZ850io/USR-ES1 with Wiznet W5500 chip.
    - [`EthernetLarge library v2.0.0+`](https://github.com/OPEnSLab-OSU/EthernetLarge) for W5100, W5200 and W5500.
+   - [`EthernetENC library v2.0.0+`](https://github.com/jandrassy/EthernetENC) for ENC28J60. **New**
    - [`UIPEthernet library v2.0.8+`](https://github.com/UIPEthernet/UIPEthernet) for ENC28J60.
    - [`STM32Ethernet library v1.2.0+`](https://github.com/stm32duino/STM32Ethernet) for built-in Ethernet LAN8742A on (Nucleo-144, Discovery). To be used with [`STM32duino_LwIP library v2.1.2+`](https://github.com/stm32duino/LwIP).
 15. [`WiFiNINA_Generic library v1.7.1+`](https://github.com/khoih-prog/WiFiNINA_Generic) to use WiFiNINA modules/shields. To install. check [![arduino-library-badge](https://www.ardu-badge.com/badge/WiFiNINA_Generic.svg?)](https://www.ardu-badge.com/WiFiNINA_Generic) if using WiFiNINA for boards such as Nano 33 IoT, nRF52, Teensy, etc.
@@ -297,10 +298,29 @@ In examples' **defines.h**
   #define USE_ETHERNET3           false //true
   #define USE_ETHERNET_LARGE      true
   #define USE_ETHERNET_ESP8266    false //true
+  #define USE_ETHERNET_ENC        false
 ```
 
+3) To use ENC28J60 Ethernet, using EthernetENC library (**NEW**)
 
-3) To use ENC28J60 Ethernet, using UIPEthernet library
+```cpp
+// This must be true if using LAN8742A for STM32F, such as Nucleo-144 F767ZI
+  #define USE_BUILTIN_ETHERNET    false
+  //////////
+  
+  #define USE_UIP_ETHERNET        false
+  #define USE_CUSTOM_ETHERNET     false
+
+  // Only one if the following to be true
+  #define USE_ETHERNET            false
+  #define USE_ETHERNET2           false //true
+  #define USE_ETHERNET3           false //true
+  #define USE_ETHERNET_LARGE      false
+  #define USE_ETHERNET_ESP8266    false //true
+  #define USE_ETHERNET_ENC        true
+```
+
+4) To use ENC28J60 Ethernet, using UIPEthernet library
 
 ```cpp
 // This must be true if using LAN8742A for STM32F, such as Nucleo-144 F767ZI
@@ -316,9 +336,10 @@ In examples' **defines.h**
   #define USE_ETHERNET3           false //true
   #define USE_ETHERNET_LARGE      false
   #define USE_ETHERNET_ESP8266    false //true
+  #define USE_ETHERNET_ENC        false
 ```
 
-4) To use LAN8742A Ethernet, using STM32Ethernet library library
+5) To use LAN8742A Ethernet, using STM32Ethernet library
 
 ```cpp
 // This must be true if using LAN8742A for STM32F, such as Nucleo-144 F767ZI
@@ -334,6 +355,7 @@ In examples' **defines.h**
   #define USE_ETHERNET3           false //true
   #define USE_ETHERNET_LARGE      false
   #define USE_ETHERNET_ESP8266    false //true
+  #define USE_ETHERNET_ENC        false
 ```
 
 #### 3. How to select which built-in WiFi or shield to use
@@ -394,7 +416,7 @@ In examples' **defines.h**
 #endif
 ```
 
-4) To use some new custom WiFi, with custom WiFi_XYZ library => Define USE_WIFI_NINA == falseand DDNS_USING_WIFI_AT == false and USE_WIFI_CUSTOM == true. Then uncomment #include "WiFi_XYZ.h" and comment out #include "WiFiEspAT.h"
+4) To use some new custom WiFi, with custom WiFi_XYZ library => Define USE_WIFI_NINA == false, DDNS_USING_WIFI_AT == false and USE_WIFI_CUSTOM == true. Then uncomment #include "WiFi_XYZ.h" and comment out #include "WiFiEspAT.h"
 
 ```cpp
 //#define USE_WIFI_NINA         true
@@ -602,7 +624,7 @@ void setup()
 #elif (DDNS_USING_ETHERNET)
 
   // For other boards, to change if necessary
-#if ( USE_ETHERNET || USE_ETHERNET_LARGE || USE_ETHERNET2 )
+#if ( USE_ETHERNET || USE_ETHERNET_LARGE || USE_ETHERNET2 || USE_ETHERNET_ENC )
   // Must use library patch for Ethernet, Ethernet2, EthernetLarge libraries
 
   Ethernet.init (USE_THIS_SS_PIN);
@@ -616,7 +638,7 @@ void setup()
   Ethernet.setCsPin (USE_THIS_SS_PIN);
   Ethernet.init (ETHERNET3_MAX_SOCK_NUM);
 
-#endif  //( USE_ETHERNET || USE_ETHERNET2 || USE_ETHERNET3 || USE_ETHERNET_LARGE )
+#endif  //#if ( USE_ETHERNET || USE_ETHERNET_LARGE || USE_ETHERNET2 || USE_ETHERNET_ENC )
 
   // start the ethernet connection and the server:
   // Use DHCP dynamic IP and random mac
@@ -1000,7 +1022,7 @@ void loop()
   #warning ESP8266 board selected
 
 #elif (ESP32)
-  #warning ESP32 board selected  
+  #warning ESP32 board selected
 
 #else
   // For Mega
@@ -1083,10 +1105,11 @@ void loop()
   #define USE_ETHERNET            false
   #define USE_ETHERNET2           false //true
   #define USE_ETHERNET3           false //true
-  #define USE_ETHERNET_LARGE      true
+  #define USE_ETHERNET_LARGE      false
   #define USE_ETHERNET_ESP8266    false //true
+  #define USE_ETHERNET_ENC        true
 
-  #if ( USE_ETHERNET2 || USE_ETHERNET3 || USE_ETHERNET_LARGE || USE_ETHERNET_ESP8266 )
+  #if ( USE_ETHERNET2 || USE_ETHERNET3 || USE_ETHERNET_LARGE || USE_ETHERNET_ESP8266 || USE_ETHERNET_ENC )
     #ifdef USE_CUSTOM_ETHERNET
       #undef USE_CUSTOM_ETHERNET
       #define USE_CUSTOM_ETHERNET   true
@@ -1111,6 +1134,10 @@ void loop()
       #include "Ethernet_ESP8266.h"
       #warning Use Ethernet_ESP8266 lib
       #define SHIELD_TYPE           "W5x00 using Ethernet_ESP8266 Library"
+    #elif USE_ETHERNET_ENC
+      #include "EthernetENC.h"
+      #warning Use EthernetENC lib
+      #define SHIELD_TYPE           "ENC28J60 using EthernetENC Library"
     #elif USE_CUSTOM_ETHERNET
       #include "Ethernet_XYZ.h"
       #warning Use Custom Ethernet library from EthernetWrapper. You must include a library here or error.
@@ -1324,7 +1351,26 @@ DDNSGeneric - IP Change Detected: aaa.bbb.ccc.ddd
 
 ---
 
-#### 5. Debug terminal output when running example [DuckDNS_Client](examples/Generic/DuckDNS_Client) on Adafruit NRF52840_FEATHER_EXPRESS with ENC28J60 using UIPEthernet Library
+#### 5. Debug terminal output when running example [DuckDNS_Client](examples/Generic/DuckDNS_Client) on Adafruit NRF52840_FEATHER_EXPRESS with ENC28J60 using new EthernetENC Library
+
+```
+Start nRF52_Ethernet_DuckDNS_Client on NRF52840_FEATHER with ENC28J60 using EthernetENC Library
+
+HTTP WebServer is @ IP : 192.168.2.83
+[DDNS] Access whatismyipaddress
+[DDNS] httpCode = 200
+[DDNS] Current Public IP = aaa.bbb.ccc.ddd
+[DDNS] response = aaa.bbb.ccc.ddd
+[DDNS] Sending HTTP_GET to duckdns
+[DDNS] HTTP_GET = http://www.duckdns.org/update?domains=account.duckdns.org&token=token&ip=aaa.bbb.ccc.ddd
+[DDNS] httpCode = 200
+DDNSGeneric - IP Change Detected: aaa.bbb.ccc.ddd
+[DDNS] Updated IP = aaa.bbb.ccc.ddd
+```
+
+---
+
+#### 6. Debug terminal output when running example [DuckDNS_Client](examples/Generic/DuckDNS_Client) on Adafruit NRF52840_FEATHER_EXPRESS with ENC28J60 using UIPEthernet Library
 
 ```
 Start DuckDNS_Client on NRF52840_FEATHER with ENC28J60 using UIPEthernet Library
@@ -1348,7 +1394,7 @@ DDNSGeneric - IP Change Detected: aaa.bbb.ccc.ddd
 
 ---
 
-#### 6. Debug terminal output when running example [DuckDNS_Client](examples/Generic/DuckDNS_Client) on Adafruit SAMD21 SAMD_NANO_33_IOT with WiFiNINA using WiFiNINA_Generic Library
+#### 7. Debug terminal output when running example [DuckDNS_Client](examples/Generic/DuckDNS_Client) on Adafruit SAMD21 SAMD_NANO_33_IOT with WiFiNINA using WiFiNINA_Generic Library
 
 ```
 Start DuckDNS_Client on SAMD_NANO_33_IOT with WiFiNINA using WiFiNINA_Generic Library
@@ -1368,7 +1414,7 @@ DDNSGeneric - IP Change Detected: aaa.bbb.ccc.ddd
 
 ---
 
-#### 7. Debug terminal output when running example [No-ip_Client](examples/Generic/No-ip_Client) on Adafruit SAMD21 SAMD_NANO_33_IOT with WiFiNINA using WiFiNINA_Generic Library
+#### 8. Debug terminal output when running example [No-ip_Client](examples/Generic/No-ip_Client) on Adafruit SAMD21 SAMD_NANO_33_IOT with WiFiNINA using WiFiNINA_Generic Library
 
 ```
 Start No-ip_Client on SAMD_NANO_33_IOT with WiFiNINA using WiFiNINA_Generic Library
@@ -1388,7 +1434,7 @@ DDNSGeneric - IP Change Detected: aaa.bbb.ccc.ddd
 
 ---
 
-#### 8. Debug terminal output when running example [DuckDNS_Client](examples/Generic/DuckDNS_Client) on Arduino SAM DUE with W5100 using Ethernet Library
+#### 9. Debug terminal output when running example [DuckDNS_Client](examples/Generic/DuckDNS_Client) on Arduino SAM DUE with W5100 using Ethernet Library
 
 ```
 Start DuckDNS_Client on SAM DUE with W5x00 using Ethernet Library
@@ -1410,7 +1456,7 @@ DDNSGeneric - IP Change Detected: aaa.bbb.ccc.ddd
 
 ---
 
-#### 9. Debug terminal output when running example [No-ip_Client](examples/Generic/No-ip_Client) on Arduino SAM DUE with W5100 using EthernetLarge Library
+#### 10. Debug terminal output when running example [No-ip_Client](examples/Generic/No-ip_Client) on Arduino SAM DUE with W5100 using EthernetLarge Library
 
 ```
 Start No-ip_Client on SAM DUE with W5x00 using EthernetLarge Library
@@ -1432,7 +1478,7 @@ DDNSGeneric - IP Change Detected: aaa.bbb.ccc.ddd
 
 ---
 
-#### 10. Debug terminal output when running example [DuckDNS_Client](examples/Generic/DuckDNS_Client) on SeeedStudio SEEED_XIAO_M0 with ESP8266-AT using ESP8266_AT_WebServer Library
+#### 11. Debug terminal output when running example [DuckDNS_Client](examples/Generic/DuckDNS_Client) on SeeedStudio SEEED_XIAO_M0 with ESP8266-AT using ESP8266_AT_WebServer Library
 
 ```
 Start DuckDNS_Client on SEEED_XIAO_M0 with ESP8266-AT/ESP32-AT using ESP8266_AT_WebServer Library
@@ -1454,7 +1500,7 @@ DDNSGeneric - IP Change Detected: aaa.bbb.ccc.ddd
 
 ---
 
-#### 11. Debug terminal output when running example [No-ip_Client](examples/Generic/No-ip_Client) on SeeedStudio SEEED_XIAO_M0 with ESP8266-AT using ESP8266_AT_WebServer Library
+#### 12. Debug terminal output when running example [No-ip_Client](examples/Generic/No-ip_Client) on SeeedStudio SEEED_XIAO_M0 with ESP8266-AT using ESP8266_AT_WebServer Library
 
 ```
 Start No-ip_Client on SEEED_XIAO_M0 with ESP8266-AT/ESP32-AT using ESP8266_AT_WebServer Library
@@ -1506,7 +1552,7 @@ DDNSGeneric - IP Change Detected: aaa.bbb.ccc.ddd
 #### Currently Supported Ethernet Modules/Shields
 
   - **W5x00's using Ethernet, EthernetLarge, Ethernet2 or Ethernet3 Library.**
-  - **ENC28J60 using UIPEthernet library**
+  - **ENC28J60 using EthernetENC, UIPEthernet library**
   - **LAN8742A using STM32duino LwIP,STM32duino STM32Ethernet libraries**
 
 ---
@@ -1529,7 +1575,7 @@ DDNSGeneric - IP Change Detected: aaa.bbb.ccc.ddd
  7. Add support to STM32F/L/H/G/WB/MP1 (Nucleo-144, Nucleo-64, Nucleo-32, Discovery, STM32Fx, STM32H7, STM32Lx, STM32Gx, STM32WB, STM32MP1, etc.) having 32K+ Flash program memory.
  8. Add support to Ethernet W5x00, using either [`Ethernet`](https://www.arduino.cc/en/Reference/Ethernet), [`Ethernet2`](https://github.com/khoih-prog/Ethernet2), [`Ethernet3`](https://github.com/sstaub/Ethernet3) or [`EthernetLarge`](https://github.com/OPEnSLab-OSU/EthernetLarge) library
  9. Add support to LAN8742A using STM32duino LwIP,STM32duino STM32Ethernet libraries
-10. Add support to Ethernet ENC28J60, using [`UIPEthernet`](https://github.com/UIPEthernet/UIPEthernet) library
+10. Add support to Ethernet ENC28J60, using [`EthernetENC`](https://github.com/jandrassy/EthernetENC) [`UIPEthernet`](https://github.com/UIPEthernet/UIPEthernet) library
 11. Add support to WiFiNINA using WiFiNINA or WiFiNINA_Generic library.
 12. Add support to ESP8266-AT, ESP32-AT WiFi shields using WiFiEspAT or ESP8266_AT_WebServer library.
 13. Add support to Seeeduino SAMD21/SAMD51: LoRaWAN, Zero, Femto M0, XIAO M0, Wio GPS Board, Wio Terminal, Grove UI Wireless

@@ -94,7 +94,7 @@ void setup()
 #elif (DDNS_USING_ETHERNET)
 
    // For other boards, to change if necessary
-#if ( USE_ETHERNET || USE_ETHERNET_LARGE || USE_ETHERNET2 )
+#if ( USE_ETHERNET || USE_ETHERNET_LARGE || USE_ETHERNET2 || USE_ETHERNET_ENC )
   // Must use library patch for Ethernet, Ethernet2, EthernetLarge libraries
 
   Ethernet.init (USE_THIS_SS_PIN);
@@ -108,7 +108,7 @@ void setup()
   Ethernet.setCsPin (USE_THIS_SS_PIN);
   Ethernet.init (ETHERNET3_MAX_SOCK_NUM);
 
-#endif  //( USE_ETHERNET || USE_ETHERNET2 || USE_ETHERNET3 || USE_ETHERNET_LARGE )
+#endif  // #if ( USE_ETHERNET || USE_ETHERNET_LARGE || USE_ETHERNET2 || USE_ETHERNET_ENC )
 
   // start the ethernet connection and the server:
   // Use DHCP dynamic IP and random mac

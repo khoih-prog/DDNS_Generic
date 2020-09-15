@@ -28,8 +28,8 @@
 #define _DDNS_GENERIC_LOGLEVEL_     2
 
 // Select DDNS_USING_WIFI for boards using built-in WiFi, such as Nano-33-IoT
-#define DDNS_USING_WIFI             true    //true
-#define DDNS_USING_ETHERNET         false   //true
+#define DDNS_USING_WIFI             false    //true
+#define DDNS_USING_ETHERNET         true   //true
 
 /////////////////////////////////
   
@@ -438,15 +438,16 @@
   
   #define USE_UIP_ETHERNET        false
   #define USE_CUSTOM_ETHERNET     false
-
+  
   // Only one if the following to be true
   #define USE_ETHERNET            false
   #define USE_ETHERNET2           false //true
   #define USE_ETHERNET3           false //true
-  #define USE_ETHERNET_LARGE      true
+  #define USE_ETHERNET_LARGE      false
   #define USE_ETHERNET_ESP8266    false //true
-
-  #if ( USE_ETHERNET2 || USE_ETHERNET3 || USE_ETHERNET_LARGE || USE_ETHERNET_ESP8266 )
+  #define USE_ETHERNET_ENC        true
+  
+  #if ( USE_ETHERNET2 || USE_ETHERNET3 || USE_ETHERNET_LARGE || USE_ETHERNET_ESP8266 || USE_ETHERNET_ENC )
     #ifdef USE_CUSTOM_ETHERNET
       #undef USE_CUSTOM_ETHERNET
       #define USE_CUSTOM_ETHERNET   true
@@ -471,6 +472,10 @@
       #include "Ethernet_ESP8266.h"
       #warning Use Ethernet_ESP8266 lib
       #define SHIELD_TYPE           "W5x00 using Ethernet_ESP8266 Library"
+    #elif USE_ETHERNET_ENC
+      #include "EthernetENC.h"
+      #warning Use EthernetENC lib
+      #define SHIELD_TYPE           "ENC28J60 using EthernetENC Library"
     #elif USE_CUSTOM_ETHERNET
       #include "Ethernet_XYZ.h"
       #warning Use Custom Ethernet library from EthernetWrapper. You must include a library here or error.
