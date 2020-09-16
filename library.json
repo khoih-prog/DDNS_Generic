@@ -6,13 +6,13 @@
   "authors": [
     {
       "name":  "Ayush Sharma",
-      "url":   "https://github.com/ayushsharma82",
-    }
+      "url":   "https://github.com/ayushsharma82"
+    },
     {
       "name":  "Khoi Hoang",
       "url":   "https://github.com/khoih-prog",
       "email": "khoih.prog@gmail.com",
-      "maintainer": true,
+      "maintainer": true
     }  
   ],
   "repository":
