@@ -29,7 +29,14 @@
 
 ---
 
-### Releases v1.0.0
+### Releases v1.0.1
+
+1. Add HTTP_ResponseParser class to fix issue with **nRF52 and STM32F/L/H/G/WB/MP1 using ESP8266/ESP32-AT**.
+2. Add support to Ethernet2, Ethernet3 and EthernetLarge libraries for STM32 using W5x00.
+3. Update Platform.ini to support PlatformIO 5.x owner-based dependency declaration.
+4. Add more debug features.
+
+#### Releases v1.0.0
 
 1. Initial coding for Generic boards using many different WiFi/Ethernet modules/shields.
 2. Add more examples
@@ -85,14 +92,14 @@
    - [`Ethernet2 library v1.0.4+`](https://github.com/khoih-prog/Ethernet2) for W5500 (Deprecated, use Arduino Ethernet library).
    - [`Ethernet3 library v1.5.3+`](https://github.com/sstaub/Ethernet3) for W5500/WIZ550io/WIZ850io/USR-ES1 with Wiznet W5500 chip.
    - [`EthernetLarge library v2.0.0+`](https://github.com/OPEnSLab-OSU/EthernetLarge) for W5100, W5200 and W5500.
-   - [`EthernetENC library v2.0.0+`](https://github.com/jandrassy/EthernetENC) for ENC28J60. **New**
-   - [`UIPEthernet library v2.0.8+`](https://github.com/UIPEthernet/UIPEthernet) for ENC28J60.
+   - [`EthernetENC library v2.0.0+`](https://github.com/jandrassy/EthernetENC) for ENC28J60. **New and Better**
+   - [`UIPEthernet library v2.0.9+`](https://github.com/UIPEthernet/UIPEthernet) for ENC28J60.
    - [`STM32Ethernet library v1.2.0+`](https://github.com/stm32duino/STM32Ethernet) for built-in Ethernet LAN8742A on (Nucleo-144, Discovery). To be used with [`STM32duino_LwIP library v2.1.2+`](https://github.com/stm32duino/LwIP).
 15. [`WiFiNINA_Generic library v1.7.1+`](https://github.com/khoih-prog/WiFiNINA_Generic) to use WiFiNINA modules/shields. To install. check [![arduino-library-badge](https://www.ardu-badge.com/badge/WiFiNINA_Generic.svg?)](https://www.ardu-badge.com/WiFiNINA_Generic) if using WiFiNINA for boards such as Nano 33 IoT, nRF52, Teensy, etc.
-16. [`WiFiWebServer library v1.0.6+`](https://github.com/khoih-prog/WiFiWebServer) to use WiFi/WiFiNINA modules/shields. To install, check [![arduino-library-badge](https://www.ardu-badge.com/badge/WiFiWebServer.svg?)](https://www.ardu-badge.com/WiFiWebServer)
-17. [`EthernetWebServer library v1.0.11+`](https://github.com/khoih-prog/EthernetWebServer) to use Ethernet modules/shields on boards other than STM32F/L/H/G/WB/MP1. To install. check [![arduino-library-badge](https://www.ardu-badge.com/badge/EthernetWebServer.svg?)](https://www.ardu-badge.com/EthernetWebServer).
-18. [`EthernetWebServer_STM32 library v1.0.4+`](https://github.com/khoih-prog/EthernetWebServer_STM32) to use Ethernet modules/shields on STM32F/L/H/G/WB/MP1 boards. To install, check [![arduino-library-badge](https://www.ardu-badge.com/badge/EthernetWebServer_STM32.svg?)](https://www.ardu-badge.com/EthernetWebServer_STM32).
-19. [`ESP8266_AT_WebServer library v1.0.12+`](https://github.com/khoih-prog/ESP8266_AT_WebServer) to use ESP8266-AT/ESP32-AT WiFi modules/shields. To install, check [![arduino-library-badge](https://www.ardu-badge.com/badge/ESP8266_AT_WebServer.svg?)](https://www.ardu-badge.com/ESP8266_AT_WebServer)
+16. [`WiFiWebServer library v1.0.7+`](https://github.com/khoih-prog/WiFiWebServer) to use WiFi/WiFiNINA modules/shields. To install, check [![arduino-library-badge](https://www.ardu-badge.com/badge/WiFiWebServer.svg?)](https://www.ardu-badge.com/WiFiWebServer)
+17. [`EthernetWebServer library v1.0.13+`](https://github.com/khoih-prog/EthernetWebServer) to use Ethernet modules/shields on boards other than STM32F/L/H/G/WB/MP1. To install. check [![arduino-library-badge](https://www.ardu-badge.com/badge/EthernetWebServer.svg?)](https://www.ardu-badge.com/EthernetWebServer).
+18. [`EthernetWebServer_STM32 library v1.0.6+`](https://github.com/khoih-prog/EthernetWebServer_STM32) to use Ethernet modules/shields on STM32F/L/H/G/WB/MP1 boards. To install, check [![arduino-library-badge](https://www.ardu-badge.com/badge/EthernetWebServer_STM32.svg?)](https://www.ardu-badge.com/EthernetWebServer_STM32).
+19. [`ESP8266_AT_WebServer library v1.1.1+`](https://github.com/khoih-prog/ESP8266_AT_WebServer) to use ESP8266-AT/ESP32-AT WiFi modules/shields. To install, check [![arduino-library-badge](https://www.ardu-badge.com/badge/ESP8266_AT_WebServer.svg?)](https://www.ardu-badge.com/ESP8266_AT_WebServer). Using [![arduino-library-badge](https://www.ardu-badge.com/badge/ESP8266_AT_WebServer.svg?)](https://www.ardu-badge.com/ESP8266_AT_WebServer) is mandatory to avoid error while using ESP8266/ESP32-AT shields.
 
 ---
 
@@ -244,8 +251,14 @@ theses files must be copied into the corresponding directory:
 - [w5100.cpp](LibraryPatches/EthernetLarge/src/utility/w5100.cpp)
 
 4. To fix [`Ethernet2 library`](https://github.com/khoih-prog/Ethernet2), just copy these following files into the [`Ethernet2 library`](https://github.com/khoih-prog/Ethernet2) directory to overwrite the old files:
+
 - [Ethernet2.h](LibraryPatches/Ethernet2/src/Ethernet2.h)
 - [Ethernet2.cpp](LibraryPatches/Ethernet2/src/Ethernet2.cpp)
+
+To add UDP Multicast support, necessary for this [**UPnP_Generic library**](https://github.com/khoih-prog/UPnP_Generic):
+
+- [EthernetUdp2.h](LibraryPatches/Ethernet2/src/EthernetUdp2.h)
+- [EthernetUdp2.cpp](LibraryPatches/Ethernet2/src/EthernetUdp2.cpp)
 
 5. To fix [`Ethernet3 library`](https://github.com/sstaub/Ethernet3), just copy these following files into the [`Ethernet3 library`](https://github.com/sstaub/Ethernet3) directory to overwrite the old files:
 - [Ethernet3.h](LibraryPatches/Ethernet3/src/Ethernet3.h)
@@ -370,7 +383,7 @@ In examples' **defines.h**
 #define DDNS_USING_ETHERNET         false
 ```
 
-2) To use WiFiNINA, with WiFiNINA_Generic library => Define USE_WIFI_NINA == true
+2) To use WiFiNINA, with [**WiFiNINA_Generic library**](https://github.com/khoih-prog/WiFiNINA_Generic) => Define USE_WIFI_NINA == true
 
 ```cpp
 // Select one to be true: USE_WIFI_NINA, DDNS_USING_WIFI_AT or USE_WIFI_CUSTOM
@@ -382,7 +395,7 @@ In examples' **defines.h**
 #define USE_WIFI_CUSTOM       false
 ```
 
-2) To use ESP8266-AT/ESP32-AT WiFi, with ESP8266_ATWebServer library => Define USE_WIFI_NINA and USE_WIFI_CUSTOM == false and USE_WIFI_CUSTOM == true
+2) To use ESP8266-AT/ESP32-AT WiFi, with [**ESP8266_AT_WebServer library**](https://github.com/khoih-prog/ESP8266_AT_WebServer) => Define USE_WIFI_NINA and USE_WIFI_CUSTOM == false and USE_WIFI_CUSTOM == true
 
 ```cpp
 // Select one to be true: USE_WIFI_NINA, DDNS_USING_WIFI_AT or USE_WIFI_CUSTOM
@@ -555,7 +568,7 @@ These pins are tested OK with ESP8266 and W5x00
 
 void onUpdateCallback(const char* oldIP, const char* newIP)
 {
-  Serial.print("DDNSGeneric - IP Change Detected: ");
+  Serial.print(F("DDNSGeneric - IP Change Detected: "));
   Serial.println(newIP);
 }
 
@@ -601,7 +614,7 @@ void setup()
   
   if (fv < WIFI_FIRMWARE_LATEST_VERSION)
   {
-    Serial.println("Please upgrade the firmware");
+    Serial.println(F("Please upgrade the firmware"));
   }
   
 #endif
@@ -638,7 +651,7 @@ void setup()
   Ethernet.setCsPin (USE_THIS_SS_PIN);
   Ethernet.init (ETHERNET3_MAX_SOCK_NUM);
 
-#endif  //#if ( USE_ETHERNET || USE_ETHERNET_LARGE || USE_ETHERNET2 || USE_ETHERNET_ENC )
+#endif  // #if ( USE_ETHERNET || USE_ETHERNET_LARGE || USE_ETHERNET2 || USE_ETHERNET_ENC )
 
   // start the ethernet connection and the server:
   // Use DHCP dynamic IP and random mac
@@ -690,8 +703,8 @@ void loop()
 #define _DDNS_GENERIC_LOGLEVEL_     2
 
 // Select DDNS_USING_WIFI for boards using built-in WiFi, such as Nano-33-IoT
-#define DDNS_USING_WIFI             true    //true
-#define DDNS_USING_ETHERNET         false   //true
+#define DDNS_USING_WIFI             false    //true
+#define DDNS_USING_ETHERNET         true   //true
 
 /////////////////////////////////
   
@@ -1100,15 +1113,15 @@ void loop()
   
   #define USE_UIP_ETHERNET        false
   #define USE_CUSTOM_ETHERNET     false
-
+  
   // Only one if the following to be true
   #define USE_ETHERNET            false
   #define USE_ETHERNET2           false //true
   #define USE_ETHERNET3           false //true
-  #define USE_ETHERNET_LARGE      false
+  #define USE_ETHERNET_LARGE      true
   #define USE_ETHERNET_ESP8266    false //true
-  #define USE_ETHERNET_ENC        true
-
+  #define USE_ETHERNET_ENC        false
+  
   #if ( USE_ETHERNET2 || USE_ETHERNET3 || USE_ETHERNET_LARGE || USE_ETHERNET_ESP8266 || USE_ETHERNET_ENC )
     #ifdef USE_CUSTOM_ETHERNET
       #undef USE_CUSTOM_ETHERNET
@@ -1525,9 +1538,19 @@ DDNSGeneric - IP Change Detected: aaa.bbb.ccc.ddd
 
 ## Releases
 
-### Releases v1.0.0
+### Releases v1.0.1
+
+1. Add HTTP_ResponseParser class to fix issue with **nRF52 and STM32F/L/H/G/WB/MP1 using ESP8266/ESP32-AT**.
+2. Add support to Ethernet2, Ethernet3 and EthernetLarge libraries for STM32 using W5x00.
+3. Update Platform.ini to support PlatformIO 5.x owner-based dependency declaration.
+4. Add more debug features.
+
+
+#### Releases v1.0.0
 
 1. Initial coding for Generic boards using many different WiFi/Ethernet modules/shields.
+
+---
 
 #### Currently Supported Boards
 
@@ -1574,11 +1597,10 @@ DDNSGeneric - IP Change Detected: aaa.bbb.ccc.ddd
  6. Add support to Seeeduino SAMD21/SAMD51 boards (SEEED_WIO_TERMINAL, SEEED_FEMTO_M0, SEEED_XIAO_M0, Wio_Lite_MG126, WIO_GPS_BOARD, SEEEDUINO_ZERO, SEEEDUINO_LORAWAN, SEEED_GROVE_UI_WIRELESS, etc.)
  7. Add support to STM32F/L/H/G/WB/MP1 (Nucleo-144, Nucleo-64, Nucleo-32, Discovery, STM32Fx, STM32H7, STM32Lx, STM32Gx, STM32WB, STM32MP1, etc.) having 32K+ Flash program memory.
  8. Add support to Ethernet W5x00, using either [`Ethernet`](https://www.arduino.cc/en/Reference/Ethernet), [`Ethernet2`](https://github.com/khoih-prog/Ethernet2), [`Ethernet3`](https://github.com/sstaub/Ethernet3) or [`EthernetLarge`](https://github.com/OPEnSLab-OSU/EthernetLarge) library
- 9. Add support to LAN8742A using STM32duino LwIP,STM32duino STM32Ethernet libraries
-10. Add support to Ethernet ENC28J60, using [`EthernetENC`](https://github.com/jandrassy/EthernetENC) [`UIPEthernet`](https://github.com/UIPEthernet/UIPEthernet) library
-11. Add support to WiFiNINA using WiFiNINA or WiFiNINA_Generic library.
-12. Add support to ESP8266-AT, ESP32-AT WiFi shields using WiFiEspAT or ESP8266_AT_WebServer library.
-13. Add support to Seeeduino SAMD21/SAMD51: LoRaWAN, Zero, Femto M0, XIAO M0, Wio GPS Board, Wio Terminal, Grove UI Wireless
+ 9. Add support to LAN8742A using STM32duino LwIP, STM32duino STM32Ethernet libraries
+10. Add support to Ethernet ENC28J60, using [`EthernetENC`](https://github.com/jandrassy/EthernetENC) or [`UIPEthernet`](https://github.com/UIPEthernet/UIPEthernet) library
+11. Add support to WiFiNINA using WiFiNINA or [**WiFiNINA_Generic**](https://github.com/khoih-prog/WiFiNINA_Generic) library.
+12. Add support to ESP8266-AT, ESP32-AT WiFi shields using WiFiEspAT or [**ESP8266_AT_WebServer**](https://github.com/khoih-prog/ESP8266_AT_WebServer) library.
 
  
 ---

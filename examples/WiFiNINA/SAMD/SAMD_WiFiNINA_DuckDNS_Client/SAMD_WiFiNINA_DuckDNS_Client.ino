@@ -1,20 +1,25 @@
 /****************************************************************************************************************************
-   SAMD_WiFiNINA_DuckDNS_Client.ino
+  SAMD_WiFiNINA_DuckDNS_Client.ino
    
-   For all Generic boards such as ESP8266, ESP32, SAM DUE, SAMD21/SAMD51, nRF52, STM32F/L/H/G/WB/MP1
-   with WiFiNINA, ESP8266/ESP32 WiFi, ESP8266-AT, W5x00, ENC28J60, built-in Ethernet LAN8742A
+  For all Generic boards such as ESP8266, ESP32, SAM DUE, SAMD21/SAMD51, nRF52, STM32F/L/H/G/WB/MP1
+  with WiFiNINA, ESP8266/ESP32 WiFi, ESP8266-AT, W5x00, ENC28J60, built-in Ethernet LAN8742A
 
-   DDNS_Generic is a library to update DDNS IP address for DDNS services such as 
-   duckdns, noip, dyndns, dynu, enom, all-inkl, selfhost.de, dyndns.it, strato, freemyip, afraid.org
+  DDNS_Generic is a library to update DDNS IP address for DDNS services such as 
+  duckdns, noip, dyndns, dynu, enom, all-inkl, selfhost.de, dyndns.it, strato, freemyip, afraid.org
 
-   Based on and modified from EasyDDNS https://github.com/ayushsharma82/EasyDDNS
-   Built by Khoi Hoang https://github.com/khoih-prog/DDNS_Generic
-   Licensed under MIT license
-   Version: 1.0.0
+  Based on and modified from 
+  1) EasyDDNS            (https://github.com/ayushsharma82/EasyDDNS)
+  2) ArduinoHttpClient   (https://github.com/arduino-libraries/ArduinoHttpClient)
 
-   Version Modified By   Date      Comments
-   ------- -----------  ---------- -----------
-    1.0.0   K Hoang      11/09/2020 Initial coding for Generic boards using many WiFi/Ethernet modules/shields.
+  Built by Khoi Hoang https://github.com/khoih-prog/DDNS_Generic
+
+  Licensed under MIT license
+  Version: 1.0.1
+
+  Version Modified By   Date      Comments
+  ------- -----------  ---------- -----------
+  1.0.0   K Hoang      11/09/2020 Initial coding for Generic boards using many WiFi/Ethernet modules/shields.
+  1.0.1   K Hoang      28/09/2020 Fix issue with nRF52 and STM32F/L/H/G/WB/MP1 using ESP8266/ESP32-AT
  *****************************************************************************************************************************/
 
 #include "defines.h"

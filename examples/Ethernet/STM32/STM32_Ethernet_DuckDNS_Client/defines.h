@@ -1,20 +1,25 @@
 /****************************************************************************************************************************
-   defines.h
+  defines.h
    
-   For all Generic boards such as ESP8266, ESP32, SAM DUE, SAMD21/SAMD51, nRF52, STM32F/L/H/G/WB/MP1
-   with WiFiNINA, ESP8266/ESP32 WiFi, ESP8266-AT, W5x00, ENC28J60, built-in Ethernet LAN8742A
+  For all Generic boards such as ESP8266, ESP32, SAM DUE, SAMD21/SAMD51, nRF52, STM32F/L/H/G/WB/MP1
+  with WiFiNINA, ESP8266/ESP32 WiFi, ESP8266-AT, W5x00, ENC28J60, built-in Ethernet LAN8742A
 
-   DDNS_Generic is a library to update DDNS IP address for DDNS services such as 
-   duckdns, noip, dyndns, dynu, enom, all-inkl, selfhost.de, dyndns.it, strato, freemyip, afraid.org
+  DDNS_Generic is a library to update DDNS IP address for DDNS services such as 
+  duckdns, noip, dyndns, dynu, enom, all-inkl, selfhost.de, dyndns.it, strato, freemyip, afraid.org
 
-   Based on and modified from EasyDDNS https://github.com/ayushsharma82/EasyDDNS
-   Built by Khoi Hoang https://github.com/khoih-prog/DDNS_Generic
-   Licensed under MIT license
-   Version: 1.0.0
+  Based on and modified from 
+  1) EasyDDNS            (https://github.com/ayushsharma82/EasyDDNS)
+  2) ArduinoHttpClient   (https://github.com/arduino-libraries/ArduinoHttpClient)
 
-   Version Modified By   Date      Comments
-   ------- -----------  ---------- -----------
-    1.0.0   K Hoang      11/09/2020 Initial coding for Generic boards using many WiFi/Ethernet modules/shields.
+  Built by Khoi Hoang https://github.com/khoih-prog/DDNS_Generic
+
+  Licensed under MIT license
+  Version: 1.0.1
+
+  Version Modified By   Date      Comments
+  ------- -----------  ---------- -----------
+  1.0.0   K Hoang      11/09/2020 Initial coding for Generic boards using many WiFi/Ethernet modules/shields.
+  1.0.1   K Hoang      28/09/2020 Fix issue with nRF52 and STM32F/L/H/G/WB/MP1 using ESP8266/ESP32-AT
  *****************************************************************************************************************************/
 
 #ifndef defines_h
@@ -32,24 +37,85 @@
 #if !( defined(STM32F0) || defined(STM32F1) || defined(STM32F2) || defined(STM32F3)  ||defined(STM32F4) || defined(STM32F7) || \
        defined(STM32L0) || defined(STM32L1) || defined(STM32L4) || defined(STM32H7)  ||defined(STM32G0) || defined(STM32G4) || \
        defined(STM32WB) || defined(STM32MP1) )
-
-  #error This code is intended to run on the STM32F/L/H/G/WB/MP1 platform! Please check your Tools->Board setting.
+  #error This code is designed to run on STM32F/L/H/G/WB/MP1 platform! Please check your Tools->Board setting.
 #endif
 
-/////////////////////////////////
+#define DEBUG_ETHERNET_WEBSERVER_PORT       Serial
 
-#if defined(ETHERNET_USE_STM32)
-  #undef ETHERNET_USE_STM32
-#endif
+// Debug Level from 0 to 4
+#define _ETHERNET_WEBSERVER_LOGLEVEL_       2
 
-#define ETHERNET_USE_STM32          true
-#warning Use STM32 architecture with Ethernet   
+// If USE_BUILTIN_ETHERNET == false and USE_UIP_ETHERNET == false => 
+// either use W5x00 with EthernetXYZ library
+// or ENC28J60 with EthernetENC library
+//#define USE_BUILTIN_ETHERNET    true
+#define USE_BUILTIN_ETHERNET    false
 
-// Default pin 10 to SS/CS
+//#define USE_UIP_ETHERNET        true
+#define USE_UIP_ETHERNET        false
+
+// To override the default CS/SS pin. Don't use unless you know exactly which pin to use
+// You can define here or customize for each board at same place with BOARD_TYPE
+//#define USE_THIS_SS_PIN   22  //21  //5 //4 //2 //15
+// Default pin 10 to SS/CS. To change according to your board, if necessary
 #define USE_THIS_SS_PIN       10
 
-/////////////////////////////////
-  
+#if !(USE_BUILTIN_ETHERNET || USE_UIP_ETHERNET)
+  // Only one if the following to be true
+  #define USE_ETHERNET          false //true
+  #define USE_ETHERNET2         true //true
+  #define USE_ETHERNET3         false //true
+  #define USE_ETHERNET_LARGE    false
+  #define USE_ETHERNET_ESP8266  false //true
+  #define USE_ETHERNET_ENC      false
+  #define USE_CUSTOM_ETHERNET   false
+#endif
+
+#if ( USE_ETHERNET2 || USE_ETHERNET3 || USE_ETHERNET_LARGE || USE_ETHERNET_ESP8266 || USE_ETHERNET_ENC )
+  #ifdef USE_CUSTOM_ETHERNET
+    #undef USE_CUSTOM_ETHERNET
+  #endif
+  #define USE_CUSTOM_ETHERNET   false //true
+#endif
+
+#if (USE_BUILTIN_ETHERNET)
+  #warning Using LAN8742A Ethernet & STM32Ethernet lib
+  #define SHIELD_TYPE           "LAN8742A Ethernet & STM32Ethernet Library"
+#elif (USE_UIP_ETHERNET)
+  #warning Using ENC28J60 & UIPEthernet lib
+  #define SHIELD_TYPE           "ENC28J60 & UIPEthernet Library"
+#elif USE_ETHERNET3
+  #include "Ethernet3.h"
+  #warning Using W5x00 & Ethernet3 lib
+  #define SHIELD_TYPE           "W5x00 & Ethernet3 Library"
+#elif USE_ETHERNET2
+  #include "Ethernet2.h"
+  #warning Using W5x00 & Ethernet2 lib
+  #define SHIELD_TYPE           "W5x00 & Ethernet2 Library"
+#elif USE_ETHERNET_LARGE
+  #include "EthernetLarge.h"
+  #warning Using W5x00 & EthernetLarge lib
+  #define SHIELD_TYPE           "W5x00 & EthernetLarge Library"
+#elif USE_ETHERNET_ESP8266
+  #include "Ethernet_ESP8266.h"
+  #warning Using W5x00 & Ethernet_ESP8266 lib 
+  #define SHIELD_TYPE           "W5x00 & Ethernet_ESP8266 Library" 
+#elif USE_ETHERNET_ENC
+  #include "EthernetENC.h"
+  #warning Using ENC28J60 & EthernetENC lib
+  #define SHIELD_TYPE           "ENC28J60 & EthernetENC Library"
+#elif USE_CUSTOM_ETHERNET
+  //#include "Ethernet_XYZ.h"
+  #include "EthernetENC.h"
+  #warning Using Custom Ethernet library. You must include a library and initialize.
+  #define SHIELD_TYPE           "Custom Ethernet & Ethernet_XYZ Library"
+#else
+  #define USE_ETHERNET          true
+  #include "Ethernet.h"
+  #warning Using Ethernet lib
+  #define SHIELD_TYPE           "W5x00 & Ethernet Library"
+#endif
+
 #if defined(STM32F0)
   #warning STM32F0 board selected
   #define BOARD_TYPE  "STM32F0"
@@ -95,37 +161,6 @@
 #else
   #warning STM32 unknown board selected
   #define BOARD_TYPE  "STM32 Unknown"
-#endif
-
-
-///////////////////////////////////////////
-// Select Ethernet Library for the Shield
-///////////////////////////////////////////
-
-// This must be true if using LAN8742A for STM32F, such as Nucleo-144 F767ZI
-#define USE_BUILTIN_ETHERNET    true
-//////////
-  
-#define USE_UIP_ETHERNET        false
-
-// Currently, only Ethernet lib available for STM32 using W5x00
-#define USE_ETHERNET            false
-
-#if USE_BUILTIN_ETHERNET
-  #warning Using built-in LAN8742A Library
-  #define SHIELD_TYPE           "LAN8742A using STM32Ethernet Library" 
-#elif USE_UIP_ETHERNET
-  #warning Using ENC28J60 and UIPEthernet Library
-  #define SHIELD_TYPE           "ENC28J60 using UIPEthernet Library"
-#else
-  #warning Using W5x00 and Ethernet Library
-  
-  #ifdef USE_ETHERNET
-    #undef USE_ETHERNET
-  #endif
-  #define USE_ETHERNET          true
-  
-  #define SHIELD_TYPE           "W5x00 using Ethernet Library"
 #endif
 
 /////////////////////////////////
@@ -180,7 +215,7 @@ byte mac[][NUMBER_OF_MAC] =
 };
 
 // Select the IP address according to your local network
-IPAddress ip(192, 168, 2, 222);
+IPAddress ip(192, 168, 2, 232);
 
 /////////////////////////////////
 

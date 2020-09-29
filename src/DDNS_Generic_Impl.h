@@ -1,20 +1,25 @@
 /****************************************************************************************************************************
-   DDNS_Generic_Impl.h
+  DDNS_Generic_Impl.h
    
-   For all Generic boards such as ESP8266, ESP32, SAM DUE, SAMD21/SAMD51, nRF52, STM32F/L/H/G/WB/MP1
-   with WiFiNINA, ESP8266/ESP32 WiFi, ESP8266-AT, W5x00, ENC28J60, built-in Ethernet LAN8742A
+  For all Generic boards such as ESP8266, ESP32, SAM DUE, SAMD21/SAMD51, nRF52, STM32F/L/H/G/WB/MP1
+  with WiFiNINA, ESP8266/ESP32 WiFi, ESP8266-AT, W5x00, ENC28J60, built-in Ethernet LAN8742A
 
-   DDNS_Generic is a library to update DDNS IP address for DDNS services such as 
-   duckdns, noip, dyndns, dynu, enom, all-inkl, selfhost.de, dyndns.it, strato, freemyip, afraid.org
+  DDNS_Generic is a library to update DDNS IP address for DDNS services such as 
+  duckdns, noip, dyndns, dynu, enom, all-inkl, selfhost.de, dyndns.it, strato, freemyip, afraid.org
 
-   Based on and modified from EasyDDNS https://github.com/ayushsharma82/EasyDDNS
-   Built by Khoi Hoang https://github.com/khoih-prog/DDNS_Generic
-   Licensed under MIT license
-   Version: 1.0.0
+  Based on and modified from 
+  1) EasyDDNS            (https://github.com/ayushsharma82/EasyDDNS)
+  2) ArduinoHttpClient   (https://github.com/arduino-libraries/ArduinoHttpClient)
 
-   Version Modified By   Date      Comments
-   ------- -----------  ---------- -----------
-    1.0.0   K Hoang      11/09/2020 Initial coding for Generic boards using many WiFi/Ethernet modules/shields.
+  Built by Khoi Hoang https://github.com/khoih-prog/DDNS_Generic
+
+  Licensed under MIT license
+  Version: 1.0.1
+
+  Version Modified By   Date      Comments
+  ------- -----------  ---------- -----------
+  1.0.0   K Hoang      11/09/2020 Initial coding for Generic boards using many WiFi/Ethernet modules/shields.
+  1.0.1   K Hoang      28/09/2020 Fix issue with nRF52 and STM32F/L/H/G/WB/MP1 using ESP8266/ESP32-AT
  *****************************************************************************************************************************/
 
 #ifndef DDNS_Generic_Impl_H
@@ -32,10 +37,71 @@ void DDNSGenericClass::client(String ddns_domain, String ddns_username, String d
   ddns_p = ddns_password;
 }
 
+#if ( (WIFI_USE_STM32 || WIFI_USE_NRF528XX) && DDNS_USING_WIFI_AT )
+// this method makes a HTTP connection to the server
+String DDNSGenericClass::publicIPRequest(Client& client)
+{
+  // close any connection before send a new request
+  // this will free the socket on the WiFi shield
+  client.stop();
+
+  // if there's a successful connection
+  if (client.connect(server.c_str(), 80))
+  {
+    DDNS_LOGINFO1(F("Connecting to "), server);
+
+    client.println("GET / HTTP/1.1");
+    client.println("Host: " + server);
+    client.println("Connection: close");
+    client.println();
+  }
+  else
+  {
+    // if you couldn't make a connection
+    DDNS_LOGERROR(F("Connection failed"));
+  }
+  
+  String response = "";
+  String currentIP;
+  
+  while ( response.length() == 0 )
+  {
+    response = "";
+    
+    // if there are incoming bytes available
+    // from the server, read them and print them
+    while (client.available())
+    {
+      char c = client.read();
+      response += c;
+    }
+
+    if (response.length() > 0)
+    {
+      HTTP_ResponseParser http = HTTP_ResponseParser();
+
+      int httpCode = http.responseStatusCode(response);
+
+      if (httpCode > 0)
+      {
+        if (httpCode == 200 /*HTTP_CODE_OK*/)
+        {
+          currentIP = http.responseBody(response);
+
+          DDNS_LOGDEBUG1(F("Current Public IP = "), currentIP);
+        }
+      }
+    }
+  }
+  
+  client.stop();
+  
+  return currentIP;
+}
+#endif
+
 void DDNSGenericClass::update(unsigned long ddns_update_interval, bool use_local_ip)
 {
-
-
   interval = ddns_update_interval;
 
   unsigned long currentMillis = millis(); // Calculate Elapsed Time & Trigger
@@ -72,7 +138,7 @@ void DDNSGenericClass::update(unsigned long ddns_update_interval, bool use_local
                String(ipAddress[2]) + String(".") +
                String(ipAddress[3]);
                
-      DDNS_LOGERROR1("Current Local IP =", new_ip);         
+      DDNS_LOGINFO1(F("Current Local IP ="), new_ip);         
     } 
     
       
@@ -93,7 +159,7 @@ void DDNSGenericClass::update(unsigned long ddns_update_interval, bool use_local
         {
           new_ip = http.getString();
           
-          DDNS_LOGERROR1("Current Public IP =", new_ip);
+          DDNS_LOGINFO1(F("Current Public IP ="), new_ip);
         }
       } 
       else 
@@ -106,8 +172,20 @@ void DDNSGenericClass::update(unsigned long ddns_update_interval, bool use_local
       http.end();
     }
 #else
+
     else 
     {
+#if ( (WIFI_USE_STM32 || WIFI_USE_NRF528XX) && DDNS_USING_WIFI_AT )
+      // To fix issue on nRF52 and STM32 using ESP8266/ESP32-AT
+      // ######## GET PUBLIC IP ######## //
+      DDNS_LOGDEBUG(F("Calling publicIPRequest"));
+       
+      new_ip = publicIPRequest(client);
+      
+      if (new_ip.length() > 0)
+        DDNS_LOGINFO1(F("Current Public IP ="), new_ip);
+#else
+
       // ######## GET PUBLIC IP ######## //
       HttpClient http(client, "ipv4bot.whatismyipaddress.com");
       
@@ -140,8 +218,13 @@ void DDNSGenericClass::update(unsigned long ddns_update_interval, bool use_local
         return;
       }
       
-      http.stop();
-    }
+      http.stop();      
+      
+      
+#endif
+      
+    } 
+        
 #endif      
         
     // ######## GENERATE UPDATE URL ######## //
@@ -241,19 +324,19 @@ void DDNSGenericClass::update(unsigned long ddns_update_interval, bool use_local
     } 
     else 
     {
-      DDNS_LOGERROR("## INPUT CORRECT DDNS SERVICE NAME ##");
+      DDNS_LOGERROR(F("## INPUT CORRECT DDNS SERVICE NAME ##"));
       return;
     }
 
     // ######## CHECK & UPDATE ######### //
-    if (old_ip != new_ip) 
+    if ( (new_ip.length() > 0) && (old_ip != new_ip) )
     {
     
 #if (ESP8266 || ESP32)    
       HTTPClient http;
       
-      DDNS_LOGERROR1("Sending HTTP_GET to", ddns_choice);
-      DDNS_LOGERROR1("HTTP_GET =",  update_url);
+      DDNS_LOGWARN1(F("Sending HTTP_GET to"), ddns_choice);
+      DDNS_LOGWARN1(F("HTTP_GET ="),  update_url);
       
       http.begin(client, update_url);
       
@@ -271,11 +354,11 @@ void DDNSGenericClass::update(unsigned long ddns_update_interval, bool use_local
         // Replace Old IP with new one to detect further changes.
         old_ip = new_ip;
         
-        DDNS_LOGERROR1("Updated IP =", old_ip);
+        DDNS_LOGERROR1(F("Updated IP ="), old_ip);
       }
       else if (httpCode == -1)
       {
-        DDNS_LOGERROR("Public IP not changed. Don't need to update");
+        DDNS_LOGERROR(F("Public IP not changed. Don't need to update"));
       }
       
       http.end();
@@ -296,13 +379,13 @@ void DDNSGenericClass::update(unsigned long ddns_update_interval, bool use_local
         http.get(access_path);
       }
 
-      DDNS_LOGERROR1("Sending HTTP_GET to", ddns_choice);
-      DDNS_LOGERROR1("HTTP_GET =",  update_url);
+      DDNS_LOGWARN1(F("Sending HTTP_GET to"), ddns_choice);
+      DDNS_LOGWARN1(F("HTTP_GET ="),  update_url);
            
       // @return 200 when Content-Length is set by server
       int httpCode = http.responseStatusCode();
       
-      DDNS_LOGERROR1("httpCode =", httpCode);  
+      DDNS_LOGINFO1(F("httpCode ="), httpCode);  
       
       if (httpCode == 200 /*HTTP_CODE_OK*/) 
       {
@@ -315,11 +398,11 @@ void DDNSGenericClass::update(unsigned long ddns_update_interval, bool use_local
         // Replace Old IP with new one to detect further changes.
         old_ip = new_ip;
         
-        DDNS_LOGERROR1("Updated IP =", old_ip); 
+        DDNS_LOGERROR1(F("Updated IP ="), old_ip); 
       }
       else if (httpCode == -1)
       {
-        DDNS_LOGERROR("Public IP not changed. Don't need to update");
+        DDNS_LOGERROR(F("Public IP not changed. Don't need to update"));
       }
       
       http.stop();

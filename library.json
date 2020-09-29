@@ -1,20 +1,14 @@
 {
   "name": "DDNS_Generic",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "DDNS Update Client for Arduino boards, ported to run on SAM DUE, nRF52, SAMD21/SAMD51, STM32F/L/H/G/WB/MP1, etc. besides ESP8266/ESP32, using WiFi, WiFiNINA, Ethernet W5x00, ENC28J60, LAN8742A",
   "keywords": "ddns, update, wifi, ethernet, client, server, noip, duckdns, dyndns, dynu, enom, all-inkl, selfhost.de, dyndns.it, strato, freemyip, afraid.org, communication",
-  "authors": [
-    {
-      "name":  "Ayush Sharma",
-      "url":   "https://github.com/ayushsharma82"
-    },
-    {
-      "name":  "Khoi Hoang",
-      "url":   "https://github.com/khoih-prog",
-      "email": "khoih.prog@gmail.com",
-      "maintainer": true
-    }  
-  ],
+  "authors":
+  {
+    "name":  "Khoi Hoang",
+    "url":   "https://github.com/khoih-prog",
+    "maintainer": true
+  },  
   "repository":
   {
     "type": "git",

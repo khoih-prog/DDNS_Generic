@@ -9,6 +9,8 @@
 DDNSGenericClass	KEYWORD1
 DDNSUpdateHandler	KEYWORD1
 
+HTTP_ResponseParser KEYWORD1
+
 
 #######################################
 # Methods and Functions (KEYWORD2)
@@ -23,7 +25,34 @@ client  KEYWORD2
 update  KEYWORD2
 onUpdate  KEYWORD2
 
+######################
+# HTTP_ResponseParser
+######################
+
+responseStringRead KEYWORD2
+responseStatusCode  KEYWORD2
+headerAvailable  KEYWORD2
+readHeaderName  KEYWORD2
+readHeaderValue  KEYWORD2
+readHeader  KEYWORD2
+skipResponseHeaders  KEYWORD2
+endOfHeadersReached  KEYWORD2
+endOfBodyReached  KEYWORD2
+contentLength  KEYWORD2
+isResponseChunked  KEYWORD2
+responseBody  KEYWORD2
+available  KEYWORD2
+read  KEYWORD2
+
 #######################################
 # Constants (LITERAL1)
 #######################################
+
+HTTP_HEADER_CONTENT_LENGTH  LITERAL1
+HTTP_HEADER_CONTENT_TYPE  LITERAL1
+HTTP_HEADER_CONNECTION  LITERAL1
+HTTP_HEADER_TRANSFER_ENCODING LITERAL1
+HTTP_HEADER_USER_AGENT  LITERAL1
+HTTP_HEADER_VALUE_CHUNKED LITERAL1
+
 
