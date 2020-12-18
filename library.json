@@ -26,43 +26,43 @@
     {
       "owner": "arduino-libraries",
       "name": "ArduinoHttpClient",
-      "version": "^0.4.0",
+      "version": ">=0.4.0",
       "platforms": ["*"]
     },
     {
       "owner": "amcewen",
       "name": "HttpClient",
-      "version": "^2.2.0",
+      "version": ">=2.2.0",
       "platforms": "espressif32"
     },
     {
       "owner": "khoih.prog",
       "name": "WiFiNINA_Generic",
-      "version": "^1.8.0",
+      "version": ">=1.8.0",
       "platforms": ["*"]
     },
     {
       "owner": "khoih-prog",
       "name": "EthernetWebServer",
-      "version": "^1.1.0",
+      "version": ">=1.2.0",
       "platforms": ["*"]
     },
     {
       "owner": "khoih-prog",
       "name": "EthernetWebServer_STM32",
-      "version": "^1.1.0",
+      "version": ">=1.1.0",
       "platforms": ["ststm32", "stm32"]
     },
     {
       "owner": "khoih-prog",
       "name": "WiFiWebServer",
-      "version": "^1.1.0",
+      "version": ">=1.1.0",
       "platforms": ["*"]
     },
     {
       "owner": "khoih-prog",
       "name": "ESP8266_AT_WebServer",
-      "version": "^1.1.1",
+      "version": ">=1.1.1",
       "platforms": ["*"]
     }
   ],
