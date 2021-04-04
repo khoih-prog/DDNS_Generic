@@ -9,7 +9,118 @@
 ---
 ---
 
+## Table of Contents
+
+* [Why do we need this DDNS_Generic library](#why-do-we-need-this-ddns_generic-library)
+  * [Features](#features)
+  * [Currently Supported Boards](#currently-supported-boards)
+  * [Currently Supported WiFi Modules/Shields](#currently-supported-wifi-modulesshields)
+  * [Currently Supported Ethernet Modules/Shields](#currently-supported-ethernet-modulesshields)
+* [Changelog](#changelog)
+  * [Releases v1.1.0](#releases-v110)
+  * [Releases v1.0.1](#releases-v101)
+  * [Releases v1.0.0](#releases-v100)
+* [Prerequisites](#prerequisites)
+* [Installation](#installation)
+  * [Use Arduino Library Manager](#use-arduino-library-manager)
+  * [Manual Install](#manual-install)
+  * [VS Code & PlatformIO](#vs-code--platformio)
+* [Packages' Patches](#packages-patches)
+  * [1. For Adafruit nRF52840 and nRF52832 boards](#1-for-adafruit-nRF52840-and-nRF52832-boards)
+  * [2. For Teensy boards](#2-for-teensy-boards)
+  * [3. For Arduino SAM DUE boards](#3-for-arduino-sam-due-boards)
+  * [4. For Arduino SAMD boards](#4-for-arduino-samd-boards)
+      * [For core version v1.8.10+](#for-core-version-v1810)
+      * [For core version v1.8.9-](#for-core-version-v189-)
+  * [5. For Adafruit SAMD boards](#5-for-adafruit-samd-boards)
+  * [6. For Seeeduino SAMD boards](#6-for-seeeduino-samd-boards)
+  * [7. For STM32 boards](#7-for-stm32-boards)
+* [Libraries' Patches](#libraries-patches)
+  * [1. For application requiring 2K+ HTML page](#1-for-application-requiring-2k-html-page)
+  * [2. For Ethernet library](#2-for-ethernet-library)
+  * [3. For EthernetLarge library](#3-for-ethernetlarge-library)
+  * [4. For Etherne2 library](#4-for-ethernet2-library)
+  * [5. For Ethernet3 library](#5-for-ethernet3-library)
+  * [6. For UIPEthernet library](#6-for-uipethernet-library)
+  * [7. For fixing ESP32 compile error](#7-for-fixing-esp32-compile-error)
+  * [8. For STM32 core F3 and F4 using UIPEthernet library](#8-for-stm32-core-f3-and-f4-using-uipethernet-library)
+* [HOWTO Use analogRead() with ESP32 running WiFi and/or BlueTooth (BT/BLE)](#howto-use-analogread-with-esp32-running-wifi-andor-bluetooth-btble)
+  * [1. ESP32 has 2 ADCs, named ADC1 and ADC2](#1--esp32-has-2-adcs-named-adc1-and-adc2)
+  * [2. ESP32 ADCs functions](#2-esp32-adcs-functions)
+  * [3. ESP32 WiFi uses ADC2 for WiFi functions](#3-esp32-wifi-uses-adc2-for-wifi-functions)
+ [Configuration Notes](#configuration-notes)
+  * [1. How to use built-in WiFi in ESP8266/ESP32](#1-how-to-use-built-in-wifi-in-esp8266esp32)
+  * [2. How to select which built-in Ethernet or shield to use](#2-how-to-select-which-built-in-ethernet-or-shield-to-use)
+  * [3. How to select which built-in WiFi or shield to use](#3-how-to-select-which-built-in-wifi-or-shield-to-use)
+  * [Important](#important)
+  * [4. How to select another CS/SS pin to use](#4-how-to-select-another-csss-pin-to-use)
+  * [5. How to use W5x00 with ESP8266](#5-how-to-use-w5x00-with-esp8266)
+  * [6. How to increase W5x00 TX/RX buffer](#6-how-to-increase-w5x00-txrx-buffer)
+* [Examples](#examples)
+  * [A. For Generic boards and shields](#a-for-generic-boards-and-shields)
+    * [ 1. afraid-org_Client](examples/Generic/afraid-org_Client) 
+    * [ 2. all-inkl_Client](examples/Generic/all-inkl_Client)
+    * [ 3. DuckDNS_Client](examples/Generic/DuckDNS_Client)
+    * [ 4. DynDNS_Client](examples/Generic/DynDNS_Client)
+    * [ 5. dyndns-it_Client](examples/Generic/dyndns-it_Client)
+    * [ 6. Dynu_Client](examples/Generic/Dynu_Client)
+    * [ 7. enom_Client](examples/Generic/enom_Client)
+    * [ 8. freemyip_Client](examples/Generic/freemyip_Client)
+    * [ 9. No-ip_Client](examples/Generic/No-ip_Client)
+    * [10. selfhost-de_Client](examples/Generic/selfhost-de_Client)
+    * [11. strato_Client](examples/Generic/strato_Client)
+    * [12. OVH_Client](examples/Generic/OVH_Client)
+  * [B. For Ethernet shields](#b-for-ethernet-shields)
+    * [13. nRF52_Ethernet_DuckDNS_Client](examples/Ethernet/nRF52/nRF52_Ethernet_DuckDNS_Client)
+    * [14. SAMD_Ethernet_DuckDNS_Client](examples/Ethernet/SAMD/SAMD_Ethernet_DuckDNS_Client)
+    * [15. SAM-DUE_Ethernet_DuckDNS_Client](examples/Ethernet/SAM-DUE/SAM-DUE_Ethernet_DuckDNS_Client)
+    * [16. STM32_Ethernet_DuckDNS_Client](examples/Ethernet/STM32/STM32_Ethernet_DuckDNS_Client)
+    * [17. AVR_Ethernet_DuckDNS_Client](examples/Ethernet/AVR/AVR_Ethernet_DuckDNS_Client). **New**
+    * [18. megaAVR_Ethernet_DuckDNS_Client](examples/Ethernet/megaAVR/megaAVR_Ethernet_DuckDNS_Client). **New**
+  * [C. For WiFiNINA shields](#c-for-wifinina-shields)
+    * [19. nRF52_WiFiNINA_DuckDNS_Client](examples/WiFiNINA/nRF52/nRF52_WiFiNINA_DuckDNS_Client)
+    * [20. SAMD_WiFiNINA_DuckDNS_Client](examples/WiFiNINA/SAMD/SAMD_WiFiNINA_DuckDNS_Client)
+    * [21. megaAVR_WiFiNINA_DuckDNS_Client](examples/WiFiNINA/megaAVR/megaAVR_WiFiNINA_DuckDNS_Client). **New**
+  * [D. For ESP8266-AT/ESP32-AT shields](#d-for-esp8266-atesp32-at-shields)
+    * [22. nRF52_ESP_AT_DuckDNS_Client](examples/ESP_AT_WiFi/nRF52/nRF52_ESP_AT_DuckDNS_Client)
+    * [23. SAMD_ESP_AT_DuckDNS_Client](examples/ESP_AT_WiFi/SAMD/SAMD_ESP_AT_DuckDNS_Client)
+    * [24. SAM-DUE_ESP_AT_DuckDNS_Client](examples/ESP_AT_WiFi/SAM-DUE/SAM-DUE_ESP_AT_DuckDNS_Client)
+    * [25. STM32_ESP_AT_DuckDNS_Client](examples/ESP_AT_WiFi/STM32/STM32_ESP_AT_DuckDNS_Client)
+    * [26. AVR_ESP_AT_DuckDNS_Client](examples/ESP_AT_WiFi/AVR/AVR_ESP_AT_DuckDNS_Client). **New**
+    * [27. megaAVR_ESP_AT_DuckDNS_Client](examples/ESP_AT_WiFi/megaAVR/megaAVR_ESP_AT_DuckDNS_Client). **New**
+* [Example DuckDNS_Client](#example-duckdns_client)
+  * [ 1. File DuckDNS_Client.ino](#1-file-duckdns_clientino) 
+  * [ 2. 2. File defines.h](#2-file-definesh)
+* [Debug Terminal Output Samples](#debug-terminal-output-samples)
+  *  [1. Debug terminal output when running example No-ip_Client on STM32F7 Nucleo-144 NUCLEO_F767ZI with LAN8742A using STM32Ethernet Library](#1-debug-terminal-output-when-running-example-no-ip_client-on-stm32f7-nucleo-144-nucleo_f767zi-with-lan8742a-using-stm32ethernet-library)
+  * [ 2. Debug terminal output when running example DuckDNS_Client on STM32F7 Nucleo-144 NUCLEO_F767ZI with LAN8742A using STM32Ethernet Library](#2-debug-terminal-output-when-running-example-duckdns_client-on-stm32f7-nucleo-144-nucleo_f767zi-with-lan8742a-using-stm32ethernet-library)
+  * [ 3. Debug terminal output when running example DuckDNS_Client on Adafruit NRF52840_FEATHER_EXPRESS with W5500 using EthernetLarge Library](#3-debug-terminal-output-when-running-example-duckdns_client-on-adafruit-nrf52840_feather_express-with-w5500-using-ethernetlarge-library)
+  * [ 4. Debug terminal output when running example No-ip_Client on Adafruit NRF52840_FEATHER_EXPRESS with W5500 using EthernetLarge Library](#4-debug-terminal-output-when-running-example-no-ip_client-on-adafruit-nrf52840_feather_express-with-w5500-using-ethernetlarge-library)
+  * [ 5. Debug terminal output when running example DuckDNS_Client on Adafruit NRF52840_FEATHER_EXPRESS with ENC28J60 using new EthernetENC Library](#5-debug-terminal-output-when-running-example-duckdns_client-on-adafruit-nrf52840_feather_express-with-enc28j60-using-new-ethernetenc-library)
+  * [ 6. Debug terminal output when running example DuckDNS_Client on Adafruit NRF52840_FEATHER_EXPRESS with ENC28J60 using UIPEthernet Library](#6-debug-terminal-output-when-running-example-duckdns_client-on-adafruit-nrf52840_feather_express-with-enc28j60-using-uipethernet-library)
+  * [ 7. Debug terminal output when running example DuckDNS_Client on Adafruit SAMD21 SAMD_NANO_33_IOT with WiFiNINA using WiFiNINA_Generic Library](#7-debug-terminal-output-when-running-example-duckdns_client-on-adafruit-samd21-samd_nano_33_iot-with-wifinina-using-wifinina_generic-library)
+  * [ 8. Debug terminal output when running example No-ip_Client on Adafruit SAMD21 SAMD_NANO_33_IOT with WiFiNINA using WiFiNINA_Generic Library](#8-debug-terminal-output-when-running-example-no-ip_client-on-adafruit-samd21-samd_nano_33_iot-with-wifinina-using-wifinina_generic-library)
+  * [ 9. Debug terminal output when running example DuckDNS_Client on Arduino SAM DUE with W5100 using Ethernet Library](#9-debug-terminal-output-when-running-example-duckdns_client-on-arduino-sam-due-with-w5100-using-ethernet-library)
+  * [10. Debug terminal output when running example No-ip_Client on Arduino SAM DUE with W5100 using EthernetLarge Library](#10-debug-terminal-output-when-running-example-no-ip_client-on-arduino-sam-due-with-w5100-using-ethernetlarge-library)
+  * [11. Debug terminal output when running example DuckDNS_Client on SeeedStudio SEEED_XIAO_M0 with ESP8266-AT using ESP8266_AT_WebServer Library](#11-debug-terminal-output-when-running-example-duckdns_client-on-seeedstudio-seeed_xiao_m0-with-esp8266-at-using-esp8266_at_webserver-library)
+  * [12. Debug terminal output when running example No-ip_Client on SeeedStudio SEEED_XIAO_M0 with ESP8266-AT using ESP8266_AT_WebServer Library](#12-debug-terminal-output-when-running-example-no-ip_client-on-seeedstudio-seeed_xiao_m0-with-esp8266-at-using-esp8266_at_webserver-library)
+* [Debug](#debug)
+* [Troubleshooting](#troubleshooting)
+* [Releases](#releases)
+* [Issues](#issues)
+* [TO DO](#to-do)
+* [DONE](#done)
+* [Contributions and Thanks](#contributions-and-thanks)
+* [Contributing](#contributing)
+* [License](#license)
+* [Copyright](#copyright)
+
+---
+---
+
 ### Why do we need this [DDNS_Generic library](https://github.com/khoih-prog/DDNS_Generic)
+
+### Features
 
   Many of us are using [**Dynamic DNS (DDNS) service**](https://en.wikipedia.org/wiki/Dynamic_DNS) because Dynamic IP addresses is much cheaper than the expensive static IP address. 
   
@@ -23,23 +134,9 @@
   
   The [**DDNS_Generic**](https://github.com/khoih-prog/DDNS_Generic) code is very short, can be immersed in your Projects and to be called in the loop() code.
   
-  It currently supports **DuckDNS, No-ip, DynDNS, Dynu, enom, all-inkl, selfhost.de, dyndns.it, strato, freemyip, afraid.org**. Expansion to support more DDNS sevice providers is very easy and can be done by yourself.
+  It currently supports **DuckDNS, No-ip, DynDNS, Dynu, enom, all-inkl, selfhost.de, dyndns.it, strato, freemyip, afraid.org, OVH.com**. Expansion to support more DDNS sevice providers is very easy and can be done by yourself.
   
   This [**DDNS_Generic library**](https://github.com/khoih-prog/DDNS_Generic) is based on and modified from [**Ayush Sharma's EasyDDNS Library**](https://github.com/ayushsharma82/EasyDDNS) to add support to many boards and shields besides **ESP32 and ESP8266**.
-
----
-
-### Releases v1.0.1
-
-1. Add HTTP_ResponseParser class to fix issue with **nRF52 and STM32F/L/H/G/WB/MP1 using ESP8266/ESP32-AT**.
-2. Add support to **Ethernet2, Ethernet3 and EthernetLarge libraries for STM32 using W5x00**.
-3. Update Platform.ini to support PlatformIO 5.x owner-based dependency declaration.
-4. Add more debug features.
-
-#### Releases v1.0.0
-
-1. Initial coding for Generic boards using many different WiFi/Ethernet modules/shields.
-2. Add more examples
 
 ---
 
@@ -72,11 +169,39 @@
 ---
 ---
 
+## Changelog
+
+### Releases v1.1.0
+
+1. Add support to **Arduino AVR ATmega2560** such as **Mega, Mega2560, Mega ADK, etc.**
+2. Add support to **Arduino ATmega4809** such as **UNO WiFi Rev2, AVR_NANO_EVERY, etc.**
+3. Remove dependency on <functional>.
+4. Add OVH.com support.
+5. Update and add examples for AVR and megaAVR
+6. Add Version string
+7. Add Table-of-Contents
+
+
+### Releases v1.0.1
+
+1. Add HTTP_ResponseParser class to fix issue with **nRF52 and STM32F/L/H/G/WB/MP1 using ESP8266/ESP32-AT**.
+2. Add support to **Ethernet2, Ethernet3 and EthernetLarge libraries for STM32 using W5x00**.
+3. Update Platform.ini to support PlatformIO 5.x owner-based dependency declaration.
+4. Add more debug features.
+
+#### Releases v1.0.0
+
+1. Initial coding for Generic boards using many different WiFi/Ethernet modules/shields.
+2. Add more examples
+
+---
+---
+
 ## Prerequisites
 
  1. [`Arduino IDE 1.8.13+` for Arduino](https://www.arduino.cc/en/Main/Software)
  2. [`Arduino AVR core 1.8.3+`](https://github.com/arduino/ArduinoCore-avr) for Arduino (Use Arduino Board Manager) for AVR boards. [![GitHub release](https://img.shields.io/github/release/arduino/ArduinoCore-avr.svg)](https://github.com/arduino/ArduinoCore-avr/releases/latest)
- 3. [`ESP32 Core 1.0.4+`](https://github.com/espressif/arduino-esp32) for ESP32-based boards. [![Latest release](https://img.shields.io/github/release/espressif/arduino-esp32.svg)](https://github.com/espressif/arduino-esp32/releases/latest/)
+ 3. [`ESP32 Core 1.0.6+`](https://github.com/espressif/arduino-esp32) for ESP32-based boards. [![Latest release](https://img.shields.io/github/release/espressif/arduino-esp32.svg)](https://github.com/espressif/arduino-esp32/releases/latest/)
  4. [`ESP8266 Core 2.7.4+`](https://github.com/esp8266/Arduino) for ESP8266-based boards. [![Latest release](https://img.shields.io/github/release/esp8266/Arduino.svg)](https://github.com/esp8266/Arduino/releases/latest/). To use ESP8266 core 2.7.1+ for LittleFS. 
  5. [`Teensy core 1.53+`](https://www.pjrc.com/teensy/td_download.html) for Teensy (4.1, 4.0, 3.6, 3.5, 3,2, 3.1, 3.0) boards. **Not ready in v1.0.0.**
  6. [`Arduino SAM DUE core v1.6.12+`](https://github.com/arduino/ArduinoCore-sam) for SAM DUE ARM Cortex-M3 boards.
@@ -85,21 +210,23 @@
  9. [`Seeeduino SAMD core 1.8.1+`](https://github.com/Seeed-Studio/ArduinoCore-samd) for SAMD21/SAMD51 boards (XIAO M0, Wio Terminal, etc.). [![Latest release](https://img.shields.io/github/release/Seeed-Studio/ArduinoCore-samd.svg)](https://github.com/Seeed-Studio/ArduinoCore-samd/releases/latest/)
 10. [`Adafruit nRF52 v0.21.0+`](https://github.com/adafruit/Adafruit_nRF52_Arduino) for nRF52 boards such as Adafruit NRF52840_FEATHER, NRF52832_FEATHER, NRF52840_FEATHER_SENSE, NRF52840_ITSYBITSY, NRF52840_CIRCUITPLAY, NRF52840_CLUE, NRF52840_METRO, NRF52840_PCA10056, PARTICLE_XENON, **NINA_B302_ublox**, etc. [![GitHub release](https://img.shields.io/github/release/adafruit/Adafruit_nRF52_Arduino.svg)](https://github.com/adafruit/Adafruit_nRF52_Arduino/releases/latest)
 11. [`Arduino Core for STM32 v1.9.0+`](https://github.com/stm32duino/Arduino_Core_STM32) for STM32F/L/H/G/WB/MP1 boards. [![GitHub release](https://img.shields.io/github/release/stm32duino/Arduino_Core_STM32.svg)](https://github.com/stm32duino/Arduino_Core_STM32/releases/latest)
-12. [`ArduinoHttpClient v0.4.0+`](https://github.com/arduino-libraries/ArduinoHttpClient).
-13. [`Functional-VLPP library v1.0.2+`](https://github.com/khoih-prog/functional-vlpp) to use server's lambda function. To install. check [![arduino-library-badge](https://www.ardu-badge.com/badge/Functional-Vlpp.svg?)](https://www.ardu-badge.com/Functional-Vlpp)
-14. Depending on which Ethernet card you're using:
+12. [`Arduino megaAVR core 1.8.7+`](https://github.com/arduino/ArduinoCore-megaavr/releases) for Arduino megaAVR boards. Use Arduino Board Manager to install.
+13. [`Arduino AVR core 1.8.3+`](https://github.com/arduino/ArduinoCore-avr) for Arduino AVR boards. Use Arduino Board Manager to install. [![Latest release](https://img.shields.io/github/release/arduino/ArduinoCore-avr.svg)](https://github.com/arduino/ArduinoCore-avr/releases/latest/)
+14. [`ArduinoHttpClient v0.4.0+`](https://github.com/arduino-libraries/ArduinoHttpClient).
+15. [`Functional-VLPP library v1.0.2+`](https://github.com/khoih-prog/functional-vlpp) to use server's lambda function. To install. check [![arduino-library-badge](https://www.ardu-badge.com/badge/Functional-Vlpp.svg?)](https://www.ardu-badge.com/Functional-Vlpp)
+16. Depending on which Ethernet card you're using:
    - [`Ethernet library v2.0.0+`](https://github.com/arduino-libraries/Ethernet) for W5100, W5200 and W5500.  [![GitHub release](https://img.shields.io/github/release/arduino-libraries/Ethernet.svg)](https://github.com/arduino-libraries/Ethernet/releases/latest)
    - [`EthernetLarge library v2.0.0+`](https://github.com/OPEnSLab-OSU/EthernetLarge) for W5100, W5200 and W5500.
    - [`Ethernet2 library v1.0.4+`](https://github.com/khoih-prog/Ethernet2) for W5500. [![GitHub release](https://img.shields.io/github/release/adafruit/Ethernet2.svg)](https://github.com/adafruit/Ethernet2/releases/latest)
-   - [`Ethernet3 library v1.5.3+`](https://github.com/sstaub/Ethernet3) for W5500/WIZ550io/WIZ850io/USR-ES1 with Wiznet W5500 chip. [![GitHub release](https://img.shields.io/github/release/sstaub/Ethernet3.svg)](https://github.com/sstaub/Ethernet3/releases/latest)
+   - [`Ethernet3 library v1.5.5+`](https://github.com/sstaub/Ethernet3) for W5500/WIZ550io/WIZ850io/USR-ES1 with Wiznet W5500 chip. [![GitHub release](https://img.shields.io/github/release/sstaub/Ethernet3.svg)](https://github.com/sstaub/Ethernet3/releases/latest)
    - [`EthernetENC library v2.0.0+`](https://github.com/jandrassy/EthernetENC) for ENC28J60. [![GitHub release](https://img.shields.io/github/release/jandrassy/EthernetENC.svg)](https://github.com/jandrassy/EthernetENC/releases/latest). **New and Better**
    - [`UIPEthernet library v2.0.9+`](https://github.com/UIPEthernet/UIPEthernet) for ENC28J60. [![GitHub release](https://img.shields.io/github/release/UIPEthernet/UIPEthernet.svg)](https://github.com/UIPEthernet/UIPEthernet/releases/latest)
    - [`STM32Ethernet library v1.2.0+`](https://github.com/stm32duino/STM32Ethernet) for built-in LAN8742A Ethernet on (Nucleo-144, Discovery). [![GitHub release](https://img.shields.io/github/release/stm32duino/STM32Ethernet.svg)](https://github.com/stm32duino/STM32Ethernet/releases/latest). To be used with [`LwIP library v2.1.2+`](https://github.com/stm32duino/LwIP) for built-in LAN8742A Ethernet on (Nucleo-144, Discovery). [![GitHub release](https://img.shields.io/github/release/stm32duino/LwIP.svg)](https://github.com/stm32duino/LwIP/releases/latest)
-15. [`WiFiNINA_Generic library v1.8.2+`](https://github.com/khoih-prog/WiFiNINA_Generic) to use WiFiNINA modules/shields. To install. check [![arduino-library-badge](https://www.ardu-badge.com/badge/WiFiNINA_Generic.svg?)](https://www.ardu-badge.com/WiFiNINA_Generic) if using WiFiNINA for boards such as Nano 33 IoT, nRF52, Teensy, etc.
-16. [`WiFiWebServer library v1.1.1+`](https://github.com/khoih-prog/WiFiWebServer) to use WiFi/WiFiNINA modules/shields. To install, check [![arduino-library-badge](https://www.ardu-badge.com/badge/WiFiWebServer.svg?)](https://www.ardu-badge.com/WiFiWebServer)
-17. [`EthernetWebServer library v1.3.0+`](https://github.com/khoih-prog/EthernetWebServer) to use Ethernet modules/shields on boards other than STM32F/L/H/G/WB/MP1. To install. check [![arduino-library-badge](https://www.ardu-badge.com/badge/EthernetWebServer.svg?)](https://www.ardu-badge.com/EthernetWebServer).
-18. [`EthernetWebServer_STM32 library v1.1.1+`](https://github.com/khoih-prog/EthernetWebServer_STM32) to use Ethernet modules/shields on STM32F/L/H/G/WB/MP1 boards. To install, check [![arduino-library-badge](https://www.ardu-badge.com/badge/EthernetWebServer_STM32.svg?)](https://www.ardu-badge.com/EthernetWebServer_STM32).
-19. [`ESP8266_AT_WebServer library v1.1.2+`](https://github.com/khoih-prog/ESP8266_AT_WebServer) to use ESP8266-AT/ESP32-AT WiFi modules/shields. To install, check [![arduino-library-badge](https://www.ardu-badge.com/badge/ESP8266_AT_WebServer.svg?)](https://www.ardu-badge.com/ESP8266_AT_WebServer). Using [![arduino-library-badge](https://www.ardu-badge.com/badge/ESP8266_AT_WebServer.svg?)](https://www.ardu-badge.com/ESP8266_AT_WebServer) is mandatory to avoid error while using ESP8266/ESP32-AT shields.
+17. [`WiFiNINA_Generic library v1.8.5+`](https://github.com/khoih-prog/WiFiNINA_Generic) to use WiFiNINA modules/shields. To install. check [![arduino-library-badge](https://www.ardu-badge.com/badge/WiFiNINA_Generic.svg?)](https://www.ardu-badge.com/WiFiNINA_Generic) if using WiFiNINA for boards such as Nano 33 IoT, nRF52, Teensy, etc.
+18. [`WiFiWebServer library v1.1.1+`](https://github.com/khoih-prog/WiFiWebServer) to use WiFi/WiFiNINA modules/shields. To install, check [![arduino-library-badge](https://www.ardu-badge.com/badge/WiFiWebServer.svg?)](https://www.ardu-badge.com/WiFiWebServer)
+19. [`EthernetWebServer library v1.3.0+`](https://github.com/khoih-prog/EthernetWebServer) to use Ethernet modules/shields on boards other than STM32F/L/H/G/WB/MP1. To install. check [![arduino-library-badge](https://www.ardu-badge.com/badge/EthernetWebServer.svg?)](https://www.ardu-badge.com/EthernetWebServer).
+20. [`EthernetWebServer_STM32 library v1.1.1+`](https://github.com/khoih-prog/EthernetWebServer_STM32) to use Ethernet modules/shields on STM32F/L/H/G/WB/MP1 boards. To install, check [![arduino-library-badge](https://www.ardu-badge.com/badge/EthernetWebServer_STM32.svg?)](https://www.ardu-badge.com/EthernetWebServer_STM32).
+21. [`ESP8266_AT_WebServer library v1.1.2+`](https://github.com/khoih-prog/ESP8266_AT_WebServer) to use ESP8266-AT/ESP32-AT WiFi modules/shields. To install, check [![arduino-library-badge](https://www.ardu-badge.com/badge/ESP8266_AT_WebServer.svg?)](https://www.ardu-badge.com/ESP8266_AT_WebServer). Using [![arduino-library-badge](https://www.ardu-badge.com/badge/ESP8266_AT_WebServer.svg?)](https://www.ardu-badge.com/ESP8266_AT_WebServer) is mandatory to avoid error while using ESP8266/ESP32-AT shields.
 
 ---
 
@@ -126,7 +253,7 @@ Another way to install is to:
 3. Install [**DDNS_Generic** library](https://platformio.org/lib/show/11241/DDNS_Generic) by using [Library Manager](https://platformio.org/lib/show/11241/DDNS_Generic/installation). Search for **DDNS_Generic** in [Platform.io Author's Libraries](https://platformio.org/lib/search?query=author:%22Khoi%20Hoang%22)
 4. Use included [platformio.ini](platformio/platformio.ini) file from examples to ensure that all dependent libraries will installed automatically. Please visit documentation for the other options and examples at [Project Configuration File](https://docs.platformio.org/page/projectconf.html)
 
-
+---
 ---
 
 ### Packages' Patches
@@ -155,22 +282,20 @@ These files must be copied into the directory:
 - `~/.arduino15/packages/adafruit/hardware/nrf52/x.yy.z/variants/NINA_B112_ublox/variant.cpp`
 - **`~/.arduino15/packages/adafruit/hardware/nrf52/x.yy.z/cores/nRF5/Udp.h`**
 
-#### 2. For Teensy boards
+#### 2. For For Teensy boards
  
- **To be able to compile and run on Teensy boards**, you have to copy the files in [**Packages_Patches for Teensy directory**](Packages_Patches/hardware/teensy/avr) into Teensy hardware directory (./arduino-1.8.13/hardware/teensy/avr/boards.txt). 
+ **To be able to compile and run on Teensy boards**, you have to copy the file [Teensy boards.txt](Packages_Patches/hardware/teensy/avr/boards.txt) into Teensy hardware directory (./arduino-1.8.13/hardware/teensy/avr/boards.txt). 
 
-Supposing the Arduino version is 1.8.13. These files must be copied into the directory:
+Supposing the Arduino version is 1.8.13. This file must be copied into the directory:
 
 - `./arduino-1.8.13/hardware/teensy/avr/boards.txt`
-- `./arduino-1.8.13/hardware/teensy/avr/cores/teensy/Stream.h`
 - `./arduino-1.8.13/hardware/teensy/avr/cores/teensy3/Stream.h`
 - `./arduino-1.8.13/hardware/teensy/avr/cores/teensy4/Stream.h`
 
 Whenever a new version is installed, remember to copy this file into the new version directory. For example, new version is x.yy.zz
-These files must be copied into the directory:
+This file must be copied into the directory:
 
 - `./arduino-x.yy.zz/hardware/teensy/avr/boards.txt`
-- `./arduino-x.yy.zz/hardware/teensy/avr/cores/teensy/Stream.h`
 - `./arduino-x.yy.zz/hardware/teensy/avr/cores/teensy3/Stream.h`
 - `./arduino-x.yy.zz/hardware/teensy/avr/cores/teensy4/Stream.h`
 
@@ -189,9 +314,9 @@ This file must be copied into the directory:
 
 #### 4. For Arduino SAMD boards
  
- ***To be able to compile without error and automatically detect and display BOARD_NAME on Arduino SAMD (Nano-33-IoT, etc) boards***, you have to copy the whole [Arduino SAMD cores 1.8.10](Packages_Patches/arduino/hardware/samd/1.8.10) directory into Arduino SAMD directory (~/.arduino15/packages/arduino/hardware/samd/1.8.10).
+ ***To be able to compile without error and automatically detect and display BOARD_NAME on Arduino SAMD (Nano-33-IoT, etc) boards***, you have to copy the whole [Arduino SAMD cores 1.8.11](Packages_Patches/arduino/hardware/samd/1.8.11) directory into Arduino SAMD directory (~/.arduino15/packages/arduino/hardware/samd/1.8.11).
  
-#### For core version v1.8.11+
+#### For core version v1.8.10+
 
 Supposing the Arduino SAMD version is 1.8.11. Now only one file must be copied into the directory:
 
@@ -268,40 +393,56 @@ theses files must be copied into the corresponding directory:
 - `~/.arduino15/packages/STM32/hardware/stm32/x.yy.zz/variants/NUCLEO_L053R8/variant.h`
 
 ---
+---
 
 ### Libraries' Patches
 
-1. If your application requires 2K+ HTML page, the current [`Ethernet library`](https://www.arduino.cc/en/Reference/Ethernet) must be modified if you are using W5200/W5500 Ethernet shields. W5100 is not supported for 2K+ buffer. If you use boards requiring different CS/SS pin for W5x00 Ethernet shield, for example ESP32, ESP8266, nRF52, etc., you also have to modify the following libraries to be able to specify the CS/SS pin correctly.
+#### Notes: These patches are totally optional and necessary only when you use the related Ethernet library and get certain error or issues.
 
-2. To fix [`Ethernet library`](https://www.arduino.cc/en/Reference/Ethernet), just copy these following files into the [`Ethernet library`](https://www.arduino.cc/en/Reference/Ethernet) directory to overwrite the old files:
+#### 1. For application requiring 2K+ HTML page
+
+If your application requires 2K+ HTML page, the current [`Ethernet library`](https://www.arduino.cc/en/Reference/Ethernet) must be modified if you are using W5200/W5500 Ethernet shields. W5100 is not supported for 2K+ buffer. If you use boards requiring different CS/SS pin for W5x00 Ethernet shield, for example ESP32, ESP8266, nRF52, etc., you also have to modify the following libraries to be able to specify the CS/SS pin correctly.
+
+#### 2. For Ethernet library
+
+To fix [`Ethernet library`](https://www.arduino.cc/en/Reference/Ethernet), just copy these following files into the [`Ethernet library`](https://www.arduino.cc/en/Reference/Ethernet) directory to overwrite the old files:
 - [Ethernet.h](LibraryPatches/Ethernet/src/Ethernet.h)
 - [Ethernet.cpp](LibraryPatches/Ethernet/src/Ethernet.cpp)
 - [EthernetServer.cpp](LibraryPatches/Ethernet/src/EthernetServer.cpp)
 - [w5100.h](LibraryPatches/Ethernet/src/utility/w5100.h)
 - [w5100.cpp](LibraryPatches/Ethernet/src/utility/w5100.cpp)
 
-3. To fix [`EthernetLarge library`](https://github.com/OPEnSLab-OSU/EthernetLarge), just copy these following files into the [`EthernetLarge library`](https://github.com/OPEnSLab-OSU/EthernetLarge) directory to overwrite the old files:
+#### 3. For EthernetLarge library
+
+To fix [`EthernetLarge library`](https://github.com/OPEnSLab-OSU/EthernetLarge), just copy these following files into the [`EthernetLarge library`](https://github.com/OPEnSLab-OSU/EthernetLarge) directory to overwrite the old files:
 - [EthernetLarge.h](LibraryPatches/EthernetLarge/src/EthernetLarge.h)
 - [EthernetLarge.cpp](LibraryPatches/EthernetLarge/src/EthernetLarge.cpp)
 - [EthernetServer.cpp](LibraryPatches/EthernetLarge/src/EthernetServer.cpp)
 - [w5100.h](LibraryPatches/EthernetLarge/src/utility/w5100.h)
 - [w5100.cpp](LibraryPatches/EthernetLarge/src/utility/w5100.cpp)
 
-4. To fix [`Ethernet2 library`](https://github.com/khoih-prog/Ethernet2), just copy these following files into the [`Ethernet2 library`](https://github.com/khoih-prog/Ethernet2) directory to overwrite the old files:
+
+#### 4. For Ethernet2 library
+
+To fix [`Ethernet2 library`](https://github.com/khoih-prog/Ethernet2), just copy these following files into the [`Ethernet2 library`](https://github.com/khoih-prog/Ethernet2) directory to overwrite the old files:
 
 - [Ethernet2.h](LibraryPatches/Ethernet2/src/Ethernet2.h)
 - [Ethernet2.cpp](LibraryPatches/Ethernet2/src/Ethernet2.cpp)
 
-To add UDP Multicast support, necessary for this [**UPnP_Generic library**](https://github.com/khoih-prog/UPnP_Generic):
+To add UDP Multicast support, necessary for the [**UPnP_Generic library**](https://github.com/khoih-prog/UPnP_Generic):
 
 - [EthernetUdp2.h](LibraryPatches/Ethernet2/src/EthernetUdp2.h)
 - [EthernetUdp2.cpp](LibraryPatches/Ethernet2/src/EthernetUdp2.cpp)
+
+#### 5. For Ethernet3 library
 
 5. To fix [`Ethernet3 library`](https://github.com/sstaub/Ethernet3), just copy these following files into the [`Ethernet3 library`](https://github.com/sstaub/Ethernet3) directory to overwrite the old files:
 - [Ethernet3.h](LibraryPatches/Ethernet3/src/Ethernet3.h)
 - [Ethernet3.cpp](LibraryPatches/Ethernet3/src/Ethernet3.cpp)
 
-6. **To be able to compile and run on nRF52 boards with ENC28J60 using UIPEthernet library**, you have to copy these following files into the UIPEthernet `utility` directory to overwrite the old files:
+#### 6. For UIPEthernet library
+
+***To be able to compile and run on nRF52 boards with ENC28J60 using UIPEthernet library***, you have to copy these following files into the UIPEthernet `utility` directory to overwrite the old files:
 
 - For [UIPEthernet v2.0.8](https://github.com/UIPEthernet/UIPEthernet)
 
@@ -317,8 +458,14 @@ To add UDP Multicast support, necessary for this [**UPnP_Generic library**](http
   - [Enc28J60Network.h](LibraryPatches/UIPEthernet-2.0.9/utility/Enc28J60Network.h)
   - [Enc28J60Network.cpp](LibraryPatches/UIPEthernet-2.0.9/utility/Enc28J60Network.cpp)
 
-7. To fix [`ESP32 compile error`](https://github.com/espressif/arduino-esp32), just copy the following file into the [`ESP32`](https://github.com/espressif/arduino-esp32) cores/esp32 directory (e.g. ./arduino-1.8.12/hardware/espressif/cores/esp32) to overwrite the old file:
+#### 7. For fixing ESP32 compile error
+
+To fix [`ESP32 compile error`](https://github.com/espressif/arduino-esp32), just copy the following file into the [`ESP32`](https://github.com/espressif/arduino-esp32) cores/esp32 directory (e.g. ./arduino-1.8.12/hardware/espressif/cores/esp32) to overwrite the old file:
 - [Server.h](LibraryPatches/esp32/cores/esp32/Server.h)
+
+#### 8. For STM32 core F3 and F4 using UIPEthernet library
+
+Check if you need to install the UIPEthernet patch [new STM32 core F3/F4 compatibility](https://github.com/UIPEthernet/UIPEthernet/commit/c6d6519a260166b722b9cee5dd1f0fb2682e6782) to avoid errors `#include HardwareSPI.h` on some STM32 boards (Nucleo-32 F303K8, etc.)
 
 ---
 ---
@@ -616,25 +763,31 @@ These pins are tested OK with ESP8266 and W5x00
  9. [No-ip_Client](examples/Generic/No-ip_Client)
 10. [selfhost-de_Client](examples/Generic/selfhost-de_Client)
 11. [strato_Client](examples/Generic/strato_Client)
+12. [OVH_Client](examples/Generic/OVH_Client). **New**
 
 #### B. For Ethernet shields
 
-12. [nRF52_Ethernet_DuckDNS_Client](examples/Ethernet/nRF52/nRF52_Ethernet_DuckDNS_Client)
-13. [SAMD_Ethernet_DuckDNS_Client](examples/Ethernet/SAMD/SAMD_Ethernet_DuckDNS_Client)
-14. [SAM-DUE_Ethernet_DuckDNS_Client](examples/Ethernet/SAM-DUE/SAM-DUE_Ethernet_DuckDNS_Client)
-15. [STM32_Ethernet_DuckDNS_Client](examples/Ethernet/STM32/STM32_Ethernet_DuckDNS_Client)
+13. [nRF52_Ethernet_DuckDNS_Client](examples/Ethernet/nRF52/nRF52_Ethernet_DuckDNS_Client)
+14. [SAMD_Ethernet_DuckDNS_Client](examples/Ethernet/SAMD/SAMD_Ethernet_DuckDNS_Client)
+15. [SAM-DUE_Ethernet_DuckDNS_Client](examples/Ethernet/SAM-DUE/SAM-DUE_Ethernet_DuckDNS_Client)
+16. [STM32_Ethernet_DuckDNS_Client](examples/Ethernet/STM32/STM32_Ethernet_DuckDNS_Client)
+17. [AVR_Ethernet_DuckDNS_Client](examples/Ethernet/AVR/AVR_Ethernet_DuckDNS_Client). **New**
+18. [megaAVR_Ethernet_DuckDNS_Client](examples/Ethernet/megaAVR/megaAVR_Ethernet_DuckDNS_Client). **New**
 
 #### C. For WiFiNINA shields
 
-16. [nRF52_WiFiNINA_DuckDNS_Client](examples/WiFiNINA/nRF52/nRF52_WiFiNINA_DuckDNS_Client)
-17. [SAMD_WiFiNINA_DuckDNS_Client](examples/WiFiNINA/SAMD/SAMD_WiFiNINA_DuckDNS_Client)
+19. [nRF52_WiFiNINA_DuckDNS_Client](examples/WiFiNINA/nRF52/nRF52_WiFiNINA_DuckDNS_Client)
+20. [SAMD_WiFiNINA_DuckDNS_Client](examples/WiFiNINA/SAMD/SAMD_WiFiNINA_DuckDNS_Client)
+21. [megaAVR_WiFiNINA_DuckDNS_Client](examples/WiFiNINA/megaAVR/megaAVR_WiFiNINA_DuckDNS_Client). **New**
 
 #### D. For ESP8266-AT/ESP32-AT shields
 
-18. [nRF52_ESP_AT_DuckDNS_Client](examples/ESP_AT_WiFi/nRF52/nRF52_ESP_AT_DuckDNS_Client)
-19. [SAMD_ESP_AT_DuckDNS_Client](examples/ESP_AT_WiFi/SAMD/SAMD_ESP_AT_DuckDNS_Client)
-20. [SAM-DUE_ESP_AT_DuckDNS_Client](examples/ESP_AT_WiFi/SAM-DUE/SAM-DUE_ESP_AT_DuckDNS_Client)
-21. [STM32_ESP_AT_DuckDNS_Client](examples/ESP_AT_WiFi/STM32/STM32_ESP_AT_DuckDNS_Client)
+22. [nRF52_ESP_AT_DuckDNS_Client](examples/ESP_AT_WiFi/nRF52/nRF52_ESP_AT_DuckDNS_Client)
+23. [SAMD_ESP_AT_DuckDNS_Client](examples/ESP_AT_WiFi/SAMD/SAMD_ESP_AT_DuckDNS_Client)
+24. [SAM-DUE_ESP_AT_DuckDNS_Client](examples/ESP_AT_WiFi/SAM-DUE/SAM-DUE_ESP_AT_DuckDNS_Client)
+25. [STM32_ESP_AT_DuckDNS_Client](examples/ESP_AT_WiFi/STM32/STM32_ESP_AT_DuckDNS_Client)
+26. [AVR_ESP_AT_DuckDNS_Client](examples/ESP_AT_WiFi/AVR/AVR_ESP_AT_DuckDNS_Client)
+27. [megaAVR_ESP_AT_DuckDNS_Client](examples/ESP_AT_WiFi/megaAVR/megaAVR_ESP_AT_DuckDNS_Client)
 
 ---
 ---
@@ -664,6 +817,7 @@ void setup()
 
   Serial.print("\nStart DuckDNS_Client on " + String(BOARD_NAME));
   Serial.println(" with " + String(SHIELD_TYPE));
+  Serial.println(DDNS_GENERIC_VERSION);
 
 #if DDNS_USING_WIFI_AT
   // initialize serial for ESP module
@@ -858,6 +1012,59 @@ void loop()
     #define USE_THIS_SS_PIN       10
     #define ETHERNET_USE_SAM_DUE      true
     #warning Use SAM_DUE architecture with Ethernet
+  #endif
+#endif
+
+/////////////////////////////////
+
+#if ( defined(__AVR_ATmega2560__) )
+  #if (DDNS_USING_WIFI)
+    #if defined(WIFI_USE_AVR)
+      #undef WIFI_USE_AVR
+    #endif
+    #define WIFI_USE_AVR      true
+    #warning Use AVR architecture with WiFi
+  #elif DDNS_USING_ETHERNET
+    #if defined(ETHERNET_USE_AVR)
+      #undef ETHERNET_USE_AVR
+    #endif
+    // Default pin 10 to SS/CS
+    #define USE_THIS_SS_PIN       10
+    #define ETHERNET_USE_AVR      true
+    #warning Use AVR architecture with Ethernet
+  #endif
+#endif
+
+/////////////////////////////////
+
+#if ( defined(__AVR_ATmega4809__) || defined(ARDUINO_AVR_UNO_WIFI_REV2) || defined(ARDUINO_AVR_NANO_EVERY) )
+
+  // Default WiFiNINA for UNO WiFi Rev2
+  #if defined(ARDUINO_AVR_UNO_WIFI_REV2)
+    #if !(DDNS_USING_WIFI)
+      #undef DDNS_USING_WIFI
+      #define DDNS_USING_WIFI         true
+    #endif
+    #if (DDNS_USING_ETHERNET)
+      #undef DDNS_USING_ETHERNET
+      #define DDNS_USING_ETHERNET     false
+    #endif
+  #endif
+  
+  #if (DDNS_USING_WIFI)
+    #if defined(WIFI_USE_MEGA_AVR)
+      #undef WIFI_USE_MEGA_AVR
+    #endif
+    #define WIFI_USE_MEGA_AVR           true
+    #warning Use megaAVR architecture with WiFi
+  #elif DDNS_USING_ETHERNET
+    #if defined(ETHERNET_USE_MEGA_AVR)
+      #undef ETHERNET_USE_MEGA_AVR
+    #endif
+    // Default pin 10 to SS/CS
+    #define USE_THIS_SS_PIN             10
+    #define ETHERNET_USE_MEGA_AVR       true
+    #warning Use megaAVR architecture with Ethernet
   #endif
 #endif
 
@@ -1121,13 +1328,49 @@ void loop()
 
 #elif (ESP32)
   #warning ESP32 board selected
+  
+#elif defined(WIFI_USE_MEGA_AVR) || defined(ETHERNET_USE_MEGA_AVR)
+  // For megaAVR such as UNO WiFi Rev2
+  #define EspSerial Serial1
+  
+  #if defined(ARDUINO_AVR_UNO_WIFI_REV2)
+    #define BOARD_TYPE      "ARDUINO_AVR_UNO_WIFI_REV2"
+  #elif defined(ARDUINO_AVR_NANO_EVERY)
+    #define BOARD_TYPE      "ARDUINO_AVR_NANO_EVERY"
+  #else
+    #define BOARD_TYPE      "Unknown MegaAVR ATmega4809"  
+  #endif
+  
+  #warning megaAVR ATmega4809 board selected
 
-#else
+  #ifndef BOARD_TYPE
+    #define BOARD_TYPE  "MegaAVR ATmega4809"
+  #endif
+  
+#elif defined(WIFI_USE_AVR) || defined(ETHERNET_USE_AVR)
   // For Mega
-  #error Mega, UNO, Nano, etc. not supported now
+  #define EspSerial Serial3
+  
+  #if defined(ARDUINO_AVR_MEGA2560)
+    #define BOARD_TYPE      "AVR_MEGA2560"
+  #elif defined(ARDUINO_AVR_MEGA)
+    #define BOARD_TYPE      "ARDUINO_AVR_MEGA"
+  #elif defined(ARDUINO_AVR_ADK)
+    #define BOARD_TYPE      "ARDUINO_AVR_ADK"  
+  #endif
+
+  #warning AVR Mega board selected
+
+  #ifndef BOARD_TYPE
+    #define BOARD_TYPE  "AVR Mega"
+  #endif
+  
+#else
+  // For UNO, Nano
+  #error UNO, Nano, etc. not supported. Not enough memory
   // Default pin 10 to SS/CS
   #define USE_THIS_SS_PIN       10
-  #define BOARD_TYPE      "AVR Mega"
+  #define BOARD_TYPE      "Unsupported AVR"
 #endif    // #ifdef CORE_TEENSY
 
 /////////////////////////////////
@@ -1181,7 +1424,7 @@ void loop()
       #define SHIELD_TYPE                 "WiFiNINA using WiFiNINA_Generic Library"
     #elif DDNS_USING_WIFI_AT
       #warning Using ESP8266-AT/ESP32-AT and ESP8266_AT_WebServer Library
-      #define SHIELD_TYPE                 "ESP8266-AT/ESP32-AT using ESP8266_AT_WebServer Library"
+      #define SHIELD_TYPE                 "ESP8266-AT/ESP32-AT using ESP8266_AT_WebServer Library"        
     #elif USE_WIFI_CUSTOM
       #warning Using Custom WiFi
       #define SHIELD_TYPE                 "Custom WiFi"
@@ -1361,13 +1604,13 @@ void loop()
 ---
 ---
 
-### Debug Termimal Output Samples
+### Debug Terminal Output Samples
 
 #### 1. Debug terminal output when running example [No-ip_Client](examples/No-ip_Client) on STM32F7 Nucleo-144 NUCLEO_F767ZI with LAN8742A using STM32Ethernet Library
 
 ```
 Start No-ip_Client on NUCLEO_F767ZI with LAN8742A using STM32Ethernet Library
-
+DDNS_Generic v1.1.0
 HTTP WebServer is @ IP : 192.168.2.84
 [DDNS] Access whatismyipaddress
 [DDNS] httpCode = 200
@@ -1390,7 +1633,7 @@ DDNSGeneric - IP Change Detected: aaa.bbb.ccc.ddd
 
 ```
 Start DuckDNS_Client on NUCLEO_F767ZI with LAN8742A using STM32Ethernet Library
-
+DDNS_Generic v1.1.0
 HTTP WebServer is @ IP : 192.168.2.84
 [DDNS] Access whatismyipaddress
 [DDNS] httpCode = 200
@@ -1409,6 +1652,7 @@ DDNSGeneric - IP Change Detected: aaa.bbb.ccc.ddd
 
 ```
 Start DuckDNS_Client on NRF52840_FEATHER with W5x00 using EthernetLarge Library
+DDNS_Generic v1.1.0
 _pinCS = 0
 W5100 init, using SS_PIN_DEFAULT = 10, new ss_pin = 10, W5100Class::ss_pin = 10
 W5100::init: W5500, SSIZE =8192
@@ -1431,6 +1675,7 @@ DDNSGeneric - IP Change Detected: aaa.bbb.ccc.ddd
 
 ```
 Start No-ip_Client on NRF52840_FEATHER with W5x00 using EthernetLarge Library
+DDNS_Generic v1.1.0
 _pinCS = 0
 W5100 init, using SS_PIN_DEFAULT = 10, new ss_pin = 10, W5100Class::ss_pin = 10
 W5100::init: W5500, SSIZE =8192
@@ -1453,7 +1698,7 @@ DDNSGeneric - IP Change Detected: aaa.bbb.ccc.ddd
 
 ```
 Start nRF52_Ethernet_DuckDNS_Client on NRF52840_FEATHER with ENC28J60 using EthernetENC Library
-
+DDNS_Generic v1.1.0
 HTTP WebServer is @ IP : 192.168.2.83
 [DDNS] Access whatismyipaddress
 [DDNS] httpCode = 200
@@ -1472,6 +1717,7 @@ DDNSGeneric - IP Change Detected: aaa.bbb.ccc.ddd
 
 ```
 Start DuckDNS_Client on NRF52840_FEATHER with ENC28J60 using UIPEthernet Library
+DDNS_Generic v1.1.0
 ENC28J60_CONTROL_CS =10
 SS =5
 SPI_MOSI =25
@@ -1496,6 +1742,7 @@ DDNSGeneric - IP Change Detected: aaa.bbb.ccc.ddd
 
 ```
 Start DuckDNS_Client on SAMD_NANO_33_IOT with WiFiNINA using WiFiNINA_Generic Library
+DDNS_Generic v1.1.0
 Connecting to WiFi SSID: HueNet1
 
 HTTP WebServer is @ IP : 192.168.2.83
@@ -1516,6 +1763,7 @@ DDNSGeneric - IP Change Detected: aaa.bbb.ccc.ddd
 
 ```
 Start No-ip_Client on SAMD_NANO_33_IOT with WiFiNINA using WiFiNINA_Generic Library
+DDNS_Generic v1.1.0
 Connecting to WiFi SSID: HueNet1
 
 HTTP WebServer is @ IP : 192.168.2.83
@@ -1536,6 +1784,7 @@ DDNSGeneric - IP Change Detected: aaa.bbb.ccc.ddd
 
 ```
 Start DuckDNS_Client on SAM DUE with W5x00 using Ethernet Library
+DDNS_Generic v1.1.0
 _pinCS = 0
 W5100 init, using SS_PIN_DEFAULT = 10, new ss_pin = 10, W5100Class::ss_pin = 10
 W5100::init: W5100, SSIZE =4096
@@ -1558,6 +1807,7 @@ DDNSGeneric - IP Change Detected: aaa.bbb.ccc.ddd
 
 ```
 Start No-ip_Client on SAM DUE with W5x00 using EthernetLarge Library
+DDNS_Generic v1.1.0
 _pinCS = 0
 W5100 init, using SS_PIN_DEFAULT = 10, new ss_pin = 10, W5100Class::ss_pin = 10
 W5100::init: W5100, SSIZE =4096
@@ -1580,6 +1830,7 @@ DDNSGeneric - IP Change Detected: aaa.bbb.ccc.ddd
 
 ```
 Start DuckDNS_Client on SEEED_XIAO_M0 with ESP8266-AT/ESP32-AT using ESP8266_AT_WebServer Library
+DDNS_Generic v1.1.0
 [ESP_AT] Use ES8266-AT Command
 WiFi shield init done
 Connecting to WiFi SSID: HueNet1
@@ -1602,6 +1853,7 @@ DDNSGeneric - IP Change Detected: aaa.bbb.ccc.ddd
 
 ```
 Start No-ip_Client on SEEED_XIAO_M0 with ESP8266-AT/ESP32-AT using ESP8266_AT_WebServer Library
+DDNS_Generic v1.1.0
 [ESP_AT] Use ES8266-AT Command
 WiFi shield init done
 Connecting to WiFi SSID: HueNet1
@@ -1621,7 +1873,44 @@ DDNSGeneric - IP Change Detected: aaa.bbb.ccc.ddd
 ---
 ---
 
+### Debug
+
+Debug is enabled by default on Serial.
+
+You can also change the debugging level (_WIFI_LOGLEVEL_, _WIFININA_LOGLEVEL_ and _DDNS_GENERIC_LOGLEVEL_) from 0 to 4
+
+```cpp
+#define DEBUG_WIFI_WEBSERVER_PORT   Serial
+
+// Debug Level from 0 to 4
+#define _WIFI_LOGLEVEL_             4
+#define _WIFININA_LOGLEVEL_         4
+#define _DDNS_GENERIC_LOGLEVEL_     2
+```
+
+---
+
+### Troubleshooting
+
+If you get compilation errors, more often than not, you may need to install a newer version of the core for Arduino boards.
+
+Sometimes, the library will only work if you update the board core to the latest version because I am using newly added functions.
+
+
+---
+---
+
 ## Releases
+
+### Releases v1.1.0
+
+1. Add support to **Arduino AVR ATmega2560** such as **Mega, Mega2560, Mega ADK, etc.**
+2. Add support to **Arduino ATmega4809** such as **UNO WiFi Rev2, AVR_NANO_EVERY, etc.**
+3. Remove dependency on <functional>.
+4. Add OVH.com support.
+5. Update and add examples for AVR and megaAVR
+6. Add Version string
+7. Add Table-of-Contents
 
 ### Releases v1.0.1
 
@@ -1649,6 +1938,8 @@ DDNSGeneric - IP Change Detected: aaa.bbb.ccc.ddd
   - **STM32 (Nucleo-144, Nucleo-64, Nucleo-32, Discovery, STM32F1, STM32F3, STM32F4, STM32H7, STM32L0, etc.)**.
   - **SAM DUE**
   - **STM32F/L/H/G/WB/MP1 (Nucleo-64 L053R8,Nucleo-144, Nucleo-64, Nucleo-32, Discovery, STM32Fx, STM32H7, STM32Lx, STM32Gx, STM32WB, STM32MP1, etc.) having 64K+ Flash program memory.**
+  - **Arduino ATmega4809-based boards** such as **UNO WiFi Rev2, AVR_NANO_EVERY, etc.**
+  - **Arduino AVR ATmega2560** such as **Mega, Mega2560, Mega ADK, etc.**
   
 #### Currently Supported WiFi Modules/Shields
 
@@ -1664,11 +1955,20 @@ DDNSGeneric - IP Change Detected: aaa.bbb.ccc.ddd
   - **LAN8742A using STM32duino LwIP,STM32duino STM32Ethernet libraries**
 
 ---
+---
+
+### Issues
+
+Submit issues to: [DDNS_Generic issues](https://github.com/khoih-prog/DDNS_Generic/issues)
+
+
+---
+
 
 ### TO DO
 
 1. Bug Searching and Killing
-2. Support more types of boards using WiFi/Ethernet shields (Teensy, AVR Nano/UNO/Mega, etc.)
+2. Support more types of boards using WiFi/Ethernet shields (Teensy, etc.)
 3. Support more non-compatible Ethernet Libraries such as Ethernet_Shield_W5200, EtherCard, EtherSia
 
 
@@ -1686,8 +1986,12 @@ DDNSGeneric - IP Change Detected: aaa.bbb.ccc.ddd
 10. Add support to Ethernet ENC28J60, using [`EthernetENC`](https://github.com/jandrassy/EthernetENC) or [`UIPEthernet`](https://github.com/UIPEthernet/UIPEthernet) library
 11. Add support to WiFiNINA using WiFiNINA or [**WiFiNINA_Generic**](https://github.com/khoih-prog/WiFiNINA_Generic) library.
 12. Add support to ESP8266-AT, ESP32-AT WiFi shields using WiFiEspAT or [**ESP8266_AT_WebServer**](https://github.com/khoih-prog/ESP8266_AT_WebServer) library.
+13. Add support to Arduino ATmega4809-based boards such as UNO WiFi Rev2, AVR_NANO_EVERY, etc.
+14. Add support to Arduino AVR ATmega2560 such as Mega, Mega2560, Mega ADK, etc.
+15. Add Version String
+16. Add Table-of-Contents
 
- 
+---
 ---
 
 ### Contributions and Thanks
@@ -1718,7 +2022,7 @@ If you want to contribute to this project:
 
 ### License
 
-- The library is licensed under [MIT](https://github.com/khoih-prog/EthernetWebServer/blob/master/LICENSE)
+- The library is licensed under [MIT](https://github.com/khoih-prog/DDNS_Generic/blob/master/LICENSE)
 
 ---
 
