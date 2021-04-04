@@ -109,7 +109,7 @@
   * [11. Debug terminal output when running example DuckDNS_Client on SeeedStudio SEEED_XIAO_M0 with ESP8266-AT using ESP8266_AT_WebServer Library](#11-debug-terminal-output-when-running-example-duckdns_client-on-seeedstudio-seeed_xiao_m0-with-esp8266-at-using-esp8266_at_webserver-library)
   * [12. Debug terminal output when running example No-ip_Client on SeeedStudio SEEED_XIAO_M0 with ESP8266-AT using ESP8266_AT_WebServer Library](#12-debug-terminal-output-when-running-example-no-ip_client-on-seeedstudio-seeed_xiao_m0-with-esp8266-at-using-esp8266_at_webserver-library)
   * [13. Debug terminal output when running example AVR_Ethernet_DuckDNS_Client on AVR_MEGA2560 with W5x00 using EthernetLarge Library](#13-debug-terminal-output-when-running-example-avr_ethernet_duckdns_client-on-avr_mega2560-with-w5x00-using-ethernetlarge-library)
-  * [14. Debug terminal output when running example Teensy_Ethernet_DuckDNS_Client on TEENSY 4.1 with Custom Ethernet using Teensy 4.1 NativeEthernet Library](14-debug-terminal-output-when-running-example-teensy_ethernet_duckdns_client-on-teensy-41-with-custom-ethernet-using-teensy-41-nativeethernet-library)
+  * [14. Debug terminal output when running example Teensy_Ethernet_DuckDNS_Client on TEENSY 4.1 with Custom Ethernet using Teensy 4.1 NativeEthernet Library](#14-debug-terminal-output-when-running-example-teensy_ethernet_duckdns_client-on-teensy-41-with-custom-ethernet-using-teensy-41-nativeethernet-library)
 * [Debug](#debug)
 * [Troubleshooting](#troubleshooting)
 * [Releases](#releases)
