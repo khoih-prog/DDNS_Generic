@@ -31,72 +31,83 @@
 
 // Debug Level from 0 to 4
 #define _WIFI_LOGLEVEL_             4
-#define _WIFININA_LOGLEVEL_         4
 #define _DDNS_GENERIC_LOGLEVEL_     2
 
 // Select DDNS_USING_WIFI for boards using built-in WiFi, such as Nano-33-IoT
 #define DDNS_USING_WIFI             true    //true
 #define DDNS_USING_ETHERNET         false   //true
 
+#define DDNS_USING_WIFI_AT          true
+
+// Uncomment to use ESP32-AT commands
+//#define USE_ESP32_AT              true
+
 /////////////////////////////////
 
-#if !( defined(NRF52840_FEATHER) || defined(NRF52832_FEATHER) || defined(NRF52_SERIES) || defined(ARDUINO_NRF52_ADAFRUIT) || \
-        defined(NRF52840_FEATHER_SENSE) || defined(NRF52840_ITSYBITSY) || defined(NRF52840_CIRCUITPLAY) || defined(NRF52840_CLUE) || \
-        defined(NRF52840_METRO) || defined(NRF52840_PCA10056) || defined(PARTICLE_XENON) || defined(NINA_B302_ublox) || defined(NINA_B112_ublox) )
-
-  #error This code is intended to run on the nRF52 platform! Please check your Tools->Board setting.
+#if !( defined(CORE_TEENSY) )
+  #error This code is intended to run on Teensy boards! Please check your Tools->Board setting.
 #endif
 
-#if defined(WIFI_USE_NRF528XX)
-  #undef WIFI_USE_NRF528XX
+#if defined(WIFI_USE_TEENSY)
+  #undef WIFI_USE_TEENSY
 #endif
-#define WIFI_USE_NRF528XX          true
+#define WIFI_USE_TEENSY          true
 
-#warning Use NRF52 architecture with WiFi
+#warning Use Teensy architecture with WiFi
 
 /////////////////////////////////
+// To change according to usage
+//#define EspSerial Serial3
+#define EspSerial Serial1
+/////////////////////////////////
 
-#if defined(NRF52840_FEATHER)
-  #define BOARD_TYPE      "NRF52840_FEATHER_EXPRESS"
-#elif defined(NRF52832_FEATHER)
-  #define BOARD_TYPE      "NRF52832_FEATHER"
-#elif defined(NRF52840_FEATHER_SENSE)
-  #define BOARD_TYPE      "NRF52840_FEATHER_SENSE"
-#elif defined(NRF52840_ITSYBITSY)
-  #define BOARD_TYPE      "NRF52840_ITSYBITSY_EXPRESS"
-#elif defined(NRF52840_CIRCUITPLAY)
-  #define BOARD_TYPE      "NRF52840_CIRCUIT_PLAYGROUND"
-#elif defined(NRF52840_CLUE)
-  #define BOARD_TYPE      "NRF52840_CLUE"
-#elif defined(NRF52840_METRO)
-  #define BOARD_TYPE      "NRF52840_METRO_EXPRESS"
-#elif defined(NRF52840_PCA10056)
-  #define BOARD_TYPE      "NORDIC_NRF52840DK"
-#elif defined(NINA_B302_ublox)
-  #define BOARD_TYPE      "NINA_B302_ublox"
-#elif defined(NINA_B112_ublox)
-  #define BOARD_TYPE      "NINA_B112_ublox"
-#elif defined(PARTICLE_XENON)
-  #define BOARD_TYPE      "PARTICLE_XENON"
-#elif defined(MDBT50Q_RX)
-  #define BOARD_TYPE      "RAYTAC_MDBT50Q_RX"
-#elif defined(ARDUINO_NRF52_ADAFRUIT)
-  #define BOARD_TYPE      "ARDUINO_NRF52_ADAFRUIT"
-#else
-  #define BOARD_TYPE      "nRF52 Unknown"
+#if ( defined(CORE_TEENSY) )
+  
+  #if defined(__IMXRT1062__)
+    // For Teensy 4.1/4.0
+    #if defined(ARDUINO_TEENSY41)
+      #define BOARD_TYPE      "TEENSY 4.1"
+    #elif defined(ARDUINO_TEENSY40)
+      #define BOARD_TYPE      "TEENSY 4.0"
+    #else
+      #define BOARD_TYPE      "TEENSY 4.x"
+    #endif      
+  #elif defined(__MK66FX1M0__)
+    #define BOARD_TYPE "Teensy 3.6"
+  #elif defined(__MK64FX512__)
+    #define BOARD_TYPE "Teensy 3.5"
+  #elif defined(__MKL26Z64__)
+    #define BOARD_TYPE "Teensy LC"
+  #elif defined(__MK20DX256__)
+    #define BOARD_TYPE "Teensy 3.2" // and Teensy 3.1 (obsolete)
+  #elif defined(__MK20DX128__)
+    #define BOARD_TYPE "Teensy 3.0"
+  #elif defined(__AVR_AT90USB1286__)
+    #error Teensy 2.0++ not supported
+  #elif defined(__AVR_ATmega32U4__)
+    #error Teensy 2.0 not supported
+  #else
+    // For Other Boards
+    #define BOARD_TYPE      "Unknown Teensy Board"
+  #endif
+#endif
+
+#warning Teensy board selected
+
+#ifndef BOARD_TYPE
+  #define BOARD_TYPE  "Teensy"
 #endif
 
 /////////////////////////////////
 
-// Select one to be true: USE_WIFI_NINA, DDNS_USING_WIFI_AT or USE_WIFI_CUSTOM
-#define USE_WIFI_NINA         true
+#define DDNS_USING_WIFI_AT    true
 
-#warning Using WiFiNINA and WiFiNINA_Generic Library
-#define SHIELD_TYPE           "WiFiNINA using WiFiNINA_Generic Library"
+#warning Using ESP8266-AT/ESP32-AT and ESP8266_AT_WebServer Library
+#define SHIELD_TYPE       "ESP8266-AT/ESP32-AT using ESP8266_AT_WebServer Library" 
 
 /////////////////////////////////
 
-#include <WiFiWebServer.h>
+#include <ESP8266_AT_WebServer.h>
 
 /////////////////////////////////
 
@@ -116,7 +127,7 @@
   
 #include <DDNS_Generic.h>
 
-WiFiServer server(80);
+ESP8266_AT_WebServer server(80);
 
 #include "wifi_credentials.h"
 

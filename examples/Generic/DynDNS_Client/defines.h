@@ -1,7 +1,7 @@
 /****************************************************************************************************************************
   defines.h
    
-  For all Generic boards such as ESP8266, ESP32, SAM DUE, SAMD21/SAMD51, nRF52, STM32F/L/H/G/WB/MP1, AVR, megaAVR
+  For all Generic boards such as ESP8266, ESP32, SAM DUE, SAMD21/SAMD51, nRF52, STM32F/L/H/G/WB/MP1, AVR, megaAVR, Teensy
   with WiFiNINA, ESP8266/ESP32 WiFi, ESP8266-AT, W5x00, ENC28J60, built-in Ethernet LAN8742A
 
   DDNS_Generic is a library to update DDNS IP address for DDNS services such as 
@@ -14,6 +14,14 @@
   Built by Khoi Hoang https://github.com/khoih-prog/DDNS_Generic
 
   Licensed under MIT license
+  Version: 1.2.0
+
+  Version Modified By   Date      Comments
+  ------- -----------  ---------- -----------
+  1.0.0   K Hoang      11/09/2020 Initial coding for Generic boards using many WiFi/Ethernet modules/shields.
+  1.0.1   K Hoang      28/09/2020 Fix issue with nRF52 and STM32F/L/H/G/WB/MP1 using ESP8266/ESP32-AT
+  1.1.0   K Hoang      03/04/2021 Add OVH.com support. Remove dependency on <functional>. Add support to AVR Mega and megaAVR.
+  1.2.0   K Hoang      04/04/2021 Add support to Teensy LC, 3.x, 4.0 and 4.1 using Ethernet, NativeEthernet, WiFi or ESP-AT
  *****************************************************************************************************************************/
 
 #ifndef defines_h
@@ -120,6 +128,22 @@
   #endif
 #endif
 
+#if ( defined(CORE_TEENSY) )
+  #if (DDNS_USING_WIFI)
+    #if defined(WIFI_USE_TEENSY)
+      #undef WIFI_USE_TEENSY
+    #endif
+    #define WIFI_USE_TEENSY      true
+    #warning Use Teensy architecture with WiFi
+  #elif DDNS_USING_ETHERNET
+    #if defined(ETHERNET_USE_TEENSY)
+      #undef ETHERNET_USE_TEENSY
+    #endif
+    #define ETHERNET_USE_TEENSY      true
+    #warning Use Teensy architecture with Ethernet
+  #endif
+#endif
+
 /////////////////////////////////
 
 #if ( defined(__AVR_ATmega4809__) || defined(ARDUINO_AVR_UNO_WIFI_REV2) || defined(ARDUINO_AVR_NANO_EVERY) )
@@ -186,7 +210,15 @@
   
   #if defined(__IMXRT1062__)
     // For Teensy 4.1/4.0
-    #define BOARD_TYPE      "TEENSY 4.1/4.0"
+    #if defined(ARDUINO_TEENSY41)
+      #define BOARD_TYPE      "TEENSY 4.1"
+      // Use true for NativeEthernet Library, false if using other Ethernet libraries
+      #define USE_NATIVE_ETHERNET     true
+    #elif defined(ARDUINO_TEENSY40)
+      #define BOARD_TYPE      "TEENSY 4.0"
+    #else
+      #define BOARD_TYPE      "TEENSY 4.x"
+    #endif      
   #elif defined(__MK66FX1M0__)
     #define BOARD_TYPE "Teensy 3.6"
   #elif defined(__MK64FX512__)
@@ -535,16 +567,20 @@
   #define USE_ETHERNET_ESP8266    false //true
   #define USE_ETHERNET_ENC        false
   
-  #if ( USE_ETHERNET2 || USE_ETHERNET3 || USE_ETHERNET_LARGE || USE_ETHERNET_ESP8266 || USE_ETHERNET_ENC )
+  #if ( USE_ETHERNET2 || USE_ETHERNET3 || USE_ETHERNET_LARGE || USE_ETHERNET_ESP8266 || USE_ETHERNET_ENC || USE_NATIVE_ETHERNET )
     #ifdef USE_CUSTOM_ETHERNET
       #undef USE_CUSTOM_ETHERNET
-      #define USE_CUSTOM_ETHERNET   true
+      #define USE_CUSTOM_ETHERNET   false
     #endif
   #endif
 
   // Currently, only Ethernet lib available for STM32 using W5x00
   #if !(USE_BUILTIN_ETHERNET || ETHERNET_USE_STM32)
-    #if USE_ETHERNET3
+    #if USE_NATIVE_ETHERNET
+      #include "NativeEthernet.h"
+      #warning Using NativeEthernet lib for Teensy 4.1. Must also use Teensy Packages Patch or error
+      #define SHIELD_TYPE           "Custom Ethernet using Teensy 4.1 NativeEthernet Library"
+    #elif USE_ETHERNET3
       #include "Ethernet3.h"
       #warning Use Ethernet3 lib
       #define SHIELD_TYPE           "W5x00 using Ethernet3 Library"

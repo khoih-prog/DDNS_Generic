@@ -1,7 +1,7 @@
 /****************************************************************************************************************************
   DDNS_Generic_Impl.h
    
-  For all Generic boards such as ESP8266, ESP32, SAM DUE, SAMD21/SAMD51, nRF52, STM32F/L/H/G/WB/MP1, AVR, megaAVR
+  For all Generic boards such as ESP8266, ESP32, SAM DUE, SAMD21/SAMD51, nRF52, STM32F/L/H/G/WB/MP1, AVR, megaAVR, Teensy
   with WiFiNINA, ESP8266/ESP32 WiFi, ESP8266-AT, W5x00, ENC28J60, built-in Ethernet LAN8742A
 
   DDNS_Generic is a library to update DDNS IP address for DDNS services such as 
@@ -14,13 +14,14 @@
   Built by Khoi Hoang https://github.com/khoih-prog/DDNS_Generic
 
   Licensed under MIT license
-  Version: 1.1.0
+  Version: 1.2.0
 
   Version Modified By   Date      Comments
   ------- -----------  ---------- -----------
   1.0.0   K Hoang      11/09/2020 Initial coding for Generic boards using many WiFi/Ethernet modules/shields.
   1.0.1   K Hoang      28/09/2020 Fix issue with nRF52 and STM32F/L/H/G/WB/MP1 using ESP8266/ESP32-AT
-  1.1.0   K Hoang      03/04/2021 Add OVH.com support. Remove dependency on <functional>. Add  support to AVR Mega and megaAVR.
+  1.1.0   K Hoang      03/04/2021 Add OVH.com support. Remove dependency on <functional>. Add support to AVR Mega and megaAVR.
+  1.2.0   K Hoang      04/04/2021 Add support to Teensy LC, 3.x, 4.0 and 4.1 using Ethernet, NativeEthernet, WiFi or ESP-AT
  *****************************************************************************************************************************/
 
 #ifndef DDNS_Generic_Impl_H
@@ -38,7 +39,7 @@ void DDNSGenericClass::client(String ddns_domain, String ddns_username, String d
   ddns_p = ddns_password;
 }
 
-#if ( (WIFI_USE_STM32 || WIFI_USE_NRF528XX || WIFI_USE_AVR || WIFI_USE_MEGA_AVR) && DDNS_USING_WIFI_AT )
+#if ( (WIFI_USE_STM32 || WIFI_USE_NRF528XX || WIFI_USE_AVR || WIFI_USE_MEGA_AVR || WIFI_USE_TEENSY) && DDNS_USING_WIFI_AT )
 // this method makes a HTTP connection to the server
 String DDNSGenericClass::publicIPRequest(Client& client)
 {
@@ -176,7 +177,7 @@ void DDNSGenericClass::update(unsigned long ddns_update_interval, bool use_local
 
     else 
     {
-#if ( (WIFI_USE_STM32 || WIFI_USE_NRF528XX || WIFI_USE_AVR || WIFI_USE_MEGA_AVR) && DDNS_USING_WIFI_AT )
+#if ( (WIFI_USE_STM32 || WIFI_USE_NRF528XX || WIFI_USE_AVR || WIFI_USE_MEGA_AVR || WIFI_USE_TEENSY) && DDNS_USING_WIFI_AT )
       // To fix issue on nRF52 and STM32 using ESP8266/ESP32-AT
       // ######## GET PUBLIC IP ######## //
       DDNS_LOGDEBUG(F("Calling publicIPRequest"));

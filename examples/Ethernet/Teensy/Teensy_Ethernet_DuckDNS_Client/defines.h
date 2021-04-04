@@ -36,30 +36,62 @@
 
 /////////////////////////////////
   
-#if !( defined(ARDUINO_SAM_DUE) || defined(__SAM3X8E__) )
-
-  #error This code is intended to run on the SAM-DUE platform! Please check your Tools->Board setting.
+#if !( defined(CORE_TEENSY) )
+  #error This code is intended to run on Teensy boards! Please check your Tools->Board setting.
 #endif
 
 /////////////////////////////////
 
-#if defined(ETHERNET_USE_SAM_DUE)
-  #undef ETHERNET_USE_SAM_DUE
+#if defined(ETHERNET_USE_TEENSY)
+  #undef ETHERNET_USE_TEENSY
 #endif
 
-#define ETHERNET_USE_SAM_DUE          true
-#warning Use SAM_DUE architecture with Ethernet   
+#define ETHERNET_USE_TEENSY          true
+#warning Use Teensy architecture with Ethernet   
 
 // Default pin 10 to SS/CS
 #define USE_THIS_SS_PIN       10
 
 /////////////////////////////////
   
-#if ( defined(ARDUINO_SAM_DUE) || defined(__SAM3X8E__) ) 
-  #warning SAM DUE board selected
-  #define BOARD_TYPE  "SAM DUE"
+#if ( defined(CORE_TEENSY) )
+  
+  #if defined(__IMXRT1062__)
+    // For Teensy 4.1/4.0
+    #if defined(ARDUINO_TEENSY41)
+      #define BOARD_TYPE      "TEENSY 4.1"
+      // Use true for NativeEthernet Library, false if using other Ethernet libraries
+      #define USE_NATIVE_ETHERNET     true
+    #elif defined(ARDUINO_TEENSY40)
+      #define BOARD_TYPE      "TEENSY 4.0"
+    #else
+      #define BOARD_TYPE      "TEENSY 4.x"
+    #endif      
+  #elif defined(__MK66FX1M0__)
+    #define BOARD_TYPE "Teensy 3.6"
+  #elif defined(__MK64FX512__)
+    #define BOARD_TYPE "Teensy 3.5"
+  #elif defined(__MKL26Z64__)
+    #define BOARD_TYPE "Teensy LC"
+  #elif defined(__MK20DX256__)
+    #define BOARD_TYPE "Teensy 3.2" // and Teensy 3.1 (obsolete)
+  #elif defined(__MK20DX128__)
+    #define BOARD_TYPE "Teensy 3.0"
+  #elif defined(__AVR_AT90USB1286__)
+    #error Teensy 2.0++ not supported
+  #elif defined(__AVR_ATmega32U4__)
+    #error Teensy 2.0 not supported
+  #else
+    // For Other Boards
+    #define BOARD_TYPE      "Unknown Teensy Board"
+  #endif
 #endif
 
+#warning Teensy board selected
+
+#ifndef BOARD_TYPE
+  #define BOARD_TYPE  "Teensy"
+#endif
 
 ///////////////////////////////////////////
 // Select Ethernet Library for the Shield
@@ -76,16 +108,20 @@
 #define USE_ETHERNET_ESP8266    false //true
 #define USE_ETHERNET_ENC        false
 
-#if ( USE_ETHERNET2 || USE_ETHERNET3 || USE_ETHERNET_LARGE || USE_ETHERNET_ESP8266 || USE_ETHERNET_ENC )
+#if ( USE_ETHERNET2 || USE_ETHERNET3 || USE_ETHERNET_LARGE || USE_ETHERNET_ESP8266 || USE_ETHERNET_ENC || USE_NATIVE_ETHERNET )
   #ifdef USE_CUSTOM_ETHERNET
     #undef USE_CUSTOM_ETHERNET
-    #define USE_CUSTOM_ETHERNET   false
   #endif
+  #define USE_CUSTOM_ETHERNET   false
 #endif
 
 // Currently, only Ethernet lib available for STM32 using W5x00
 #if !(USE_BUILTIN_ETHERNET || ETHERNET_USE_STM32)
-  #if USE_ETHERNET3
+  #if USE_NATIVE_ETHERNET
+    #include "NativeEthernet.h"
+    #warning Using NativeEthernet lib for Teensy 4.1. Must also use Teensy Packages Patch or error
+    #define SHIELD_TYPE           "Custom Ethernet using Teensy 4.1 NativeEthernet Library"
+  #elif USE_ETHERNET3
     #include "Ethernet3.h"
     #warning Use Ethernet3 lib
     #define SHIELD_TYPE           "W5x00 using Ethernet3 Library"
