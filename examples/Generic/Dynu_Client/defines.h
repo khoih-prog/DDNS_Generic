@@ -1,11 +1,11 @@
 /****************************************************************************************************************************
   defines.h
    
-  For all Generic boards such as ESP8266, ESP32, SAM DUE, SAMD21/SAMD51, nRF52, STM32F/L/H/G/WB/MP1
+  For all Generic boards such as ESP8266, ESP32, SAM DUE, SAMD21/SAMD51, nRF52, STM32F/L/H/G/WB/MP1, AVR, megaAVR
   with WiFiNINA, ESP8266/ESP32 WiFi, ESP8266-AT, W5x00, ENC28J60, built-in Ethernet LAN8742A
 
   DDNS_Generic is a library to update DDNS IP address for DDNS services such as 
-  duckdns, noip, dyndns, dynu, enom, all-inkl, selfhost.de, dyndns.it, strato, freemyip, afraid.org
+  duckdns, noip, dyndns, dynu, enom, all-inkl, selfhost.de, dyndns.it, strato, freemyip, afraid.org, ovh.com
 
   Based on and modified from 
   1) EasyDDNS            (https://github.com/ayushsharma82/EasyDDNS)
@@ -14,12 +14,6 @@
   Built by Khoi Hoang https://github.com/khoih-prog/DDNS_Generic
 
   Licensed under MIT license
-  Version: 1.0.1
-
-  Version Modified By   Date      Comments
-  ------- -----------  ---------- -----------
-  1.0.0   K Hoang      11/09/2020 Initial coding for Generic boards using many WiFi/Ethernet modules/shields.
-  1.0.1   K Hoang      28/09/2020 Fix issue with nRF52 and STM32F/L/H/G/WB/MP1 using ESP8266/ESP32-AT
  *****************************************************************************************************************************/
 
 #ifndef defines_h
@@ -103,6 +97,59 @@
     #define USE_THIS_SS_PIN       10
     #define ETHERNET_USE_SAM_DUE      true
     #warning Use SAM_DUE architecture with Ethernet
+  #endif
+#endif
+
+/////////////////////////////////
+
+#if ( defined(__AVR_ATmega2560__) )
+  #if (DDNS_USING_WIFI)
+    #if defined(WIFI_USE_AVR)
+      #undef WIFI_USE_AVR
+    #endif
+    #define WIFI_USE_AVR      true
+    #warning Use AVR architecture with WiFi
+  #elif DDNS_USING_ETHERNET
+    #if defined(ETHERNET_USE_AVR)
+      #undef ETHERNET_USE_AVR
+    #endif
+    // Default pin 10 to SS/CS
+    #define USE_THIS_SS_PIN       10
+    #define ETHERNET_USE_AVR      true
+    #warning Use AVR architecture with Ethernet
+  #endif
+#endif
+
+/////////////////////////////////
+
+#if ( defined(__AVR_ATmega4809__) || defined(ARDUINO_AVR_UNO_WIFI_REV2) || defined(ARDUINO_AVR_NANO_EVERY) )
+
+  // Default WiFiNINA for UNO WiFi Rev2
+  #if defined(ARDUINO_AVR_UNO_WIFI_REV2)
+    #if !(DDNS_USING_WIFI)
+      #undef DDNS_USING_WIFI
+      #define DDNS_USING_WIFI         true
+    #endif
+    #if (DDNS_USING_ETHERNET)
+      #undef DDNS_USING_ETHERNET
+      #define DDNS_USING_ETHERNET     false
+    #endif
+  #endif
+  
+  #if (DDNS_USING_WIFI)
+    #if defined(WIFI_USE_MEGA_AVR)
+      #undef WIFI_USE_MEGA_AVR
+    #endif
+    #define WIFI_USE_MEGA_AVR           true
+    #warning Use megaAVR architecture with WiFi
+  #elif DDNS_USING_ETHERNET
+    #if defined(ETHERNET_USE_MEGA_AVR)
+      #undef ETHERNET_USE_MEGA_AVR
+    #endif
+    // Default pin 10 to SS/CS
+    #define USE_THIS_SS_PIN             10
+    #define ETHERNET_USE_MEGA_AVR       true
+    #warning Use megaAVR architecture with Ethernet
   #endif
 #endif
 
@@ -365,14 +412,50 @@
   #warning ESP8266 board selected
 
 #elif (ESP32)
-  #warning ESP32 board selected  
+  #warning ESP32 board selected
+  
+#elif defined(WIFI_USE_MEGA_AVR) || defined(ETHERNET_USE_MEGA_AVR)
+  // For megaAVR such as UNO WiFi Rev2
+  #define EspSerial Serial1
+  
+  #if defined(ARDUINO_AVR_UNO_WIFI_REV2)
+    #define BOARD_TYPE      "ARDUINO_AVR_UNO_WIFI_REV2"
+  #elif defined(ARDUINO_AVR_NANO_EVERY)
+    #define BOARD_TYPE      "ARDUINO_AVR_NANO_EVERY"
+  #else
+    #define BOARD_TYPE      "Unknown MegaAVR ATmega4809"  
+  #endif
+  
+  #warning megaAVR ATmega4809 board selected
 
-#else
+  #ifndef BOARD_TYPE
+    #define BOARD_TYPE  "MegaAVR ATmega4809"
+  #endif
+  
+#elif defined(WIFI_USE_AVR) || defined(ETHERNET_USE_AVR)
   // For Mega
-  #error Mega, UNO, Nano, etc. not supported now
+  #define EspSerial Serial3
+  
+  #if defined(ARDUINO_AVR_MEGA2560)
+    #define BOARD_TYPE      "AVR_MEGA2560"
+  #elif defined(ARDUINO_AVR_MEGA)
+    #define BOARD_TYPE      "ARDUINO_AVR_MEGA"
+  #elif defined(ARDUINO_AVR_ADK)
+    #define BOARD_TYPE      "ARDUINO_AVR_ADK"  
+  #endif
+
+  #warning AVR Mega board selected
+
+  #ifndef BOARD_TYPE
+    #define BOARD_TYPE  "AVR Mega"
+  #endif
+  
+#else
+  // For UNO, Nano
+  #error UNO, Nano, etc. not supported. Not enough memory
   // Default pin 10 to SS/CS
   #define USE_THIS_SS_PIN       10
-  #define BOARD_TYPE      "AVR Mega"
+  #define BOARD_TYPE      "Unsupported AVR"
 #endif    // #ifdef CORE_TEENSY
 
 /////////////////////////////////

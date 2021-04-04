@@ -1,11 +1,11 @@
 /****************************************************************************************************************************
   SAMD_WiFiNINA_DuckDNS_Client.ino
    
-  For all Generic boards such as ESP8266, ESP32, SAM DUE, SAMD21/SAMD51, nRF52, STM32F/L/H/G/WB/MP1
+  For all Generic boards such as ESP8266, ESP32, SAM DUE, SAMD21/SAMD51, nRF52, STM32F/L/H/G/WB/MP1, AVR, megaAVR
   with WiFiNINA, ESP8266/ESP32 WiFi, ESP8266-AT, W5x00, ENC28J60, built-in Ethernet LAN8742A
 
   DDNS_Generic is a library to update DDNS IP address for DDNS services such as 
-  duckdns, noip, dyndns, dynu, enom, all-inkl, selfhost.de, dyndns.it, strato, freemyip, afraid.org
+  duckdns, noip, dyndns, dynu, enom, all-inkl, selfhost.de, dyndns.it, strato, freemyip, afraid.org, ovh.com
 
   Based on and modified from 
   1) EasyDDNS            (https://github.com/ayushsharma82/EasyDDNS)
@@ -14,22 +14,47 @@
   Built by Khoi Hoang https://github.com/khoih-prog/DDNS_Generic
 
   Licensed under MIT license
-  Version: 1.0.1
+  Version: 1.1.0
 
   Version Modified By   Date      Comments
   ------- -----------  ---------- -----------
   1.0.0   K Hoang      11/09/2020 Initial coding for Generic boards using many WiFi/Ethernet modules/shields.
   1.0.1   K Hoang      28/09/2020 Fix issue with nRF52 and STM32F/L/H/G/WB/MP1 using ESP8266/ESP32-AT
+  1.1.0   K Hoang      03/04/2021 Add OVH.com support. Remove dependency on <functional>. Add  support to AVR Mega and megaAVR.
  *****************************************************************************************************************************/
 
 #include "defines.h"
 
 int status = WL_IDLE_STATUS;     // the Wifi radio's status
 
+String myPublicIP = "";
+
+void printPublicIP()
+{
+  static unsigned long printPublicIP_timeout = 0;
+
+  //KH
+#define PRINT_INTERVAL    20000L
+  // Print hearbeat every PRINT_INTERVAL (20) seconds.
+  if ((millis() > printPublicIP_timeout))
+  {
+    if (myPublicIP != "")
+    {
+      Serial.println("==========================================");
+      Serial.print("DDNSGeneric - Public IP : ");
+      Serial.println(myPublicIP);
+      Serial.println("==========================================");
+    }
+    
+    printPublicIP_timeout = millis() + PRINT_INTERVAL;
+  }
+}
+
 void onUpdateCallback(const char* oldIP, const char* newIP)
 {
+  myPublicIP = String(newIP); 
   Serial.print("DDNSGeneric - IP Change Detected: ");
-  Serial.println(newIP);
+  Serial.println(newIP); 
 }
 
 void setup()
@@ -39,6 +64,7 @@ void setup()
 
   Serial.print("\nStart SAMD_WiFiNINA_DuckDNS_Client on " + String(BOARD_NAME));
   Serial.println(" with " + String(SHIELD_TYPE));
+  Serial.println(DDNS_GENERIC_VERSION);
 
 #if USE_WIFI_NINA
   if (WiFi.status() == WL_NO_MODULE)
@@ -93,4 +119,5 @@ void loop()
 {
   // Check for New Ip Every 10 mins.
   DDNSGeneric.update(600000);
+  printPublicIP();
 }
