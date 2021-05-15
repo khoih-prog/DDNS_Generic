@@ -14,7 +14,7 @@
   Built by Khoi Hoang https://github.com/khoih-prog/DDNS_Generic
 
   Licensed under MIT license
-  Version: 1.2.0
+  Version: 1.3.0
 
   Version Modified By   Date      Comments
   ------- -----------  ---------- -----------
@@ -22,6 +22,7 @@
   1.0.1   K Hoang      28/09/2020 Fix issue with nRF52 and STM32F/L/H/G/WB/MP1 using ESP8266/ESP32-AT
   1.1.0   K Hoang      03/04/2021 Add OVH.com support. Remove dependency on <functional>. Add support to AVR Mega and megaAVR.
   1.2.0   K Hoang      04/04/2021 Add support to Teensy LC, 3.x, 4.0 and 4.1 using Ethernet, NativeEthernet, WiFi or ESP-AT
+  1.3.0   K Hoang      15/05/2021 Add support to RP2040 using Ethernet or ESP-AT
  *****************************************************************************************************************************/
  
 #ifndef DDNS_Generic_H
@@ -31,7 +32,7 @@
 #include "DDNS_Generic_Debug.h"
 
 #ifndef DDNS_GENERIC_VERSION
-  #define DDNS_GENERIC_VERSION       "DDNS_Generic v1.2.0"
+  #define DDNS_GENERIC_VERSION       "DDNS_Generic v1.3.0"
 #endif
 
 #if ( !defined(DDNS_USING_WIFI) || DDNS_USING_WIFI || !DDNS_USING_ETHERNET)
@@ -62,8 +63,8 @@
   //#include "WiFiNINA_Generic.h"
   #include "ArduinoHttpClient.h"
   
-  #if ( (WIFI_USE_STM32 || WIFI_USE_NRF528XX || WIFI_USE_AVR || WIFI_USE_MEGA_AVR || WIFI_USE_TEENSY) && DDNS_USING_WIFI_AT )
-    #warning Using HTTP_ResponseParser to fix for ESP8266/ESP62-AT on nRF52/STM32/AVR/megaAVR/Teensy
+  #if ( (WIFI_USE_STM32 || WIFI_USE_NRF528XX || WIFI_USE_AVR || WIFI_USE_MEGA_AVR || WIFI_USE_TEENSY || WIFI_USE_RP2040) && DDNS_USING_WIFI_AT )
+    #warning Using HTTP_ResponseParser to fix for ESP8266/ESP32-AT on nRF52/STM32/AVR/megaAVR/Teensy/RP2040
     #include "HTTP_ResponseParser.h"
   #endif
 #elif DDNS_USING_ETHERNET

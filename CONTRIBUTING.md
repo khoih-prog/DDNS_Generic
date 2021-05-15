@@ -29,7 +29,7 @@ Please ensure to specify the following:
 Arduino IDE version: 1.8.13
 Arduino SAM DUE Core Version 1.6.12
 OS: Ubuntu 20.04 LTS
-Linux xy-Inspiron-3593 5.4.0-70-generic #78-Ubuntu SMP Fri Mar 19 13:29:52 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux
+Linux xy-Inspiron-3593 5.4.0-73-generic #82-Ubuntu SMP Wed Apr 14 17:39:42 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux
 
 Context:
 I encountered a crash while trying to use the Timer Interrupt.
@@ -40,6 +40,7 @@ Steps to reproduce:
 3. ...
 4. ...
 ```
+
 ### Sending Feature Requests
 
 Feel free to post feature requests. It's helpful if you can explain exactly why the feature would be useful.

@@ -14,7 +14,7 @@
   Built by Khoi Hoang https://github.com/khoih-prog/DDNS_Generic
 
   Licensed under MIT license
-  Version: 1.2.0
+  Version: 1.3.0
 
   Version Modified By   Date      Comments
   ------- -----------  ---------- -----------
@@ -22,6 +22,7 @@
   1.0.1   K Hoang      28/09/2020 Fix issue with nRF52 and STM32F/L/H/G/WB/MP1 using ESP8266/ESP32-AT
   1.1.0   K Hoang      03/04/2021 Add OVH.com support. Remove dependency on <functional>. Add support to AVR Mega and megaAVR.
   1.2.0   K Hoang      04/04/2021 Add support to Teensy LC, 3.x, 4.0 and 4.1 using Ethernet, NativeEthernet, WiFi or ESP-AT
+  1.3.0   K Hoang      15/05/2021 Add support to RP2040 using Ethernet or ESP-AT
  *****************************************************************************************************************************/
 
 #ifndef HTTP_ResponseParser_h

@@ -1,8 +1,8 @@
 {
   "name": "DDNS_Generic",
-  "version": "1.2.0",
-  "description": "DDNS Update Client for Arduino boards, ported to run on SAM DUE, nRF52, SAMD21/SAMD51, STM32F/L/H/G/WB/MP1, AVR Mega, megaAVR, Teensy, etc. besides ESP8266/ESP32, using WiFi, WiFiNINA, Ethernet W5x00, ENC28J60, LAN8742A or Teensy NativeEthernet. It is designed to be light-weight and currently supports DuckDNS, No-ip, DynDNS, Dynu, enom, all-inkl, selfhost.de, dyndns.it, strato, freemyip, afraid.org, OVH.com",
-  "keywords": "ddns, update, wifi, ethernet, native-ethernet, client, server, noip, duckdns, dyndns, dynu, enom, all-inkl, selfhost.de, dyndns.it, strato, freemyip, afraid.org, ovh, communication, dynamic-dns, esp32, esp8266, teensy, samd, sam-due, avr-mega, mega-avr, nrf52, stm32, w5x00, enc28j60, esp32-at, esp8266-at",
+  "version": "1.3.0",
+  "description": "DDNS Update Client for Arduino boards, ported to run on SAM DUE, nRF52, SAMD21/SAMD51, STM32F/L/H/G/WB/MP1, AVR Mega, megaAVR, Teensy, RP2040-based RASPBERRY_PI_PICO, etc. besides ESP8266/ESP32, using WiFi, WiFiNINA, Ethernet W5x00, ENC28J60, LAN8742A or Teensy NativeEthernet. It is designed to be light-weight and currently supports DuckDNS, No-ip, DynDNS, Dynu, enom, all-inkl, selfhost.de, dyndns.it, strato, freemyip, afraid.org, OVH.com",
+  "keywords": "ddns, wifi, ethernet, native-ethernet, noip, duckdns, dyndns, communication, dynamic-dns, esp32, esp8266, rpi-pico, rp2040, teensy, samd, sam-due, nrf52, stm32, w5x00, enc28j60, esp32-at, esp8266-at, avr-mega, mega-avr",
   "authors":
   {
     "name":  "Khoi Hoang",
@@ -44,13 +44,13 @@
     {
       "owner": "khoih-prog",
       "name": "EthernetWebServer",
-      "version": ">=1.3.0",
+      "version": ">=1.4.0",
       "platforms": ["*"]
     },
     {
       "owner": "khoih-prog",
       "name": "EthernetWebServer_STM32",
-      "version": ">=1.1.1",
+      "version": ">=1.2.0",
       "platforms": ["ststm32", "stm32"]
     },
     {
@@ -62,7 +62,7 @@
     {
       "owner": "khoih-prog",
       "name": "ESP8266_AT_WebServer",
-      "version": ">=1.1.2",
+      "version": ">=1.2.0",
       "platforms": ["*"]
     }
   ],
