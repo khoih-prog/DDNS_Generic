@@ -14,14 +14,6 @@
   Built by Khoi Hoang https://github.com/khoih-prog/DDNS_Generic
 
   Licensed under MIT license
-  Version: 1.2.0
-
-  Version Modified By   Date      Comments
-  ------- -----------  ---------- -----------
-  1.0.0   K Hoang      11/09/2020 Initial coding for Generic boards using many WiFi/Ethernet modules/shields.
-  1.0.1   K Hoang      28/09/2020 Fix issue with nRF52 and STM32F/L/H/G/WB/MP1 using ESP8266/ESP32-AT
-  1.1.0   K Hoang      03/04/2021 Add OVH.com support. Remove dependency on <functional>. Add support to AVR Mega and megaAVR.
-  1.2.0   K Hoang      04/04/2021 Add support to Teensy LC, 3.x, 4.0 and 4.1 using Ethernet, NativeEthernet, WiFi or ESP-AT
  *****************************************************************************************************************************/
 
 #ifndef defines_h
@@ -35,8 +27,8 @@
 #define _DDNS_GENERIC_LOGLEVEL_     2
 
 // Select DDNS_USING_WIFI for boards using built-in WiFi, such as Nano-33-IoT
-#define DDNS_USING_WIFI             false    //true
-#define DDNS_USING_ETHERNET         true   //true
+#define DDNS_USING_WIFI             false
+#define DDNS_USING_ETHERNET         true
 
 /////////////////////////////////
   
@@ -58,6 +50,38 @@
     #define USE_THIS_SS_PIN       10
     #define ETHERNET_USE_NRF528XX          true
     #warning Use NRF52 architecture with Ethernet
+  #endif
+     
+#endif
+
+/////////////////////////////////
+  
+#if ( defined(ARDUINO_ARCH_RP2040) || defined(ARDUINO_RASPBERRY_PI_PICO) || defined(ARDUINO_ADAFRUIT_FEATHER_RP2040) || defined(ARDUINO_GENERIC_RP2040) )
+
+  #if (DDNS_USING_WIFI)
+    #if defined(WIFI_USE_RP2040)
+        #undef WIFI_USE_RP2040
+      #endif
+      #define WIFI_USE_RP2040          true
+      
+    #if !defined(ARDUINO_ARCH_MBED)          
+      #warning Use RP2040 architecture with WiFi
+    #else
+      #error ARDUINO_ARCH_MBED WiFi not supported yet on the RP2040-based boards ! Please check your Tools->Board setting.
+    #endif
+  #elif DDNS_USING_ETHERNET
+    #if defined(ETHERNET_USE_RP2040)
+        #undef ETHERNET_USE_RP2040
+      #endif
+      // Default pin 5 to SS/CS
+      #define USE_THIS_SS_PIN       5
+      #define ETHERNET_USE_RP2040          true
+      
+    #if defined(ARDUINO_ARCH_MBED)      
+      #warning Use RP2040 architecture with Ethernet
+    #else
+      #error Only ARDUINO_ARCH_MBED supported Ethernet on the RP2040-based boards ! Please check your Tools->Board setting.
+    #endif    
   #endif
     
 #endif
@@ -272,6 +296,26 @@
     #define BOARD_TYPE      "nRF52 Unknown"
   #endif
 
+#elif defined(WIFI_USE_RP2040)  || defined(ETHERNET_USE_RP2040)
+  // For RP2040
+  #define EspSerial Serial1
+
+  #if defined(ARDUINO_ARCH_MBED)
+    #if defined(BOARD_NAME)
+      #undef BOARD_NAME
+    #endif
+    
+    #if defined(ARDUINO_RASPBERRY_PI_PICO) 
+      #define BOARD_TYPE      "MBED RASPBERRY_PI_PICO"
+    #elif defined(ARDUINO_ADAFRUIT_FEATHER_RP2040)
+      #define BOARD_TYPE      "MBED DAFRUIT_FEATHER_RP2040"
+    #elif defined(ARDUINO_GENERIC_RP2040)
+      #define BOARD_TYPE      "MBED GENERIC_RP2040"
+    #else
+      #define BOARD_TYPE      "MBED Unknown RP2040"
+    #endif
+  #endif    //ARDUINO_ARCH_MBED
+  
 #elif defined(WIFI_USE_SAMD) || defined(ETHERNET_USE_SAMD)
   // For SAMD
   #define EspSerial Serial1
@@ -512,11 +556,11 @@
 #elif ( (DDNS_USING_WIFI) && !(ESP8266 || ESP32) )
 
   // Select one to be true: USE_WIFI_NINA, DDNS_USING_WIFI_AT or USE_WIFI_CUSTOM
-  #define USE_WIFI_NINA         true
-  //#define USE_WIFI_NINA         false
+  //#define USE_WIFI_NINA         true
+  #define USE_WIFI_NINA         false
 
-  //#define DDNS_USING_WIFI_AT    true
-  #define DDNS_USING_WIFI_AT    false
+  #define DDNS_USING_WIFI_AT    true
+  //#define DDNS_USING_WIFI_AT    false
   
   // If not USE_WIFI_NINA, you can USE_WIFI_CUSTOM, then include the custom WiFi library here 
   //#define USE_WIFI_CUSTOM       true
