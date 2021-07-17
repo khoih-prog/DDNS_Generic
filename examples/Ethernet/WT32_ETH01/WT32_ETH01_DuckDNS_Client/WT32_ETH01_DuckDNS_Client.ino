@@ -1,5 +1,5 @@
 /****************************************************************************************************************************
-  AVR_Ethernet_DuckDNS_Client.ino
+  WT32_ETH01_DuckDNS_Client.ino
    
   For all Generic boards such as ESP8266, ESP32, SAM DUE, SAMD21/SAMD51, nRF52, STM32F/L/H/G/WB/MP1, AVR, megaAVR, Teensy
   with WiFiNINA, ESP8266/ESP32 WiFi, ESP8266-AT, W5x00, ENC28J60, built-in Ethernet LAN8742A, WT32_ETH01
@@ -18,15 +18,13 @@
 
 #include "defines.h"
 
-#if (ESP8266 || ESP32 || USE_WIFI_NINA || DDNS_USING_WIFI)
-  int status = WL_IDLE_STATUS;     // the Wifi radio's status
-#endif
+int status = WL_IDLE_STATUS;      // the Wifi radio's status
+
+WebServer server(80);
 
 void onUpdateCallback(const char* oldIP, const char* newIP)
 {
-  Serial.print("DDNSGeneric - IP Change Detected: oldIP = ");
-  Serial.print(oldIP);
-  Serial.print(", newIP = ");
+  Serial.print("DDNSGeneric - IP Change Detected: ");
   Serial.println(newIP);
 }
 
@@ -35,36 +33,26 @@ void setup()
   Serial.begin(115200);
   while (!Serial);
 
-  Serial.print("\nStart AVR_Ethernet_DuckDNS_Client on " + String(BOARD_NAME));
-  Serial.println(" with " + String(SHIELD_TYPE));
+  Serial.print(F("\nStart WT32_ETH01_DuckDNS_Client on ")); Serial.print(BOARD_NAME);
+  Serial.print(F(" with ")); Serial.println(SHIELD_TYPE);
+  Serial.println(WEBSERVER_WT32_ETH01_VERSION);
   Serial.println(DDNS_GENERIC_VERSION);
 
-  // For other boards, to change if necessary
-#if ( USE_ETHERNET || USE_ETHERNET_LARGE || USE_ETHERNET2 || USE_ETHERNET_ENC )
-  // Must use library patch for Ethernet, Ethernet2, EthernetLarge libraries
+  //bool begin(uint8_t phy_addr=ETH_PHY_ADDR, int power=ETH_PHY_POWER, int mdc=ETH_PHY_MDC, int mdio=ETH_PHY_MDIO, 
+  //           eth_phy_type_t type=ETH_PHY_TYPE, eth_clock_mode_t clk_mode=ETH_CLK_MODE);
+  //ETH.begin(ETH_PHY_ADDR, ETH_PHY_POWER, ETH_PHY_MDC, ETH_PHY_MDIO, ETH_PHY_TYPE, ETH_CLK_MODE);
+  ETH.begin(ETH_PHY_ADDR, ETH_PHY_POWER);
 
-  Ethernet.init (USE_THIS_SS_PIN);
+  // Static IP, leave without this line to get IP via DHCP
+  //bool config(IPAddress local_ip, IPAddress gateway, IPAddress subnet, IPAddress dns1 = 0, IPAddress dns2 = 0);
+  ETH.config(myIP, myGW, mySN, myDNS);
 
-#elif USE_ETHERNET3
-  // Use  MAX_SOCK_NUM = 4 for 4K, 2 for 8K, 1 for 16K RX/TX buffer
-  #ifndef ETHERNET3_MAX_SOCK_NUM
-  #define ETHERNET3_MAX_SOCK_NUM      4
-  #endif
+  WT32_ETH01_onEvent();
 
-  Ethernet.setCsPin (USE_THIS_SS_PIN);
-  Ethernet.init (ETHERNET3_MAX_SOCK_NUM);
-
-#endif  //#if ( USE_ETHERNET || USE_ETHERNET_LARGE || USE_ETHERNET2 || USE_ETHERNET_ENC )
-
-  // start the ethernet connection and the server:
-  // Use DHCP dynamic IP and random mac
-  uint16_t index = millis() % NUMBER_OF_MAC;
-  // Use Static IP
-  //Ethernet.begin(mac[index], ip);
-  Ethernet.begin(mac[index]);
-
-  Serial.print(F("\nHTTP WebServer is @ IP : "));
-  Serial.println(Ethernet.localIP());
+  WT32_ETH01_waitForConnect();
+  
+  Serial.print(F("\nHTTP WebServer started @ IP : "));
+  Serial.println(ETH.localIP());
 
   server.begin();
 

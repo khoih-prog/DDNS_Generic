@@ -2,7 +2,7 @@
   DDNS_Generic_Impl.h
    
   For all Generic boards such as ESP8266, ESP32, SAM DUE, SAMD21/SAMD51, nRF52, STM32F/L/H/G/WB/MP1, AVR, megaAVR, Teensy
-  with WiFiNINA, ESP8266/ESP32 WiFi, ESP8266-AT, W5x00, ENC28J60, built-in Ethernet LAN8742A
+  with WiFiNINA, ESP8266/ESP32 WiFi, ESP8266-AT, W5x00, ENC28J60, built-in Ethernet LAN8742A, WT32_ETH01
 
   DDNS_Generic is a library to update DDNS IP address for DDNS services such as 
   duckdns, noip, dyndns, dynu, enom, all-inkl, selfhost.de, dyndns.it, strato, freemyip, afraid.org, ovh.com
@@ -14,7 +14,7 @@
   Built by Khoi Hoang https://github.com/khoih-prog/DDNS_Generic
 
   Licensed under MIT license
-  Version: 1.3.0
+  Version: 1.4.0
 
   Version Modified By   Date      Comments
   ------- -----------  ---------- -----------
@@ -23,6 +23,7 @@
   1.1.0   K Hoang      03/04/2021 Add OVH.com support. Remove dependency on <functional>. Add support to AVR Mega and megaAVR.
   1.2.0   K Hoang      04/04/2021 Add support to Teensy LC, 3.x, 4.0 and 4.1 using Ethernet, NativeEthernet, WiFi or ESP-AT
   1.3.0   K Hoang      15/05/2021 Add support to RP2040 using Ethernet or ESP-AT
+  1.4.0   K Hoang      16/07/2021 Add support to WT32_ETH01 (ESP32 + LAN8720)
  *****************************************************************************************************************************/
 
 #ifndef DDNS_Generic_Impl_H
@@ -234,7 +235,16 @@ void DDNSGenericClass::update(unsigned long ddns_update_interval, bool use_local
     
     String access_url;
     String access_path;
-    bool needAuth = false;
+    
+#if !(ESP8266 || ESP32)
+    bool needAuth;
+    
+    if ( (ddns_choice == "noip") || (ddns_choice == "dyndns") || (ddns_choice == "all-inkl") || (ddns_choice == "selfhost.de") || 
+         (ddns_choice == "dyndns.it") || (ddns_choice == "strato") || (ddns_choice == "ovh") || (ddns_choice == "dyndns.it") )
+      needAuth = true;
+    else
+      needAuth = false;
+#endif
         
     if (ddns_choice == "duckdns") 
     {
@@ -244,9 +254,7 @@ void DDNSGenericClass::update(unsigned long ddns_update_interval, bool use_local
       update_url = "http://www.duckdns.org/update?domains=" + ddns_d + "&token=" + ddns_u + "&ip=" + new_ip + "";
     } 
     else if (ddns_choice == "noip") 
-    {
-      needAuth = true;
-      
+    {     
       access_url  = "dynupdate.no-ip.com";
       access_path = "/nic/update?hostname=" + ddns_d + "&myip=" + new_ip + "";
       
@@ -254,8 +262,6 @@ void DDNSGenericClass::update(unsigned long ddns_update_interval, bool use_local
     } 
     else if (ddns_choice == "dyndns") 
     {
-      needAuth = true;
-      
       access_url  = "members.dyndns.org";
       access_path = "/v3/update?hostname=" + ddns_d + "&myip=" + new_ip + "";
       
@@ -276,36 +282,28 @@ void DDNSGenericClass::update(unsigned long ddns_update_interval, bool use_local
       update_url = "http://dynamic.name-services.com/interface.asp?command=SetDnsHost&HostName=" + ddns_d + "&Zone=" + ddns_u + "&DomainPassword=" + ddns_p + "&Address=" + new_ip + "";
     } 
     else if (ddns_choice == "all-inkl") 
-    {
-      needAuth = true;
-      
+    {      
       access_url  = "dyndns.kasserver.com";
       access_path = "/?myip=" + new_ip;
       
       update_url = "http://" + ddns_u + ":" + ddns_p + "@dyndns.kasserver.com/?myip=" + new_ip;
     } 
     else if (ddns_choice == "selfhost.de") 
-    {
-      needAuth = true;
-      
+    {     
       access_url  = "carol.selfhost.de";
       access_path = "/nic/update?";
       
       update_url = "http://" + ddns_u + ":" + ddns_p + "@carol.selfhost.de/nic/update?";
     } 
     else if (ddns_choice == "dyndns.it") 
-    {
-      needAuth = true;
-      
+    {     
       access_url  = "update.dyndns.it";
       access_path = "/nic/update?hostname=" + ddns_d;
       
       update_url = "http://" + ddns_u + ":" + ddns_p + "@update.dyndns.it/nic/update?hostname=" + ddns_d;
     } 
     else if (ddns_choice == "strato") 
-    {
-      needAuth = true;
-      
+    {      
       access_url  = "dyndns.strato.com";
       access_path = "/nic/update?hostname=" + ddns_d + "&myip=" + new_ip + "";
       
@@ -326,9 +324,7 @@ void DDNSGenericClass::update(unsigned long ddns_update_interval, bool use_local
       update_url = "http://sync.afraid.org/u/" + ddns_u + "/";
     }
     else if (ddns_choice == "ovh") 
-    {
-      needAuth = true;
-      
+    {      
       access_url  = "www.ovh.com";
       access_path = "/nic/update?system=dyndns&hostname=" + ddns_d + "&myip=" + new_ip + "";
       
@@ -344,7 +340,7 @@ void DDNSGenericClass::update(unsigned long ddns_update_interval, bool use_local
     if ( (new_ip.length() > 0) && (old_ip != new_ip) )
     {
     
-#if (ESP8266 || ESP32)    
+#if (ESP8266 || ESP32)
       HTTPClient http;
       
       DDNS_LOGWARN1(F("Sending HTTP_GET to"), ddns_choice);

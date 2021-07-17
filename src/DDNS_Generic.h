@@ -2,7 +2,7 @@
   DDNS_Generic.h
    
   For all Generic boards such as ESP8266, ESP32, SAM DUE, SAMD21/SAMD51, nRF52, STM32F/L/H/G/WB/MP1, AVR, megaAVR, Teensy
-  with WiFiNINA, ESP8266/ESP32 WiFi, ESP8266-AT, W5x00, ENC28J60, built-in Ethernet LAN8742A
+  with WiFiNINA, ESP8266/ESP32 WiFi, ESP8266-AT, W5x00, ENC28J60, built-in Ethernet LAN8742A, WT32_ETH01
 
   DDNS_Generic is a library to update DDNS IP address for DDNS services such as 
   duckdns, noip, dyndns, dynu, enom, all-inkl, selfhost.de, dyndns.it, strato, freemyip, afraid.org, ovh.com
@@ -14,7 +14,7 @@
   Built by Khoi Hoang https://github.com/khoih-prog/DDNS_Generic
 
   Licensed under MIT license
-  Version: 1.3.0
+  Version: 1.4.0
 
   Version Modified By   Date      Comments
   ------- -----------  ---------- -----------
@@ -23,6 +23,7 @@
   1.1.0   K Hoang      03/04/2021 Add OVH.com support. Remove dependency on <functional>. Add support to AVR Mega and megaAVR.
   1.2.0   K Hoang      04/04/2021 Add support to Teensy LC, 3.x, 4.0 and 4.1 using Ethernet, NativeEthernet, WiFi or ESP-AT
   1.3.0   K Hoang      15/05/2021 Add support to RP2040 using Ethernet or ESP-AT
+  1.4.0   K Hoang      16/07/2021 Add support to WT32_ETH01 (ESP32 + LAN8720)
  *****************************************************************************************************************************/
  
 #ifndef DDNS_Generic_H
@@ -32,7 +33,7 @@
 #include "DDNS_Generic_Debug.h"
 
 #ifndef DDNS_GENERIC_VERSION
-  #define DDNS_GENERIC_VERSION       "DDNS_Generic v1.3.0"
+  #define DDNS_GENERIC_VERSION       "DDNS_Generic v1.4.0"
 #endif
 
 #if ( !defined(DDNS_USING_WIFI) || DDNS_USING_WIFI || !DDNS_USING_ETHERNET)

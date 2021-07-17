@@ -19,56 +19,22 @@
 #ifndef defines_h
 #define defines_h
 
-#define DEBUG_WIFI_WEBSERVER_PORT   Serial
+#if ESP32
+  #warning Using ESP32 architecture for WT32_ETH01
+  #define BOARD_NAME      "WT32-ETH01"
+#else  
+  #error This code is designed to run on ESP32 platform! Please check your Tools->Board setting.
+#endif
 
 // Debug Level from 0 to 4
-#define _WIFI_LOGLEVEL_             4
 #define _DDNS_GENERIC_LOGLEVEL_     2
 
 // Select DDNS_USING_WIFI for boards using built-in WiFi, such as Nano-33-IoT
-#define DDNS_USING_WIFI             true    //true
-#define DDNS_USING_ETHERNET         false   //true
-
-#define DDNS_USING_WIFI_AT          true
-
-// Uncomment to use ESP32-AT commands
-//#define USE_ESP32_AT              true
+#define DDNS_USING_WIFI             false
+#define DDNS_USING_ETHERNET         true
 
 /////////////////////////////////
-
-#if !( defined(ARDUINO_SAM_DUE) || defined(__SAM3X8E__) )
-
-  #error This code is intended to run on the SAM DUE platform! Please check your Tools->Board setting.
-#endif
-
-#if defined(WIFI_USE_SAM_DUE)
-  #undef WIFI_USE_SAM_DUE
-#endif
-#define WIFI_USE_SAM_DUE          true
-
-#warning Use SAM DUE architecture with WiFi
-
-/////////////////////////////////
-// To change according to usage
-#define EspSerial Serial1
-/////////////////////////////////
-
-#warning SAM DUE board selected
-#define BOARD_TYPE  "SAM DUE"
-
-/////////////////////////////////
-
-#define DDNS_USING_WIFI_AT    true
-
-#warning Using ESP8266-AT/ESP32-AT and ESP8266_AT_WebServer Library
-#define SHIELD_TYPE       "ESP8266-AT/ESP32-AT using ESP8266_AT_WebServer Library" 
-
-/////////////////////////////////
-
-#include <ESP8266_AT_WebServer.h>
-
-/////////////////////////////////
-
+  
 #ifndef BOARD_NAME
   #ifdef ARDUINO_BOARD
     #define BOARD_NAME          ARDUINO_BOARD
@@ -78,19 +44,21 @@
 #endif
 
 #ifndef SHIELD_TYPE
-  #define SHIELD_TYPE           "Unknown shield"
+  #define SHIELD_TYPE           "ETH_PHY_LAN8720" 
 #endif
 
 /////////////////////////////////
-  
+
+#include <WebServer_WT32_ETH01.h>  
 #include <DDNS_Generic.h>
 
-ESP8266_AT_WebServer server(80);
+// Select the IP address according to your local network
+IPAddress myIP(192, 168, 2, 232);
+IPAddress myGW(192, 168, 2, 1);
+IPAddress mySN(255, 255, 255, 0);
 
-#include "wifi_credentials.h"
-
-const char* ssid      = SECRET_SSID;
-const char* password  = SECRET_PASS;
+// Google DNS Server IP
+IPAddress myDNS(8, 8, 8, 8);
 
 /////////////////////////////////
 
