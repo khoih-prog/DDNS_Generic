@@ -14,7 +14,7 @@
   Built by Khoi Hoang https://github.com/khoih-prog/DDNS_Generic
 
   Licensed under MIT license
-  Version: 1.4.0
+  Version: 1.5.0
 
   Version Modified By   Date      Comments
   ------- -----------  ---------- -----------
@@ -24,6 +24,7 @@
   1.2.0   K Hoang      04/04/2021 Add support to Teensy LC, 3.x, 4.0 and 4.1 using Ethernet, NativeEthernet, WiFi or ESP-AT
   1.3.0   K Hoang      15/05/2021 Add support to RP2040 using Ethernet or ESP-AT
   1.4.0   K Hoang      16/07/2021 Add support to WT32_ETH01 (ESP32 + LAN8720)
+  1.5.0   K Hoang      16/09/2021 Add support to Portenta_H7, using either WiFi or Vision-shield Ethernet
  *****************************************************************************************************************************/
 
 #ifndef HTTP_ResponseParser_Impl_h
