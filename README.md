@@ -181,6 +181,7 @@ The **RP2040-based boards, such as RASPBERRY_PI_PICO**, are currently supported 
   - **Teensy LC, 3.0, 3.1, 3.2, 3.5, 3.6, 4.0, 4.1**
   - **RP2040-based boards, such as RASPBERRY_PI_PICO, ADAFRUIT_FEATHER_RP2040 and GENERIC_RP2040**, using [Earle Philhower's arduino-pico core](https://github.com/earlephilhower/arduino-pico) for ESP8266-AT/ESP32-AT WiFi shields or [**Arduino-mbed RP2040** core](https://github.com/arduino/ArduinoCore-mbed) using W5x00 and ENC28J60 Ethernet shields
   - **WT32_ETH01 boards** using ESP32-based boards and LAN8720 Ethernet
+  - **Portenta_H7** using either `Murata WiFi` or `Vision-shield Ethernet`
     
 #### Currently Supported WiFi Modules/Shields
 
@@ -200,7 +201,7 @@ The **RP2040-based boards, such as RASPBERRY_PI_PICO**, are currently supported 
   - Portenta_H7 using Ethernet from [Portenta Vision shields](https://store-usa.arduino.cc/products/arduino-portenta-vision-shield-ethernet)
 
 <p align="center">
-    <img src="https://github.com/khoih-prog/DDNS_Generic/blob/main/pics/Portenta_Vision.jpg">
+    <img src="https://github.com/khoih-prog/DDNS_Generic/blob/master/pics/Portenta_Vision.jpg">
 </p>
 
 ---
