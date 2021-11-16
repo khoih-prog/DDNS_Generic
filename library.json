@@ -1,7 +1,7 @@
 {
   "name": "DDNS_Generic",
-  "version": "1.5.1",
-  "description": "DDNS Update Client for Arduino boards, ported to run on SAM DUE, nRF52, SAMD21/SAMD51, STM32F/L/H/G/WB/MP1, AVR Mega, megaAVR, Teensy, RP2040-based RASPBERRY_PI_PICO, WT32_ETH01, Portenta_H7, etc. besides ESP8266/ESP32, using WiFi, WiFiNINA, Ethernet W5x00, ENC28J60, LAN8742A or Teensy NativeEthernet. It is designed to be light-weight and currently supports DuckDNS, No-ip, DynDNS, Dynu, enom, all-inkl, selfhost.de, dyndns.it, strato, freemyip, afraid.org, OVH.com",
+  "version": "1.6.0",
+  "description": "DDNS Update Client for Arduino boards, ported to run on SAM DUE, nRF52, SAMD21/SAMD51, STM32F/L/H/G/WB/MP1, AVR Mega, megaAVR, Teensy, RP2040-based RASPBERRY_PI_PICO, WT32_ETH01, Portenta_H7, etc. besides ESP8266/ESP32, using WiFi, WiFiNINA, Ethernet W5x00, ENC28J60, LAN8742A or Teensy NativeEthernet. It is designed to be light-weight and currently supports DuckDNS, No-ip, DynDNS, Dynu, enom, all-inkl, selfhost.de, dyndns.it, strato, freemyip, afraid.org, OVH.com. Deprecated ipv4bot.whatismyipaddress.com has been replaced with ifconfig.me",
   "keywords": "ddns, wifi, ethernet, native-ethernet, noip, duckdns, dyndns, communication, dynamic-dns, esp32, esp8266, rp2040, teensy, samd, sam-due, nrf52, Portenta-H7, stm32, w5x00, enc28j60, wt32-eth01, rpi-pico, esp32-at, esp8266-at, avr-mega, mega-avr",
   "authors":
   {

@@ -30,7 +30,7 @@ Arduino IDE version: 1.8.16
 `ArduinoCore-mbed` mbed_portenta core v2.5.2
 Portenta_H7 Rev2 ABX00042
 OS: Ubuntu 20.04 LTS
-Linux xy-Inspiron-3593 5.4.0-86-generic #97-Ubuntu SMP Fri Sep 17 19:19:40 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux
+Linux xy-Inspiron-3593 5.4.0-90-generic #101-Ubuntu SMP Fri Oct 15 20:00:55 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux
 
 Context:
 I encountered a crash while trying to use the Timer Interrupt.

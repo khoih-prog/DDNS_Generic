@@ -14,7 +14,7 @@
   Built by Khoi Hoang https://github.com/khoih-prog/DDNS_Generic
 
   Licensed under MIT license
-  Version: 1.5.1
+  Version: 1.6.0
 
   Version Modified By   Date      Comments
   ------- -----------  ---------- -----------
@@ -25,7 +25,8 @@
   1.3.0   K Hoang      15/05/2021 Add support to RP2040 using Ethernet or ESP-AT
   1.4.0   K Hoang      16/07/2021 Add support to WT32_ETH01 (ESP32 + LAN8720)
   1.5.0   K Hoang      16/09/2021 Add support to Portenta_H7, using either WiFi or Vision-shield Ethernet
-  1.5.1   K Hoang      10/10/2021  Update `platform.ini` and `library.json` 
+  1.5.1   K Hoang      10/10/2021 Update `platform.ini` and `library.json`
+  1.6.0   K Hoang      16/11/2021 Replace deprecated `ipv4bot.whatismyipaddress.com` with `ifconfig.me` 
  *****************************************************************************************************************************/
 
 #ifndef DDNS_Generic_Impl_H
@@ -82,6 +83,8 @@ String DDNSGenericClass::publicIPRequest(Client& client)
       response += c;
     }
 
+    DDNS_LOGDEBUG1(F("response = "), response);
+    
     if (response.length() > 0)
     {
       HTTP_ResponseParser http = HTTP_ResponseParser();
@@ -152,12 +155,17 @@ void DDNSGenericClass::update(unsigned long ddns_update_interval, bool use_local
     else 
     {
       // ######## GET PUBLIC IP ######## //
-      
+  
       HTTPClient http;
-      http.begin(client, "http://ipv4bot.whatismyipaddress.com/");
+
+      http.begin(client, "http://ifconfig.me/ip");
+      
+      DDNS_LOGDEBUG(F("Calling http.begin"));
       
       // @return -1 if no info or > 0 when Content-Length is set by server
       int httpCode = http.GET();
+      
+      DDNS_LOGDEBUG1(F("httpCode ="), httpCode);
       
       if (httpCode > 0) 
       {
@@ -177,6 +185,7 @@ void DDNSGenericClass::update(unsigned long ddns_update_interval, bool use_local
       
       http.end();
     }
+    
 #else
 
     else 
@@ -193,12 +202,12 @@ void DDNSGenericClass::update(unsigned long ddns_update_interval, bool use_local
 #else
 
       // ######## GET PUBLIC IP ######## //
-      HttpClient http(client, "ipv4bot.whatismyipaddress.com");
-      
-      DDNS_LOGERROR("Access whatismyipaddress");  
+      HttpClient http(client, "ifconfig.me");
+
+      DDNS_LOGERROR("Access ifconfig.me");
       
       // @return HTTP_CODE_OK (200) if OK and when responseBody is responded by server
-      http.get("/");
+      http.get("/ip");
       
       int httpCode = http.responseStatusCode();
       

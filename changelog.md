@@ -12,6 +12,7 @@
 ## Table of Contents
 
 * [Changelog](#changelog)
+  * [Releases v1.6.0](#releases-v160)
   * [Releases v1.5.1](#releases-v151)
   * [Releases v1.5.0](#releases-v150)
   * [Releases v1.4.0](#releases-v140)
@@ -25,6 +26,10 @@
 ---
 
 ## Changelog
+
+### Releases v1.6.0
+
+1. Replace deprecated `ipv4bot.whatismyipaddress.com` with `ifconfig.me`
 
 ### Releases v1.5.1
 
