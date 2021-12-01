@@ -217,14 +217,14 @@ The **RP2040-based boards, such as RASPBERRY_PI_PICO**, are currently supported 
  4. [`ESP8266 Core 3.0.2+`](https://github.com/esp8266/Arduino) for ESP8266-based boards. [![Latest release](https://img.shields.io/github/release/esp8266/Arduino.svg)](https://github.com/esp8266/Arduino/releases/latest/). To use ESP8266 core 2.7.1+ for LittleFS.
  5. [`Teensy core 1.55+`](https://www.pjrc.com/teensy/td_download.html) for Teensy (4.1, 4.0, 3.6, 3.5, 3,2, 3.1, 3.0, LC) boards. **New**
  6. [`Arduino SAM DUE core v1.6.12+`](https://github.com/arduino/ArduinoCore-sam) for SAM DUE ARM Cortex-M3 boards.
- 7. [`Arduino SAMD core 1.8.11+`](https://github.com/arduino/ArduinoCore-samd) for SAMD ARM Cortex-M0+ boards. [![GitHub release](https://img.shields.io/github/release/arduino/ArduinoCore-samd.svg)](https://github.com/arduino/ArduinoCore-samd/releases/latest)
+ 7. [`Arduino SAMD core 1.8.12+`](https://github.com/arduino/ArduinoCore-samd) for SAMD ARM Cortex-M0+ boards. [![GitHub release](https://img.shields.io/github/release/arduino/ArduinoCore-samd.svg)](https://github.com/arduino/ArduinoCore-samd/releases/latest)
  8. [`Adafruit SAMD core 1.7.5+`](https://github.com/adafruit/ArduinoCore-samd) for SAMD ARM Cortex-M0+ and M4 boards (Nano 33 IoT, etc.). [![GitHub release](https://img.shields.io/github/release/adafruit/ArduinoCore-samd.svg)](https://github.com/adafruit/ArduinoCore-samd/releases/latest)
  9. [`Seeeduino SAMD core 1.8.2+`](https://github.com/Seeed-Studio/ArduinoCore-samd) for SAMD21/SAMD51 boards (XIAO M0, Wio Terminal, etc.). [![Latest release](https://img.shields.io/github/release/Seeed-Studio/ArduinoCore-samd.svg)](https://github.com/Seeed-Studio/ArduinoCore-samd/releases/latest/)
-10. [`Adafruit nRF52 v1.1.0+`](https://github.com/adafruit/Adafruit_nRF52_Arduino) for nRF52 boards such as Adafruit NRF52840_FEATHER, NRF52832_FEATHER, NRF52840_FEATHER_SENSE, NRF52840_ITSYBITSY, NRF52840_CIRCUITPLAY, NRF52840_CLUE, NRF52840_METRO, NRF52840_PCA10056, PARTICLE_XENON, **NINA_B302_ublox**, etc. [![GitHub release](https://img.shields.io/github/release/adafruit/Adafruit_nRF52_Arduino.svg)](https://github.com/adafruit/Adafruit_nRF52_Arduino/releases/latest)
+10. [`Adafruit nRF52 v1.2.0+`](https://github.com/adafruit/Adafruit_nRF52_Arduino) for nRF52 boards such as Adafruit NRF52840_FEATHER, NRF52832_FEATHER, NRF52840_FEATHER_SENSE, NRF52840_ITSYBITSY, NRF52840_CIRCUITPLAY, NRF52840_CLUE, NRF52840_METRO, NRF52840_PCA10056, PARTICLE_XENON, **NINA_B302_ublox**, etc. [![GitHub release](https://img.shields.io/github/release/adafruit/Adafruit_nRF52_Arduino.svg)](https://github.com/adafruit/Adafruit_nRF52_Arduino/releases/latest)
 11. [`Arduino Core for STM32 v2.1.0+`](https://github.com/stm32duino/Arduino_Core_STM32) for STM32F/L/H/G/WB/MP1 boards. [![GitHub release](https://img.shields.io/github/release/stm32duino/Arduino_Core_STM32.svg)](https://github.com/stm32duino/Arduino_Core_STM32/releases/latest)
 12. [`Arduino megaAVR core 1.8.7+`](https://github.com/arduino/ArduinoCore-megaavr/releases) for Arduino megaAVR boards. Use Arduino Board Manager to install.
 13. [`Earle Philhower's arduino-pico core v1.9.6+`](https://github.com/earlephilhower/arduino-pico) for RP2040-based boards such as **RASPBERRY_PI_PICO, ADAFRUIT_FEATHER_RP2040 and GENERIC_RP2040**, etc. [![GitHub release](https://img.shields.io/github/release/earlephilhower/arduino-pico.svg)](https://github.com/earlephilhower/arduino-pico/releases/latest)
-14. [`ArduinoCore-mbed mbed_rp2040, mbed_nano, mbed_portenta core 2.5.2+`](https://github.com/arduino/ArduinoCore-mbed) for Arduino (Use Arduino Board Manager) **Portenta_H7, RP2040-based boards, such as Nano_RP2040_Connect, RASPBERRY_PI_PICO**. [![GitHub release](https://img.shields.io/github/release/arduino/ArduinoCore-mbed.svg)](https://github.com/arduino/ArduinoCore-mbed/releases/latest)
+14. [`ArduinoCore-mbed mbed_rp2040, mbed_nano, mbed_portenta core 2.6.1+`](https://github.com/arduino/ArduinoCore-mbed) for Arduino (Use Arduino Board Manager) **Portenta_H7, RP2040-based boards, such as Nano_RP2040_Connect, RASPBERRY_PI_PICO**. [![GitHub release](https://img.shields.io/github/release/arduino/ArduinoCore-mbed.svg)](https://github.com/arduino/ArduinoCore-mbed/releases/latest)
 
 15. [`ArduinoHttpClient v0.4.0+`](https://github.com/arduino-libraries/ArduinoHttpClient).
 16. [`Functional-VLPP library v1.0.2+`](https://github.com/khoih-prog/functional-vlpp) to use server's lambda function. To install. check [![arduino-library-badge](https://www.ardu-badge.com/badge/Functional-Vlpp.svg?)](https://www.ardu-badge.com/Functional-Vlpp)
@@ -237,12 +237,12 @@ The **RP2040-based boards, such as RASPBERRY_PI_PICO**, are currently supported 
    - [`UIPEthernet library v2.0.10+`](https://github.com/UIPEthernet/UIPEthernet) for ENC28J60. [![GitHub release](https://img.shields.io/github/release/UIPEthernet/UIPEthernet.svg)](https://github.com/UIPEthernet/UIPEthernet/releases/latest)
    - [`STM32Ethernet library v1.2.0+`](https://github.com/stm32duino/STM32Ethernet) for built-in LAN8742A Ethernet on (Nucleo-144, Discovery). [![GitHub release](https://img.shields.io/github/release/stm32duino/STM32Ethernet.svg)](https://github.com/stm32duino/STM32Ethernet/releases/latest). To be used with [`LwIP library v2.1.2+`](https://github.com/stm32duino/LwIP) for built-in LAN8742A Ethernet on (Nucleo-144, Discovery). [![GitHub release](https://img.shields.io/github/release/stm32duino/LwIP.svg)](https://github.com/stm32duino/LwIP/releases/latest)
    - [`NativeEthernet Library version stable111+`](https://github.com/vjmuzik/NativeEthernet) for Teensy 4.1 built-in NativeEthernet. **New**
-18. [`WiFiNINA_Generic library v1.8.13+`](https://github.com/khoih-prog/WiFiNINA_Generic) to use WiFiNINA modules/shields. To install. check [![arduino-library-badge](https://www.ardu-badge.com/badge/WiFiNINA_Generic.svg?)](https://www.ardu-badge.com/WiFiNINA_Generic) if using WiFiNINA for boards such as Nano 33 IoT, nRF52, Teensy, etc.
+18. [`WiFiNINA_Generic library v1.8.14-1+`](https://github.com/khoih-prog/WiFiNINA_Generic) to use WiFiNINA modules/shields. To install. check [![arduino-library-badge](https://www.ardu-badge.com/badge/WiFiNINA_Generic.svg?)](https://www.ardu-badge.com/WiFiNINA_Generic) if using WiFiNINA for boards such as Nano 33 IoT, nRF52, Teensy, etc.
 19. [`WiFiWebServer library v1.4.2+`](https://github.com/khoih-prog/WiFiWebServer) to use WiFi/WiFiNINA modules/shields. To install, check [![arduino-library-badge](https://www.ardu-badge.com/badge/WiFiWebServer.svg?)](https://www.ardu-badge.com/WiFiWebServer)
 20. [`EthernetWebServer library v1.7.1+`](https://github.com/khoih-prog/EthernetWebServer) to use Ethernet modules/shields on boards other than STM32F/L/H/G/WB/MP1. To install. check [![arduino-library-badge](https://www.ardu-badge.com/badge/EthernetWebServer.svg?)](https://www.ardu-badge.com/EthernetWebServer).
 21. [`EthernetWebServer_STM32 library v1.2.1+`](https://github.com/khoih-prog/EthernetWebServer_STM32) to use Ethernet modules/shields on STM32F/L/H/G/WB/MP1 boards. To install, check [![arduino-library-badge](https://www.ardu-badge.com/badge/EthernetWebServer_STM32.svg?)](https://www.ardu-badge.com/EthernetWebServer_STM32).
 22. [`ESP8266_AT_WebServer library v1.4.0+`](https://github.com/khoih-prog/ESP8266_AT_WebServer) to use ESP8266-AT/ESP32-AT WiFi modules/shields. To install, check [![arduino-library-badge](https://www.ardu-badge.com/badge/ESP8266_AT_WebServer.svg?)](https://www.ardu-badge.com/ESP8266_AT_WebServer). Using [![arduino-library-badge](https://www.ardu-badge.com/badge/ESP8266_AT_WebServer.svg?)](https://www.ardu-badge.com/ESP8266_AT_WebServer) is mandatory to avoid error while using ESP8266/ESP32-AT shields.
-23. [`WebServer_WT32_ETH01 library v1.3.0+`](https://github.com/khoih-prog/WebServer_WT32_ETH01) to use WT32_ETH01 (ESP32 + LAN8720). To install, check [![arduino-library-badge](https://www.ardu-badge.com/badge/WebServer_WT32_ETH01.svg?)](https://www.ardu-badge.com/WebServer_WT32_ETH01).
+23. [`WebServer_WT32_ETH01 library v1.4.1+`](https://github.com/khoih-prog/WebServer_WT32_ETH01) to use WT32_ETH01 (ESP32 + LAN8720). To install, check [![arduino-library-badge](https://www.ardu-badge.com/badge/WebServer_WT32_ETH01.svg?)](https://www.ardu-badge.com/WebServer_WT32_ETH01).
 
 
 ---
@@ -277,19 +277,19 @@ Another way to install is to:
 
 #### 1. For Adafruit nRF52840 and nRF52832 boards
 
-**To be able to compile, run and automatically detect and display BOARD_NAME on nRF52840/nRF52832 boards**, you have to copy the whole [nRF52 Packages_Patches](Packages_Patches/adafruit/hardware/nrf52/1.1.0) directory into Adafruit nRF52 directory (~/.arduino15/packages/adafruit/hardware/nrf52/1.1.0). 
+**To be able to compile, run and automatically detect and display BOARD_NAME on nRF52840/nRF52832 boards**, you have to copy the whole [nRF52 Packages_Patches](Packages_Patches/adafruit/hardware/nrf52/1.2.0) directory into Adafruit nRF52 directory (~/.arduino15/packages/adafruit/hardware/nrf52/1.2.0). 
 
-Supposing the Adafruit nRF52 version is 1.1.0. These files must be copied into the directory:
-- `~/.arduino15/packages/adafruit/hardware/nrf52/1.1.0/platform.txt`
-- `~/.arduino15/packages/adafruit/hardware/nrf52/1.1.0/boards.txt`
-- `~/.arduino15/packages/adafruit/hardware/nrf52/1.1.0/cores/nRF5/Udp.h`
-- `~/.arduino15/packages/adafruit/hardware/nrf52/1.1.0/cores/nRF5/Print.h`
-- `~/.arduino15/packages/adafruit/hardware/nrf52/1.1.0/cores/nRF5/Print.cpp`
-- `~/.arduino15/packages/adafruit/hardware/nrf52/1.1.0/variants/NINA_B302_ublox/variant.h`
-- `~/.arduino15/packages/adafruit/hardware/nrf52/1.1.0/variants/NINA_B302_ublox/variant.cpp`
-- `~/.arduino15/packages/adafruit/hardware/nrf52/1.1.0/variants/NINA_B112_ublox/variant.h`
-- `~/.arduino15/packages/adafruit/hardware/nrf52/1.1.0/variants/NINA_B112_ublox/variant.cpp`
-- **`~/.arduino15/packages/adafruit/hardware/nrf52/1.1.0/cores/nRF5/Udp.h`**
+Supposing the Adafruit nRF52 version is 1.2.0. These files must be copied into the directory:
+- `~/.arduino15/packages/adafruit/hardware/nrf52/1.2.0/platform.txt`
+- `~/.arduino15/packages/adafruit/hardware/nrf52/1.2.0/boards.txt`
+- `~/.arduino15/packages/adafruit/hardware/nrf52/1.2.0/cores/nRF5/Udp.h`
+- `~/.arduino15/packages/adafruit/hardware/nrf52/1.2.0/cores/nRF5/Print.h`
+- `~/.arduino15/packages/adafruit/hardware/nrf52/1.2.0/cores/nRF5/Print.cpp`
+- `~/.arduino15/packages/adafruit/hardware/nrf52/1.2.0/variants/NINA_B302_ublox/variant.h`
+- `~/.arduino15/packages/adafruit/hardware/nrf52/1.2.0/variants/NINA_B302_ublox/variant.cpp`
+- `~/.arduino15/packages/adafruit/hardware/nrf52/1.2.0/variants/NINA_B112_ublox/variant.h`
+- `~/.arduino15/packages/adafruit/hardware/nrf52/1.2.0/variants/NINA_B112_ublox/variant.cpp`
+- **`~/.arduino15/packages/adafruit/hardware/nrf52/1.2.0/cores/nRF5/Udp.h`**
 
 Whenever a new version is installed, remember to copy these files into the new version directory. For example, new version is x.yy.z
 These files must be copied into the directory:
@@ -339,13 +339,13 @@ This file must be copied into the directory:
 
 #### 4. For Arduino SAMD boards
  
- ***To be able to compile, run and automatically detect and display BOARD_NAME on Arduino SAMD (Nano-33-IoT, etc) boards***, you have to copy the whole [Arduino SAMD Packages_Patches](Packages_Patches/arduino/hardware/samd/1.8.11) directory into Arduino SAMD directory (~/.arduino15/packages/arduino/hardware/samd/1.8.11).
+ ***To be able to compile, run and automatically detect and display BOARD_NAME on Arduino SAMD (Nano-33-IoT, etc) boards***, you have to copy the whole [Arduino SAMD Packages_Patches](Packages_Patches/arduino/hardware/samd/1.8.12) directory into Arduino SAMD directory (~/.arduino15/packages/arduino/hardware/samd/1.8.12).
  
 #### For core version v1.8.10+
 
-Supposing the Arduino SAMD version is 1.8.11. Now only one file must be copied into the directory:
+Supposing the Arduino SAMD version is 1.8.12. Now only one file must be copied into the directory:
 
-- `~/.arduino15/packages/arduino/hardware/samd/1.8.11/platform.txt`
+- `~/.arduino15/packages/arduino/hardware/samd/1.8.12/platform.txt`
 
 Whenever a new version is installed, remember to copy this files into the new version directory. For example, new version is x.yy.zz
 
@@ -486,12 +486,12 @@ With core after v1.5.0, this step is not necessary anymore thanks to the PR [Add
 
 #### 9. For Portenta_H7 boards using Arduino IDE in Linux
 
-  **To be able to upload firmware to Portenta_H7 using Arduino IDE in Linux (Ubuntu, etc.)**, you have to copy the file [portenta_post_install.sh](Packages_Patches/arduino/hardware/mbed_portenta/2.4.1/portenta_post_install.sh) into mbed_portenta directory (~/.arduino15/packages/arduino/hardware/mbed_portenta/2.4.1/portenta_post_install.sh). 
+  **To be able to upload firmware to Portenta_H7 using Arduino IDE in Linux (Ubuntu, etc.)**, you have to copy the file [portenta_post_install.sh](Packages_Patches/arduino/hardware/mbed_portenta/2.6.1/portenta_post_install.sh) into mbed_portenta directory (~/.arduino15/packages/arduino/hardware/mbed_portenta/2.6.1/portenta_post_install.sh). 
   
   Then run the following command using `sudo`
   
 ```
-$ cd ~/.arduino15/packages/arduino/hardware/mbed_portenta/2.4.1
+$ cd ~/.arduino15/packages/arduino/hardware/mbed_portenta/2.6.1
 $ chmod 755 portenta_post_install.sh
 $ sudo ./portenta_post_install.sh
 ```
@@ -504,9 +504,9 @@ This will create the file `/etc/udev/rules.d/49-portenta_h7.rules` as follows:
 SUBSYSTEMS=="usb", ATTRS{idVendor}=="2341", ATTRS{idProduct}=="035b", GROUP="plugdev", MODE="0666"
 ```
 
-Supposing the ArduinoCore-mbed core version is 2.4.1. Now only one file must be copied into the directory:
+Supposing the ArduinoCore-mbed core version is 2.6.1. Now only one file must be copied into the directory:
 
-- `~/.arduino15/packages/arduino/hardware/mbed_portenta/2.4.1/portenta_post_install.sh`
+- `~/.arduino15/packages/arduino/hardware/mbed_portenta/2.6.1/portenta_post_install.sh`
 
 Whenever a new version is installed, remember to copy this files into the new version directory. For example, new version is x.yy.zz
 
@@ -1825,7 +1825,7 @@ Debug terminal output when running example [No-ip_Client](examples/Generic/No-ip
 
 ```
 Start No-ip_Client on NUCLEO_F767ZI with LAN8742A using STM32Ethernet Library
-DDNS_Generic v1.6.0
+DDNS_Generic v1.6.1
 HTTP WebServer is @ IP : 192.168.2.84
 [DDNS] Access ifconfig.me
 [DDNS] httpCode = 200
@@ -1850,7 +1850,7 @@ Debug terminal output when running example [DuckDNS_Client](examples/Generic/Duc
 
 ```
 Start DuckDNS_Client on NUCLEO_F767ZI with LAN8742A using STM32Ethernet Library
-DDNS_Generic v1.6.0
+DDNS_Generic v1.6.1
 HTTP WebServer is @ IP : 192.168.2.84
 [DDNS] Access ifconfig.me
 [DDNS] httpCode = 200
@@ -1871,7 +1871,7 @@ Debug terminal output when running example [DuckDNS_Client](examples/Generic/Duc
 
 ```
 Start DuckDNS_Client on NRF52840_FEATHER with W5x00 using EthernetLarge Library
-DDNS_Generic v1.6.0
+DDNS_Generic v1.6.1
 _pinCS = 0
 W5100 init, using SS_PIN_DEFAULT = 10, new ss_pin = 10, W5100Class::ss_pin = 10
 W5100::init: W5500, SSIZE =8192
@@ -1896,7 +1896,7 @@ Debug terminal output when running example [No-ip_Client](examples/Generic/No-ip
 
 ```
 Start No-ip_Client on NRF52840_FEATHER with W5x00 using EthernetLarge Library
-DDNS_Generic v1.6.0
+DDNS_Generic v1.6.1
 _pinCS = 0
 W5100 init, using SS_PIN_DEFAULT = 10, new ss_pin = 10, W5100Class::ss_pin = 10
 W5100::init: W5500, SSIZE =8192
@@ -1921,7 +1921,7 @@ Debug terminal output when running example [DuckDNS_Client](examples/Generic/Duc
 
 ```
 Start nRF52_Ethernet_DuckDNS_Client on NRF52840_FEATHER with ENC28J60 using EthernetENC Library
-DDNS_Generic v1.6.0
+DDNS_Generic v1.6.1
 HTTP WebServer is @ IP : 192.168.2.83
 [DDNS] Access ifconfig.me
 [DDNS] httpCode = 200
@@ -1942,7 +1942,7 @@ Debug terminal output when running example [DuckDNS_Client](examples/Generic/Duc
 
 ```
 Start DuckDNS_Client on NRF52840_FEATHER with ENC28J60 using UIPEthernet Library
-DDNS_Generic v1.6.0
+DDNS_Generic v1.6.1
 ENC28J60_CONTROL_CS =10
 SS =5
 SPI_MOSI =25
@@ -1969,7 +1969,7 @@ Debug terminal output when running example [DuckDNS_Client](examples/Generic/Duc
 
 ```
 Start DuckDNS_Client on SAMD_NANO_33_IOT with WiFiNINA using WiFiNINA_Generic Library
-DDNS_Generic v1.6.0
+DDNS_Generic v1.6.1
 Connecting to WiFi SSID: HueNet1
 
 HTTP WebServer is @ IP : 192.168.2.83
@@ -1992,7 +1992,7 @@ Debug terminal output when running example [No-ip_Client](examples/Generic/No-ip
 
 ```
 Start No-ip_Client on SAMD_NANO_33_IOT with WiFiNINA using WiFiNINA_Generic Library
-DDNS_Generic v1.6.0
+DDNS_Generic v1.6.1
 Connecting to WiFi SSID: HueNet1
 
 HTTP WebServer is @ IP : 192.168.2.83
@@ -2015,7 +2015,7 @@ Debug terminal output when running example [DuckDNS_Client](examples/Generic/Duc
 
 ```
 Start DuckDNS_Client on SAM DUE with W5x00 using Ethernet Library
-DDNS_Generic v1.6.0
+DDNS_Generic v1.6.1
 _pinCS = 0
 W5100 init, using SS_PIN_DEFAULT = 10, new ss_pin = 10, W5100Class::ss_pin = 10
 W5100::init: W5100, SSIZE =4096
@@ -2040,7 +2040,7 @@ Debug terminal output when running example [No-ip_Client](examples/Generic/No-ip
 
 ```
 Start No-ip_Client on SAM DUE with W5x00 using EthernetLarge Library
-DDNS_Generic v1.6.0
+DDNS_Generic v1.6.1
 _pinCS = 0
 W5100 init, using SS_PIN_DEFAULT = 10, new ss_pin = 10, W5100Class::ss_pin = 10
 W5100::init: W5100, SSIZE =4096
@@ -2065,7 +2065,7 @@ Debug terminal output when running example [DuckDNS_Client](examples/Generic/Duc
 
 ```
 Start DuckDNS_Client on SEEED_XIAO_M0 with ESP8266-AT/ESP32-AT using ESP8266_AT_WebServer Library
-DDNS_Generic v1.6.0
+DDNS_Generic v1.6.1
 [ESP_AT] Use ES8266-AT Command
 WiFi shield init done
 Connecting to WiFi SSID: HueNet1
@@ -2090,7 +2090,7 @@ Debug terminal output when running example [No-ip_Client](examples/Generic/No-ip
 
 ```
 Start No-ip_Client on SEEED_XIAO_M0 with ESP8266-AT/ESP32-AT using ESP8266_AT_WebServer Library
-DDNS_Generic v1.6.0
+DDNS_Generic v1.6.1
 [ESP_AT] Use ES8266-AT Command
 WiFi shield init done
 Connecting to WiFi SSID: HueNet1
@@ -2115,7 +2115,7 @@ Debug terminal output when running example [AVR_Ethernet_DuckDNS_Client](example
 
 ```
 Start AVR_Ethernet_DuckDNS_Client on AVR_MEGA2560 with W5x00 using EthernetLarge Library
-DDNS_Generic v1.6.0
+DDNS_Generic v1.6.1
 
 HTTP WebServer is @ IP : 192.168.2.99
 [DDNS] Access ifconfig.me
@@ -2140,7 +2140,7 @@ Debug terminal output when running example [Teensy_Ethernet_DuckDNS_Client](exam
 
 ```
 Start Teensy_Ethernet_DuckDNS_Client on TEENSY 4.1 with Custom Ethernet using Teensy 4.1 NativeEthernet Library
-DDNS_Generic v1.6.0
+DDNS_Generic v1.6.1
 
 HTTP WebServer is @ IP : 192.168.2.102
 [DDNS] Access ifconfig.me
@@ -2164,7 +2164,7 @@ Debug terminal output when running example [RP2040_ESP_AT_DuckDNS_Client](exampl
 
 ```
 Start RP2040_ESP_AT_DuckDNS_Client on RASPBERRY_PI_PICO with ESP8266-AT/ESP32-AT using ESP8266_AT_WebServer Library
-DDNS_Generic v1.6.0
+DDNS_Generic v1.6.1
 [ESP_AT] Use ES8266-AT Command
 WiFi shield init done
 Connecting to WiFi SSID: HueNet1
@@ -2184,7 +2184,7 @@ Debug terminal output when running example [RP2040_Ethernet_DuckDNS_Client](exam
 
 ```
 Start RP2040_Ethernet_DuckDNS_Client on MBED RASPBERRY_PI_PICO with W5x00 using EthernetLarge Library
-DDNS_Generic v1.6.0
+DDNS_Generic v1.6.1
 _pinCS = 0
 W5100 init, using SS_PIN_DEFAULT = 5, new ss_pin = 10, W5100Class::ss_pin = 5
 W5100::init: W5500, SSIZE =8192
@@ -2211,7 +2211,7 @@ Debug terminal output when running example [DuckDNS_Client](examples/Generic/Duc
 
 ```
 Start DuckDNS_Client on RASPBERRY_PI_PICO with ESP8266-AT/ESP32-AT using ESP8266_AT_WebServer Library
-DDNS_Generic v1.6.0
+DDNS_Generic v1.6.1
 [ESP_AT] Use ES8266-AT Command
 WiFi shield init done
 Connecting to WiFi SSID: HueNet1
@@ -2231,8 +2231,8 @@ Debug terminal output when running example [WT32_ETH01_DuckDNS_Client](examples/
 
 ```
 Start WT32_ETH01_DuckDNS_Client on WT32-ETH01 with ETH_PHY_LAN8720
-WebServer_WT32_ETH01 v1.2.0
-DDNS_Generic v1.6.0
+WebServer_WT32_ETH01 v1.4.1
+DDNS_Generic v1.6.1
 ETH MAC: A8:03:2A:A1:61:73, IPv4: 192.168.2.232
 FULL_DUPLEX, 100Mbps
 
@@ -2251,7 +2251,7 @@ Debug terminal output when running example [Portenta_H7_Ethernet_DuckDNS_Client]
 
 ```
 Start Portenta_H7_Ethernet_DuckDNS_Client on PORTENTA_H7_M7 with Ethernet using Portenta_Ethernet Library
-DDNS_Generic v1.6.0
+DDNS_Generic v1.6.1
 
 HTTP WebServer is @ IP : 192.168.2.132
 [DDNS] Access ifconfig.me
@@ -2275,7 +2275,7 @@ Debug terminal output when running example [WT32_ETH01_DuckDNS_Client](examples/
 
 ```
 Start Portenta_H7_DuckDNS_Client on PORTENTA_H7_M7 with Portenta_H7 WiFi
-DDNS_Generic v1.6.0
+DDNS_Generic v1.6.1
 Connecting to WiFi SSID: HueNet1
 
 HTTP WebServer is @ IP : 192.168.2.130
