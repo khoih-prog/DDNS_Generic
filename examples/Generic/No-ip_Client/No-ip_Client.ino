@@ -28,10 +28,31 @@ void onUpdateCallback(const char* oldIP, const char* newIP)
   Serial.println(newIP);
 }
 
+void initEthernet()
+{
+  // For other boards, to change if necessary
+#if ( USE_ETHERNET_GENERIC || USE_ETHERNET_ENC )
+  // Must use library patch for Ethernet, Ethernet2, EthernetLarge libraries
+
+  Ethernet.init (USE_THIS_SS_PIN);
+
+#endif  // #if ( USE_ETHERNET_GENERIC || USE_ETHERNET_ENC )
+
+  // start the ethernet connection and the server:
+  // Use DHCP dynamic IP and random mac
+  uint16_t index = millis() % NUMBER_OF_MAC;
+  // Use Static IP
+  //Ethernet.begin(mac[index], ip);
+  Ethernet.begin(mac[index]);
+
+  Serial.print(F("\nHTTP WebServer is @ IP : "));
+  Serial.println(Ethernet.localIP());
+}
+
 void setup()
 {
   Serial.begin(115200);
-  while (!Serial);
+  while (!Serial && millis() < 5000)
 
   Serial.print("\nStart No-ip_Client on " + String(BOARD_NAME));
   Serial.println(" with " + String(SHIELD_TYPE));
@@ -93,33 +114,7 @@ void setup()
   
 #elif (DDNS_USING_ETHERNET)
 
-  // For other boards, to change if necessary
-#if ( USE_ETHERNET || USE_ETHERNET_LARGE || USE_ETHERNET2 || USE_ETHERNET_ENC )
-  // Must use library patch for Ethernet, Ethernet2, EthernetLarge libraries
-
-  Ethernet.init (USE_THIS_SS_PIN);
-
-#elif USE_ETHERNET3
-  // Use  MAX_SOCK_NUM = 4 for 4K, 2 for 8K, 1 for 16K RX/TX buffer
-  #ifndef ETHERNET3_MAX_SOCK_NUM
-    #define ETHERNET3_MAX_SOCK_NUM      4
-  #endif
-
-  Ethernet.setCsPin (USE_THIS_SS_PIN);
-  Ethernet.init (ETHERNET3_MAX_SOCK_NUM);
-
-#endif  // #if ( USE_ETHERNET || USE_ETHERNET_LARGE || USE_ETHERNET2 || USE_ETHERNET_ENC )
-
-
-  // start the ethernet connection and the server:
-  // Use DHCP dynamic IP and random mac
-  uint16_t index = millis() % NUMBER_OF_MAC;
-  // Use Static IP
-  //Ethernet.begin(mac[index], ip);
-  Ethernet.begin(mac[index]);
-
-  Serial.print(F("\nHTTP WebServer is @ IP : "));
-  Serial.println(Ethernet.localIP());
+  initEthernet();
   
 #endif
 

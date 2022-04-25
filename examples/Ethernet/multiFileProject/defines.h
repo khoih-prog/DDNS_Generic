@@ -78,7 +78,10 @@
       #define ETHERNET_USE_RP2040          true
       
     #if defined(ARDUINO_ARCH_MBED)      
+      #warning Use MBED RP2040 architecture with Ethernet
+    #else
       #warning Use RP2040 architecture with Ethernet
+      //#error Only ARDUINO_ARCH_MBED supported Ethernet on the RP2040-based boards ! Please check your Tools->Board setting.
     #endif    
   #endif
     
@@ -298,17 +301,11 @@
   // For RP2040
   #define EspSerial Serial1
 
-  // Default pin 5 (in Mbed) or 17 to SS/CS
   #if defined(ARDUINO_ARCH_MBED)
-    // For RPI Pico using Arduino Mbed RP2040 core
-    // SCK: GPIO2,  MOSI: GPIO3, MISO: GPIO4, SS/CS: GPIO5
-    
-    #define USE_THIS_SS_PIN       17
-
     #if defined(BOARD_NAME)
       #undef BOARD_NAME
     #endif
-
+    
     #if defined(ARDUINO_RASPBERRY_PI_PICO) 
       #define BOARD_TYPE      "MBED RASPBERRY_PI_PICO"
     #elif defined(ARDUINO_ADAFRUIT_FEATHER_RP2040)
@@ -318,26 +315,7 @@
     #else
       #define BOARD_TYPE      "MBED Unknown RP2040"
     #endif
-    
-  #else
-  
-    //#define USING_SPI2        true
-    
-    // For RPI Pico using E. Philhower RP2040 core
-    #if (USING_SPI2)
-      // SCK: GPIO14,  MOSI: GPIO15, MISO: GPIO12, SS/CS: GPIO13 for SPI1
-      #define USE_THIS_SS_PIN       13
-    #else
-      // SCK: GPIO18,  MOSI: GPIO19, MISO: GPIO16, SS/CS: GPIO17 for SPI0
-      #define USE_THIS_SS_PIN       17
-    #endif
-
-  #endif
-   
-  #define SS_PIN_DEFAULT        USE_THIS_SS_PIN
-
-  // For RPI Pico
-  #warning Use RPI-Pico RP2040 architecture
+  #endif    //ARDUINO_ARCH_MBED
   
 #elif defined(WIFI_USE_SAMD) || defined(ETHERNET_USE_SAMD)
   // For SAMD
@@ -579,11 +557,11 @@
 #elif ( (DDNS_USING_WIFI) && !(ESP8266 || ESP32) )
 
   // Select one to be true: USE_WIFI_NINA, DDNS_USING_WIFI_AT or USE_WIFI_CUSTOM
-  //#define USE_WIFI_NINA         true
-  #define USE_WIFI_NINA         false
+  #define USE_WIFI_NINA         true
+  //#define USE_WIFI_NINA         false
 
-  #define DDNS_USING_WIFI_AT    true
-  //#define DDNS_USING_WIFI_AT    false
+  //#define DDNS_USING_WIFI_AT    true
+  #define DDNS_USING_WIFI_AT    false
   
   // If not USE_WIFI_NINA, you can USE_WIFI_CUSTOM, then include the custom WiFi library here 
   //#define USE_WIFI_CUSTOM       true
@@ -627,15 +605,14 @@
   #define USE_CUSTOM_ETHERNET     false
   
   // Only one if the following to be true
-  #define USE_ETHERNET_GENERIC  true
-  #define USE_ETHERNET_ESP8266  false 
-  #define USE_ETHERNET_ENC      false
-  #define USE_UIP_ETHERNET      false
-  #define USE_CUSTOM_ETHERNET   false
-    
-  ////////////////////////////
+  #define USE_ETHERNET            false
+  #define USE_ETHERNET2           false //true
+  #define USE_ETHERNET3           false //true
+  #define USE_ETHERNET_LARGE      true
+  #define USE_ETHERNET_ESP8266    false //true
+  #define USE_ETHERNET_ENC        false
   
-  #if ( USE_ETHERNET_GENERIC || USE_ETHERNET_ESP8266 || USE_ETHERNET_ENC || USE_NATIVE_ETHERNET )
+  #if ( USE_ETHERNET2 || USE_ETHERNET3 || USE_ETHERNET_LARGE || USE_ETHERNET_ESP8266 || USE_ETHERNET_ENC || USE_NATIVE_ETHERNET )
     #ifdef USE_CUSTOM_ETHERNET
       #undef USE_CUSTOM_ETHERNET
       #define USE_CUSTOM_ETHERNET   false
@@ -648,13 +625,18 @@
       #include "NativeEthernet.h"
       #warning Using NativeEthernet lib for Teensy 4.1. Must also use Teensy Packages Patch or error
       #define SHIELD_TYPE           "Custom Ethernet using Teensy 4.1 NativeEthernet Library"
-    #elif USE_ETHERNET_GENERIC
-      #include "Ethernet_Generic.h"
-      #warning Using Ethernet_Generic lib
-      #define SHIELD_TYPE           "W5x00 using Ethernet_Generic Library"
-    
-      #define ETHERNET_LARGE_BUFFERS
-         
+    #elif USE_ETHERNET3
+      #include "Ethernet3.h"
+      #warning Use Ethernet3 lib
+      #define SHIELD_TYPE           "W5x00 using Ethernet3 Library"
+    #elif USE_ETHERNET2
+      #include "Ethernet2.h"
+      #warning Use Ethernet2 lib
+      #define SHIELD_TYPE           "W5x00 using Ethernet2 Library"
+    #elif USE_ETHERNET_LARGE
+      #include "EthernetLarge.h"
+      #warning Use EthernetLarge lib
+      #define SHIELD_TYPE           "W5x00 using EthernetLarge Library"
     #elif USE_ETHERNET_ESP8266
       #include "Ethernet_ESP8266.h"
       #warning Use Ethernet_ESP8266 lib
@@ -672,14 +654,13 @@
       #warning Use UIPEthernet library
       #define SHIELD_TYPE           "ENC28J60 using UIPEthernet Library"
     #else
-      #ifdef USE_ETHERNET_GENERIC
-        #undef USE_ETHERNET_GENERIC
-      #endif  
-      #define USE_ETHERNET_GENERIC   true
-      
-      #include "Ethernet_Generic.h"
-      #warning Using default Ethernet_Generic lib
-      #define SHIELD_TYPE           "W5x00 using default Ethernet_Generic Library"
+      #ifdef USE_ETHERNET
+        #undef USE_ETHERNET
+      #endif
+      #define USE_ETHERNET          true
+      #include "Ethernet.h"
+      #warning Use Ethernet lib
+      #define SHIELD_TYPE           "W5x00 using Ethernet Library"
     #endif
   #elif USE_BUILTIN_ETHERNET
       #warning Use built-in LAN8742A Library

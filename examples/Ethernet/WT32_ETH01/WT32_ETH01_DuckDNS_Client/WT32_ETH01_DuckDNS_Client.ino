@@ -31,7 +31,7 @@ void onUpdateCallback(const char* oldIP, const char* newIP)
 void setup()
 {
   Serial.begin(115200);
-  while (!Serial);
+  while (!Serial && millis() < 5000);
 
   Serial.print(F("\nStart WT32_ETH01_DuckDNS_Client on ")); Serial.print(BOARD_NAME);
   Serial.print(F(" with ")); Serial.println(SHIELD_TYPE);
