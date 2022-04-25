@@ -14,7 +14,8 @@
   Built by Khoi Hoang https://github.com/khoih-prog/DDNS_Generic
 
   Licensed under MIT license
-  Version: 1.6.1
+  
+  Version: 1.7.0
 
   Version Modified By   Date      Comments
   ------- -----------  ---------- -----------
@@ -28,103 +29,13 @@
   1.5.1   K Hoang      10/10/2021 Update `platform.ini` and `library.json`
   1.6.0   K Hoang      16/11/2021 Replace deprecated `ipv4bot.whatismyipaddress.com` with `ifconfig.me`
   1.6.1   K Hoang      01/12/2021 Auto detect ESP32 core version. Fix bug in examples for WT32_ETH01
+  1.7.0   K Hoang      16/11/2021 Use new Ethernet_Generic library. Add support to RP2040 using arduino-pico code
  *****************************************************************************************************************************/
  
 #ifndef DDNS_Generic_H
 #define DDNS_Generic_H
 
-#include "Arduino.h"
-#include "DDNS_Generic_Debug.h"
-
-#ifndef DDNS_GENERIC_VERSION
-  #define DDNS_GENERIC_VERSION       "DDNS_Generic v1.6.1"
-#endif
-
-#if ( !defined(DDNS_USING_WIFI) || DDNS_USING_WIFI || !DDNS_USING_ETHERNET)
-  #define DDNS_USING_WIFI         true
-  #define DDNS_USING_ETHERNET     false
-#endif
-
-#if (DDNS_USING_ETHERNET && !(DDNS_USING_WIFI || DDNS_USING_ESP_WIFI))
-  #define DDNS_USING_WIFI         false
-  #define DDNS_USING_ETHERNET     true
-#endif
-
-#if defined(ESP8266)
-
-  #include "ESP8266WiFi.h"
-  #include "ESP8266HTTPClient.h"
-  #include <WiFiClient.h>
-  #define HARDWARE "esp8266"
-  
-#elif defined(ESP32)
-
-  #include "WiFi.h"
-  #include "HTTPClient.h"
-  #include <WiFiClient.h>
-  #define HARDWARE "esp32"
-  
-#elif DDNS_USING_WIFI
-  //#include "WiFiNINA_Generic.h"
-  #include "ArduinoHttpClient.h"
-  
-  #if ( (WIFI_USE_STM32 || WIFI_USE_NRF528XX || WIFI_USE_AVR || WIFI_USE_MEGA_AVR || WIFI_USE_TEENSY || WIFI_USE_RP2040) && DDNS_USING_WIFI_AT )
-    #warning Using HTTP_ResponseParser to fix for ESP8266/ESP32-AT on nRF52/STM32/AVR/megaAVR/Teensy/RP2040
-    #include "HTTP_ResponseParser.h"
-  #endif
-#elif DDNS_USING_ETHERNET
-
-  #include "ArduinoHttpClient.h"
-
-#endif
-
-#if (ESP8266 || ESP32)
-  #include "stdlib_noniso.h"
-  
-#else
-  // To support lambda function in class
-  //#include <functional>
-  
-#endif
-
-  // Handler to notify user about new public IP
-  //typedef std::function<void(const char* old_ip, const char* new_ip)> DDNSUpdateHandler;
-  typedef void (*DDNSUpdateHandler)(const char* old_ip, const char* new_ip);
-
-class DDNSGenericClass 
-{
-  public:
-    void service(String ddns_service);
-    void client(String ddns_domain, String ddns_username, String ddns_password = "");
-    void update(unsigned long ddns_update_interval, bool use_local_ip = false);
-
-    // Callback
-    void onUpdate(DDNSUpdateHandler handler) 
-    {
-      _ddnsUpdateFunc = handler;
-    }
-  
-  private:
-    String publicIPRequest(Client& client);
-    
-    String server = "ifconfig.me/ip";
-  
-    DDNSUpdateHandler _ddnsUpdateFunc = nullptr;
-    
-    unsigned long interval;
-    unsigned long previousMillis = 0;
-
-    String new_ip;
-    String old_ip;
-    String update_url;
-    String ddns_u;
-    String ddns_p;
-    String ddns_d;
-    String ddns_choice;
-};
-
-extern DDNSGenericClass DDNSGeneric;
-
+#include "DDNS_Generic.hpp"
 #include "DDNS_Generic_Impl.h"
 
 #endif    // DDNS_Generic_H

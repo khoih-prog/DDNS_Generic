@@ -14,7 +14,8 @@
   Built by Khoi Hoang https://github.com/khoih-prog/DDNS_Generic
 
   Licensed under MIT license
-  Version: 1.6.1
+  
+  Version: 1.7.0
 
   Version Modified By   Date      Comments
   ------- -----------  ---------- -----------
@@ -28,6 +29,7 @@
   1.5.1   K Hoang      10/10/2021 Update `platform.ini` and `library.json`
   1.6.0   K Hoang      16/11/2021 Replace deprecated `ipv4bot.whatismyipaddress.com` with `ifconfig.me`
   1.6.1   K Hoang      01/12/2021 Auto detect ESP32 core version. Fix bug in examples for WT32_ETH01
+  1.7.0   K Hoang      16/11/2021 Use new Ethernet_Generic library. Add support to RP2040 using arduino-pico code
  *****************************************************************************************************************************/
 
 #ifndef DDNS_Generic_Impl_H
