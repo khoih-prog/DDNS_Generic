@@ -119,7 +119,7 @@
   * [ 6. DuckDNS_Client on Adafruit NRF52840_FEATHER_EXPRESS with ENC28J60 using UIPEthernet Library](#6-duckdns_client-on-adafruit-nrf52840_feather_express-with-enc28j60-using-uipethernet-library)
   * [ 7. DuckDNS_Client on Adafruit SAMD21 SAMD_NANO_33_IOT with WiFiNINA using WiFiNINA_Generic Library](#7-duckdns_client-on-adafruit-samd21-samd_nano_33_iot-with-wifinina-using-wifinina_generic-library)
   * [ 8. No-ip_Client on Adafruit SAMD21 SAMD_NANO_33_IOT with WiFiNINA using WiFiNINA_Generic Library](#8-no-ip_client-on-adafruit-samd21-samd_nano_33_iot-with-wifinina-using-wifinina_generic-library)
-  * [ 9. DuckDNS_Client on Arduino SAM DUE with W5100 using Ethernet Library](#9-duckdns_client-on-arduino-sam-due-with-w5100-using-ethernet-library)
+  * [ 9. DuckDNS_Client on Arduino SAM DUE with W5100 using Ethernet_Generic Library](#9-duckdns_client-on-arduino-sam-due-with-w5100-using-Ethernet_Generic-library)
   * [10. No-ip_Client on Arduino SAM DUE with W5100 using Ethernet_Generic Library](#10-no-ip_client-on-arduino-sam-due-with-w5100-using-Ethernet_Generic-library)
   * [11. DuckDNS_Client on SeeedStudio SEEED_XIAO_M0 with ESP8266-AT using ESP8266_AT_WebServer Library](#11-duckdns_client-on-seeedstudio-seeed_xiao_m0-with-esp8266-at-using-esp8266_at_webserver-library)
   * [12. No-ip_Client on SeeedStudio SEEED_XIAO_M0 with ESP8266-AT using ESP8266_AT_WebServer Library](#12-no-ip_client-on-seeedstudio-seeed_xiao_m0-with-esp8266-at-using-esp8266_at_webserver-library)
